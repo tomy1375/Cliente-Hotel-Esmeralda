@@ -23,18 +23,18 @@ function LoginPage() {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-
+  
     try {
       const token = await loginUser(usernameOrEmail, password);
-      Cookies.set('token', token, { expires: 1 });
+      Cookies.set("token", token, { expires: 1/24 });
       
       let userInfo = null;
       if (token) {
         userInfo = await getUserInfo(); 
       }
-
-      dispatch(login({ token, userInfo }));
-
+  
+      dispatch(login(userInfo));
+  
       navigate('/');
     } catch (error){ 
       console.error('Error al iniciar sesión:', error);
