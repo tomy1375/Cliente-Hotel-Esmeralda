@@ -1,5 +1,7 @@
-import * as React from "react";
+
 import { useUser } from "@clerk/clerk-react";
+import React, { useState, useEffect } from 'react';
+
 
 function ProfileImage() {
 
@@ -19,6 +21,8 @@ function ProfileImage() {
     />
   );
 }
+
+
 
 function InputField({ label, value, icon, onChange }) {
   return (
@@ -72,9 +76,9 @@ function InputFieldWithIcon({ label, value, icon, onChange }) {
 
 function Button({ label, variant, onClick }) {
   const baseClasses =
-    "flex flex-col flex-1 grow shrink-0 justify-center rounded-md basis-0 w-fit";
+    "flex flex-col flex-1 grow shrink-0 justify-center rounded-md basis-0 w-fit ";
   const variantClasses = {
-    primary: "text-white bg-neutral-800",
+    primary: "text-white bg-v  hover:brightness-75 transition-color",
     secondary:
       "text-neutral-700 bg-white border border-solid border-neutral-700",
   };
@@ -93,63 +97,99 @@ function Button({ label, variant, onClick }) {
 
 function ProfileModal() {
   const [formData, setFormData] = React.useState({
-    name: "Sid Aranda",
-    email: "siddxd@growthx.com",
+    name: "",
+    email: "",
     contact: "+44 0000 0000000",
-    country: "England",
+    country: "",
     dni: "X4995280W",
-    gender: "Female",
+    gender: "",
   });
 
-  const handleChange = (field) => (event) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: event.target.value,
-    }));
-  };
+  const { user, isLoaded } = useUser();
+  const [countries, setCountries] = useState([]);
+
+
+  // Actualiza el estado formData con el nombre completo del usuario una vez que user esté cargado
+  React.useEffect(() => {
+     if (isLoaded) {
+       setFormData((prevData) => ({
+         ...prevData,
+         name: user.fullName,
+         email:user.primaryEmailAddress.emailAddress // Actualiza el nombre con el valor de user.fullName
+       }));
+     }
+  }, [isLoaded, user]);
+
+
+  useEffect(() => {
+    fetch('https://www.universal-tutorial.com/api/getaccesstoken', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'api-token': 'uLmMbkZBbbL5ExZ2xmGYWb-qORHjJ8fBy3RMmMfB3KEyCnLhMabei7gl53LhaxMmKm4',
+        'user-email': 'tomy_ramos1991@yahoo.com.ar'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const authToken = data.auth_token;
+      fetch('https://www.universal-tutorial.com/api/countries', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => setCountries(data))
+      .catch(error => console.error('Error:', error));
+    })
+    .catch(error => console.error('Error:', error));
+ }, []);
+
+ 
+ const handleChange = (field) => (event) => {
+  setFormData((prevData) => ({
+    ...prevData,
+    [field]: event.target.value,
+  }));
+};
 
   const handleSubmit = () => {
-    // Handle form submission logic here
     console.log("Form submitted:", formData);
-  };
+ };
+
+ if (!isLoaded) {
+    return <div>Loading...</div>;
+ }
+
 
   const inputFields = [
     { label: "Name", field: "name" },
-    {
-      label: "Email",
-      field: "email",
-      tags: ["Verify", "Verified"],
-    },
-    {
-      label: "Contact",
-      field: "contact",
-      icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/cc7ac094d5c3dac425a911e48d06502d0fadaa46e08a5ff79cfa27ae031d4526?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&",
-      prefix: "EN",
-    },
-    { label: "Country", field: "country", icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/cc7ac094d5c3dac425a911e48d06502d0fadaa46e08a5ff79cfa27ae031d4526?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&" },
+    { label: "Email", field: "email", tags: ["Verify", "Verified"] },
+    { label: "Contact", field: "contact", icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/cc7ac094d5c3dac425a911e48d06502d0fadaa46e08a5ff79cfa27ae031d4526?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&", prefix: "EN" },
     { label: "DNI", field: "dni" },
-    { label: "Gender", field: "gender", icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/cc7ac094d5c3dac425a911e48d06502d0fadaa46e08a5ff79cfa27ae031d4526?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&" },
-  ];
+  
+ ];
 
-  const { user, isLoaded } = useUser(); 
 
   if (!isLoaded) {
      return <div>Loading...</div>;
   }
 
   return (
-    <div className="flex flex-col items-center pt-6 pr-7 pb-10 pl-20 bg-white max-w-[862px] max-md:px-5">
-      <div className="flex gap-5 w-full max-w-[657px] max-md:flex-wrap max-md:max-w-full">
-        <div className="grow justify-center text-base font-medium leading-7 text-neutral-700 w-fit max-md:max-w-full">
+    <div className="flex flex-col items-center pt-6 pr-8 pb-10 pl-9  bg-white max-w-[862px] max-md:px-5 rounded-lg">
+      <div className="">
+        <div className="grow justify-center font-extrabold text-3xl leading-7 text-neutral-700 w-fit max-md:max-w-full ">
           Edit profile
         </div>
         <button className="flex justify-center items-center px-1 py-1.5 my-auto rounded-xl">
-          <img
+          {/* <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4297f02966bd6c29c0164b329e0e124f5aa2e3ef3e9d7aa1c741ed9b5f41ff7?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&"
-            alt=""
+            alt="salidaModal"
             className="aspect-square fill-stone-300 w-[11px]"
-          />
+          /> */}
         </button>
       </div>
       <ProfileImage />
@@ -218,15 +258,47 @@ function ProfileModal() {
                 icon={field.icon}
               />
             ))}
+          <div className="flex flex-col justify-center">
+            <label className="font-medium leading-[143%] text-neutral-700">
+              Country
+            </label>
+            <select
+              value={formData.country}
+              onChange={handleChange("country")}
+              className="flex flex-col justify-center px-4 py-3 mt-2 leading-6 bg-white rounded-lg border border-solid border-stone-300 text-stone-400 cursor-pointer mb-5"
+            >
+              <option value="">Select a country</option>
+              {countries.map((country, index) => (
+                <option key={index} value={country.country_name}>
+                  {country.country_name}
+                </option>
+              ))}
+            </select>
+            <div className="flex flex-col justify-center">
+      <label className="font-medium leading-[143%] text-neutral-700">
+        Gender
+      </label>
+      <select
+        value={formData.gender}
+        onChange={handleChange("gender")}
+        className="flex flex-col justify-center px-4 py-3 mt-2 leading-6 bg-white rounded-lg border border-solid border-stone-300 text-stone-400 cursor-pointer"
+      >
+        <option value="">Select gender</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+        <option value="Others">Others</option>
+      </select>
+    </div>
+          </div>
           </div>
         </div>
       </div>
       <div className="flex gap-4 justify-center mt-11 w-full text-base font-medium whitespace-nowrap max-w-[657px] max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
-        <Button label="Cancel" variant="secondary" onClick={() => {}} />
-        <Button label="Submit" variant="primary" onClick={handleSubmit} />
+        <Button label="Cancel" variant="secondary" onClick={() => {}}  />
+        <Button label="Submit" variant="primary" onClick={handleSubmit}  />
       </div>
     </div>
   );
+  
 }
-
 export default ProfileModal;
