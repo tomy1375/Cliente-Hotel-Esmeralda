@@ -30,6 +30,19 @@ function MainLayout() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const removeModalIndicator = () => {
+       localStorage.removeItem('modalShown');
+    };
+   
+    window.addEventListener('beforeunload', removeModalIndicator);
+   
+    return () => {
+       window.removeEventListener('beforeunload', removeModalIndicator);
+    };
+   }, []);
+   
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const token = Cookies.get("token");
@@ -48,12 +61,6 @@ function MainLayout() {
 
     fetchData();
   }, []); 
-
-  useEffect(() => {
-    if (userInfo) {
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-    }
-  }, [userInfo]);
 
   return (
     <>

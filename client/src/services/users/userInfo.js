@@ -12,7 +12,6 @@ export const getUserInfo = async () => {
        })
        
       const userInfo = response.data;
-      console.log("Información del usuario:", userInfo);
       return userInfo;
     } else {
       console.error("No se encontró el token en las cookies");

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useClerk } from "@clerk/clerk-react";
 import LogoImage from "../../assets/logo.svg";
@@ -12,14 +12,12 @@ import "./Navbar.scss";
 function Navbar() {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
   const [isOpenSeeMoreMenu, setIsOpenSeeMoreMenu] = useState(false);
-  const location = useLocation();
   const { signOut, user } = useClerk();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isCustomAuthenticated, setIsCustomAuthenticated] = useState(false);
   const [showGalleryDescription, setShowGalleryDescription] = useState(false);
   const userInfo = useSelector((state) => state.users.userInfo);
-
+  const location = useLocation();
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -30,19 +28,12 @@ function Navbar() {
     setShowGalleryDescription(location.pathname === "/gallery");
   }, [location.pathname]);
 
-  useEffect(() => {
-    const handleTokenChange = () => {
-      const token = Cookies.get("token");
-      setIsLoggedIn(!!token);
-    };
-    window.addEventListener("storage", handleTokenChange);
-    return () => {
-      window.removeEventListener("storage", handleTokenChange);
-    };
-  }, []);
-
   const reloadPage = () => {
-    window.location.reload();
+    if (location.pathname === '/') {
+      window.location.reload();
+    } else {
+      window.location.href = '/';
+    }
   };
 
   const toggleProfileMenu = () => {
@@ -77,9 +68,9 @@ function Navbar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-      await signOut(); 
-      Cookies.remove("token"); 
-      setIsCustomAuthenticated(false); 
+      await signOut();
+      Cookies.remove("token");
+      setIsCustomAuthenticated(false);
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     } finally {
@@ -195,7 +186,7 @@ function Navbar() {
               </div>
             )}
           </div>
-                    
+
           <div className="flex space-x-16 ">
             {isLoading ? (
               <div className="custom-loader"></div>
@@ -226,7 +217,11 @@ function Navbar() {
                       ) : (
                         <h1 className="ml-2 text-lg">
                           Hi,
-                          {userInfo?.full_name ? userInfo.full_name : userInfo?.username ? userInfo.username : ""}
+                          {userInfo?.full_name
+                            ? userInfo.full_name
+                            : userInfo?.username
+                            ? userInfo.username
+                            : ""}
                         </h1>
                       )}
                       <svg

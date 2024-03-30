@@ -1,12 +1,19 @@
-import React from 'react'
-import LoginPage from '../components/login/Login'
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import LoginPage from '../components/login/Login';
+import Cookies from 'js-cookie';
 
 const LoginView = () => {
-  return (
-    <div>
-        <LoginPage/>
-    </div>
-  )
+  const token = Cookies.get('token');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate('/');
+    }
+  }, [token, navigate]);
+  return token ? null : <LoginPage />;
 }
 
-export default LoginView
+export default LoginView;
+

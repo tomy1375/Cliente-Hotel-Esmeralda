@@ -135,7 +135,7 @@ const About = () => {
           <span className="font-semibold">- John Doe</span>
           <FontAwesomeIcon
             icon={faStar}
-            size="1 x"
+            size="1x"
             className="text-yellow-500 ml-2"
           />
           <FontAwesomeIcon

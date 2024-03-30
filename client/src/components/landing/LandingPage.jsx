@@ -1,32 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LandingPages({ showModal, setShowModal }) {
-  const navigate = useNavigate();
-  
+function LandingPages() {
+ const navigate = useNavigate();
+ const [showModal, setShowModal] = useState(false);
 
-  const handleClick = () => {
+ const handleClick = () => {
     navigate("/formulario");
     console.log("yendo a formulario");
-  };
+ };
 
-  const handleClickDetails = () => {
+ const handleClickDetails = () => {
     navigate("/termsAndConditions");
-    handleClose()
-  };
-  const handleClose = () => {
+    handleClose();
+ };
+
+ const handleClose = () => {
     setShowModal(false);
     document.body.style.overflow = "auto";
-  };
+    localStorage.setItem('modalShown', 'true'); // Indica que el modal ya ha sido mostrado
+ };
 
-  useEffect(() => {
-    setShowModal(true);
-    document.body.style.overflow = "hidden";
-  }, []);
+ useEffect(() => {
+    const modalShown = localStorage.getItem('modalShown');
+    if (!modalShown) {
+      setShowModal(true);
+      document.body.style.overflow = "hidden";
+    }
+ }, []);
 
-  if (!showModal) {
+ if (!showModal) {
     return null;
-  }
+ }
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-70 flex items-center justify-center">
