@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import { setUserInfo } from "./redux/users/actions/usersActions";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
+import EmailConfirmation from "./views/ConfirmationEmail";
 
 function MainLayout() {
   const location = useLocation();
@@ -33,16 +34,15 @@ function MainLayout() {
 
   useEffect(() => {
     const removeModalIndicator = () => {
-       localStorage.removeItem('modalShown');
+      localStorage.removeItem("modalShown");
     };
-   
-    window.addEventListener('beforeunload', removeModalIndicator);
-   
+
+    window.addEventListener("beforeunload", removeModalIndicator);
+
     return () => {
-       window.removeEventListener('beforeunload', removeModalIndicator);
+      window.removeEventListener("beforeunload", removeModalIndicator);
     };
-   }, []);
-   
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,7 +62,7 @@ function MainLayout() {
     };
 
     fetchData();
-  }, []); 
+  }, []);
 
   return (
     <>
@@ -87,6 +87,10 @@ function MainLayout() {
         />
         <Route path="/register" element={<RegisterView />} />
         <Route path="/gallery" element={<GalleryView />} />
+        <Route
+          path="/email-confirmation/:verificationCode"
+          element={<EmailConfirmation />}
+        />
       </Routes>
       {location.pathname !== "/login" && location.pathname !== "/register" && (
         <Footer />
