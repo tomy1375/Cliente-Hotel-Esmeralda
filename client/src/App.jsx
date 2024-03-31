@@ -19,7 +19,6 @@ import Footer from './components/footer/Footer';
 import GalleryView from './views/GalleryView';
 import ProfileView from './views/ProfileView';
 import OffersView from './views/OffersView';
-import Footer from "./components/footer/Footer";
 import { getUserInfo } from "./services/users/userInfo";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "./redux/users/actions/usersActions";
