@@ -67,6 +67,8 @@ function Navbar() {
       return lobby1;
     } else if (location.pathname === "/gallery") {
       return "https://lanzarote-resorts.com/images/hotel_rubicon_palace.jpg";
+    } else if (location.pathname === "/offers") {
+      return "https://barcelona.intercontinental.com/wp-content/uploads/2022/01/banner-DSCF2181.jpg";
     } else if (location.pathname === "/restaurant") {
       return Gallery;
     } else {

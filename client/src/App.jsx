@@ -13,6 +13,7 @@ import RegisterView from './views/RegisterView';
 import Footer from './components/footer/Footer';
 import GalleryView from './views/GalleryView';
 import ProfileView from './views/ProfileView';
+import OffersView from './views/OffersView';
 
 function MainLayout() {
  const location = useLocation();
@@ -31,6 +32,7 @@ function MainLayout() {
         <Route path="/termsAndConditions" element={<TermsAndConditionsView/>}/>
         <Route path="/register" element={<RegisterView/>}/>
         <Route path="/gallery" element={<GalleryView/>}/>
+        <Route path="/offers" element={<OffersView/>}/>
       </Routes>
       {location.pathname !== '/login' && location.pathname !== '/register' && <Footer />}
     </>
