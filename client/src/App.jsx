@@ -14,10 +14,12 @@ import Restaurant from "./views/Restaurant";
 import LoginView from "./views/LoginView";
 import TermsAndConditionsView from "./views/TermsAndConditions";
 import ResultsView from "./views/ResultView";
-import RegisterView from "./views/RegisterView";
+import RegisterView from './views/RegisterView';
+import Footer from './components/footer/Footer';
+import GalleryView from './views/GalleryView';
+import ProfileView from './views/ProfileView';
+import OffersView from './views/OffersView';
 import Footer from "./components/footer/Footer";
-import GalleryView from "./views/GalleryView";
-import ProfileView from "./views/ProfileView";
 import { getUserInfo } from "./services/users/userInfo";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "./redux/users/actions/usersActions";
@@ -71,11 +73,15 @@ function MainLayout() {
         <Route path="/" element={<HomeView />} />
         <Route path="/landing" element={<LandingView />} />
         <Route path="/detail/:id" element={<DetailView />} />
-        <Route path="/rooms" element={<Rooms />} />
-        <Route path="/restaurant" element={<Restaurant />} />
-        <Route path="/login" element={<LoginView />} />
-        <Route path="/results" element={<ResultsView />} />
-        <Route path="/profile" element={<ProfileView />} />
+        <Route path="/rooms" element={<Rooms/>}/>
+        <Route path="/restaurant" element={<Restaurant/>}/>
+        <Route path="/login" element={<LoginView/>}/>
+        <Route path="/results" element={<ResultsView/>}/>
+        <Route path="/termsAndConditions" element={<TermsAndConditionsView/>}/>
+        <Route path="/register" element={<RegisterView/>}/>
+        <Route path="/gallery" element={<GalleryView/>}/>
+        <Route path="/offers" element={<OffersView/>}/>
+        <Route path="/profile" element={<ProfileView/>}/>
         <Route
           path="/termsAndConditions"
           element={<TermsAndConditionsView />}
