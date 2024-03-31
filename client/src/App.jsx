@@ -75,6 +75,7 @@ function MainLayout() {
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/login" element={<LoginView />} />
         <Route path="/results" element={<ResultsView />} />
+        <Route path="/profile" element={<ProfileView />} />
         <Route
           path="/termsAndConditions"
           element={<TermsAndConditionsView />}
