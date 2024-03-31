@@ -1,10 +1,10 @@
-import React, { forwardRef,useState } from 'react';
+import React, { forwardRef, useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../home/SearchBar.scss";
 import { TbCalendar } from "react-icons/tb";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [checkInDate, setCheckInDate] = useState(null);
@@ -15,7 +15,6 @@ const SearchBar = () => {
   const [reservationStatus, setReservationStatus] = useState("");
 
   const navigate = useNavigate();
-  
 
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -50,10 +49,10 @@ const SearchBar = () => {
         }
       );
       setAvailableRooms(response.data.rooms);
-      console.log("availableRooms after API call:", response.data.rooms); 
+      console.log("availableRooms after API call:", response.data.rooms);
 
-      navigate('/results', { state: { availableRooms: response.data.rooms } });
-        } catch (error) {
+      navigate("/results", { state: { availableRooms: response.data.rooms } });
+    } catch (error) {
       console.error("Error al enviar la solicitud de disponibilidad:", error);
     }
   };
@@ -108,25 +107,25 @@ const SearchBar = () => {
 
   const CustomDatePickerInput = forwardRef(({ value, onClick }, ref) => (
     <div className="custom-datepicker-input" ref={ref}>
-       <input
-         type="text"
-         value={value}
-         onClick={onClick}
-         readOnly
-         className="custom-datepicker-input__input"
-         placeholder="Date"
-       />
-       <div className="custom-datepicker-input__icon" onClick={onClick}>
-         <TbCalendar />
-       </div>
+      <input
+        type="text"
+        value={value}
+        onClick={onClick}
+        readOnly
+        className="custom-datepicker-input__input"
+        placeholder="Date"
+      />
+      <div className="custom-datepicker-input__icon" onClick={onClick}>
+        <TbCalendar />
+      </div>
     </div>
-   ));
+  ));
 
   return (
     <div>
-      <div className="m-8 w-2/3 md:w-2/3 lg:w-1/2 mx-auto p-4 bg-v rounded-lg shadow-md flex flex-wrap">
-        <div className="w-full md:w-1/4 md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-2">
-          <label className="block mb-1 text-white ">CHECK-IN</label>
+      <div className="m-8  w-3/6 md:w-7/8 lg:w-1/2 mx-auto p-4 bg-v rounded-lg shadow-md flex flex-wrap">
+        <div className="w-full md:w-auto md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
+          <label className="block mb-1 text-white text-center">CHECK-IN</label>
           <DatePicker
             selected={checkInDate}
             onChange={(date) => setCheckInDate(date)}
@@ -135,7 +134,7 @@ const SearchBar = () => {
             customInput={<CustomDatePickerInput />}
           />
         </div>
-        <div className="w-full md:w-auto md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
+        <div className="w-full md:w-auto md:flex-1 md:mr-2 mb-1 md:mb-0 mr-2 ml-2">
           <label className="block mb-1 text-white text-center">CHECK-OUT</label>
           <DatePicker
             selected={checkOutDate}
@@ -147,12 +146,14 @@ const SearchBar = () => {
             }
             dateFormat="dd/MM/yyyy"
             customInput={<CustomDatePickerInput />}
+            className="w-full px-3 py-2 border rounded-lg bg-v text-b"
           />
         </div>
+
         <div className="w-full md:w-1/4 md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
           <label className="block mb-1 text-white text-center">ADULTS</label>
           <select
-            className="w-full px-3 py-2 border rounded-lg bg-v text-b"
+            className="w-full px-3 py-2 border rounded-lg bg-v text-b text-center"
             value={numberOfAdults.toString()}
             onChange={(event) => handleAdultsChange(event.target.value)}
           >
@@ -166,7 +167,7 @@ const SearchBar = () => {
         <div className="w-full md:w-1/4 md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
           <label className="block mb-1 text-white text-center">CHILDREN</label>
           <select
-            className="w-full px-3 py-2 border rounded-lg bg-v text-b"
+            className="w-full px-3 py-2 border rounded-lg bg-v text-b text-center"
             value={numberOfChildren.toString()}
             onChange={(event) => handleChildrenChange(event.target.value)}
           >
@@ -176,7 +177,7 @@ const SearchBar = () => {
             <option value="3">3</option>
           </select>
         </div>
-        <div className="ml-8   md:mt-7">
+        <div className="ml-8 md:mt-7 flex items-center justify-center">
           <button
             className="w-full px-8 py-3 text-white bg-d rounded-lg hover:bg-amber-400 color transition-colors"
             onClick={handleSearch}

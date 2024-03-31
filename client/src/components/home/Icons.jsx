@@ -13,13 +13,13 @@ const IconRow = () => {
   return (
     <>
       <div className="flex flex-col items-center m-2">
-        <div className="flex justify-center gap-5">
+        <div className="flex flex-wrap justify-center gap-5">
           <div className="flex items-center space-x-2">
             <FontAwesomeIcon
               icon={faGlassMartiniAlt}
-              className="w-8 h-8 text-yellow-500 md:w-12 md:h-12 lg:w-12 lg:h-12"
+              className="w-5 h-5 bg-gray-100 p-3 text-yellow-500 md:w-12 md:h-12 lg:w-12 lg:h-12 rounded-full"
             />
-            <span className="text-lg">
+            <span className="text-l">
               Welcome <br />
               Cocktail
             </span>
@@ -27,42 +27,43 @@ const IconRow = () => {
           <div className="flex items-center space-x-2">
             <FontAwesomeIcon
               icon={faCar}
-              className="w-10 h-10 text-yellow-500 md:w-12 md:h-12 lg:w-12 lg:h-12"
+              className={`w-5 h-5 bg-gray-100 p-3 text-yellow-500 ${"sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-12 lg:h-12"} rounded-full`}
             />
-            <span className="text-lg">
+            <span className="text-l">
               Car <br /> Rental
             </span>
           </div>
           <div className="flex items-center space-x-2">
             <FontAwesomeIcon
               icon={faHotTub}
-              className="w-10 h-10 text-yellow-500 md:w-12 md:h-12 lg:w-12 lg:h-12"
+              className={`w-5 h-5 bg-gray-100 p-3 text-yellow-500 ${"sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-12 lg:h-12"} rounded-full`}
             />
-            <span className="text-lg">
+            <span className="text-l">
               Resort <br /> & Spa
             </span>
           </div>
           <div className="flex items-center space-x-2">
             <FontAwesomeIcon
               icon={faWifi}
-              className="w-10 h-10 text-yellow-500 md:w-12 md:h-12 lg:w-12 lg:h-12"
+              className={`w-5 h-5 bg-gray-100 p-3 text-yellow-500 ${"sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-12 lg:h-12"} rounded-full`}
             />
-            <span className="text-lg">
+            <span className="text-l">
               Wi-fi <br />
               Service
             </span>
           </div>
         </div>
-        <header className="mt-4 text-center">
+        <header className="mt-12 text-center">
           <h1 className="text-lg md:text-xl lg:text-4xl">
             Why You Should Stay <span className="text-yellow-500">Here!</span>
           </h1>
-          <h2 className="text-sm text-gray-600">
+          <h2 className="text-m text-gray-600">
             Experience a world of luxury and adventure at our cutting-edge
             resort destination.
           </h2>
         </header>
       </div>
+
       <div className="flex justify-around m-14">
         <div className="flex flex-col items-start lg:flex-grow-0 lg:w-auto gap-4">
           <article>
@@ -101,7 +102,7 @@ const IconRow = () => {
           </article>
         </div>
 
-        <div className="flex flex-col lg:flex-shrink-0 ml-8">
+        <div className="flex-col lg:flex-shrink-0 ml-8 hidden lg:block">
           <img src={Collage} alt="Collage" className="w-full h-full" />
         </div>
       </div>
@@ -116,7 +117,7 @@ const IconRow = () => {
         </p>
       </div>
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center m-4">
         <div className="grid grid-cols-3 gap-6">
           <div className="col-span-1">
             <img

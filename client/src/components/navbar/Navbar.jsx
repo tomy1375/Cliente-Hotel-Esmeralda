@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {  useClerk } from "@clerk/clerk-react";
+import { useClerk } from "@clerk/clerk-react";
 import LogoImage from "../../assets/logo.svg";
 import lobby from "../../assets/lobby.svg";
 import lobby1 from "../../assets/rooms.svg";
@@ -12,15 +12,13 @@ import "./Navbar.scss";
 function Navbar() {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
   const [isOpenSeeMoreMenu, setIsOpenSeeMoreMenu] = useState(false);
-  const location = useLocation();
   const { signOut, user } = useClerk();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isCustomAuthenticated, setIsCustomAuthenticated] = useState(false);
   const [showGalleryDescription, setShowGalleryDescription] = useState(false);
+  const userInfo = useSelector((state) => state.users.userInfo);
+  const location = useLocation();
 
-  const userInfo = useSelector(state => state.users.userInfo);
-  
   useEffect(() => {
     const token = Cookies.get("token");
     setIsCustomAuthenticated(!!token);
@@ -30,19 +28,12 @@ function Navbar() {
     setShowGalleryDescription(location.pathname === "/gallery");
   }, [location.pathname]);
 
-  useEffect(() => {
-    const handleTokenChange = () => {
-      const token = Cookies.get("token");
-      setIsLoggedIn(!!token);
-    };
-    window.addEventListener("storage", handleTokenChange);
-    return () => {
-      window.removeEventListener("storage", handleTokenChange);
-    };
-  }, []);
-
   const reloadPage = () => {
-    window.location.reload();
+    if (location.pathname === '/') {
+      window.location.reload();
+    } else {
+      window.location.href = '/';
+    }
   };
 
   const toggleProfileMenu = () => {
@@ -79,9 +70,9 @@ function Navbar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-      await signOut(); // Cierra la sesión con Clerk
-      Cookies.remove("token"); // Elimina el token personalizado
-      setIsCustomAuthenticated(false); // Actualiza el estado de autenticación personalizada
+      await signOut();
+      Cookies.remove("token");
+      setIsCustomAuthenticated(false);
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     } finally {
@@ -100,7 +91,7 @@ function Navbar() {
             onClick={reloadPage}
           />
           <NavLink
-            exact
+            exact="true"
             to="/"
             className={`text-white hover:text-d  transition-colors${
               location.pathname === "/" ? "active text-d" : ""
@@ -226,10 +217,27 @@ function Navbar() {
                       {user?.firstName ? (
                         <h1 className="ml-2 text-lg">{`Hi, ${user.firstName}`}</h1>
                       ) : (
-                        <h1 className="ml-2 text-lg">Hi, 
-                        {/* {userInfo.userInfo.username || null} */}
+                        <h1 className="ml-2 text-lg">
+                          Hi,
+                          {userInfo?.full_name
+                            ? userInfo.full_name
+                            : userInfo?.username
+                            ? userInfo.username
+                            : ""}
                         </h1>
                       )}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 ml-2"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 12a1 1 0 0 1-.707-.293l-3-3a1 1 0 0 1 1.414-1.414L10 9.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-3 3a1 1 0 0 1-.707.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                     </button>
                     {isOpenProfileMenu && (
                       <div className="absolute top-28 right-3 bg-white border border-gray-300 rounded shadow-md">

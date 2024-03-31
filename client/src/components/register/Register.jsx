@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/users/actions/usersActions";
 import BackToHomeButton from "../login/BackToHomeButton";
 import registerUser from "../../services/users/requestRegister";
-import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import loginUser from "../../services/users/requestLogin";
 import { getUserInfo } from "../../services/users/userInfo";
@@ -32,7 +31,7 @@ function SignUpForm({ onSubmit }) {
         return;
       }
       const userData = await registerUser(username, email, password);
-
+      onSubmit(userData); // Invoca la función onSubmit con los datos del usuario
       await handleLoginAndRedirect(username, password);
     } catch (error) {
       console.error("Error al registrar el usuario:", error);
@@ -42,13 +41,14 @@ function SignUpForm({ onSubmit }) {
   const handleLoginAndRedirect = async (usernameOrEmail, password) => {
     try {
       const token = await loginUser(usernameOrEmail, password);
-      Cookies.set("token", token, { expires: 1 });
-
+      Cookies.set("token", token, { 
+        expiresIn: '1h'
+       });
       let userInfo = null;
       if (token) {
         userInfo = await getUserInfo();
       }
-      dispatch(login({ token, userInfo }));
+      dispatch(login(userInfo)); 
       navigate("/");
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
