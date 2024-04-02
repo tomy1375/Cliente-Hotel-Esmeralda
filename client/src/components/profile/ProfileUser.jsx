@@ -5,7 +5,7 @@ import ProfileModal from "./ProfileModal";
 import ModalProfile from "./ModalProfile";
 import ModalReservation from "./ModalReservation";
 import ReservationModal from "./ReservationModal";
-
+import { useSelector } from "react-redux";
 
 const ProfileImage = ({ src, alt }) => (
   
@@ -35,10 +35,17 @@ function ProfileUser() {
   const [isModalOpenReservation, setIsModalOpenReservation] = React.useState(false); 
 
   const { user, isLoaded } = useUser(); 
+  const userInfo = useSelector((state) => state.users.userInfo);
+  
 
   if (!isLoaded) {
      return <div>Loading...</div>;
   }
+
+  let displayName = user?.fullName || userInfo?.username || "Desconocido";
+  let displayEmail = user?.primaryEmailAddress.emailAddress || userInfo?.email || "Desconocido";
+
+
   return (
     <div className="flex flex-row justify-between ml-6 mt-8">
       <div className="max-w-full w-[786px]">
@@ -57,7 +64,7 @@ function ProfileUser() {
                 <div className="flex-auto my-auto">Your name</div>
               </div>
               <div className="self-center mt-6 tracking-normal leading-[145%] text-white text-opacity-90">
-                {user?.fullName}
+              {displayName}
               </div>
               <div className="shrink-0 mt-7 ml-4 h-px border border-solid bg-white bg-opacity-10 border-white border-opacity-10 w-[199px] max-md:ml-2.5" />
               <div className="flex gap-5 mt-10 whitespace-nowrap">
@@ -65,7 +72,7 @@ function ProfileUser() {
                 <div className="flex-auto my-auto">Email</div>
               </div>
               <div className="self-end mt-4 tracking-normal leading-[145%]">
-                {user?.primaryEmailAddress.emailAddress || "No email"} 
+                {displayEmail} 
               </div>
               <div className="shrink-0 mt-8 ml-4 h-px border border-solid bg-white bg-opacity-10 border-white border-opacity-10 w-[199px] max-md:ml-2.5" />
               <div className="flex gap-5 mt-8">

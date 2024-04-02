@@ -28,7 +28,7 @@ const ModalProfile = ({ isOpen, onClose, children}) => {
        <div className="inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-2xl  ">
 
       
-         <div className="relative px-3 py-1 w-full max-w-2xl max-h-full">
+         <div className="relative  w-full max-w-2xl max-h-full">
        
            <div className="absolute top-0 right-0 p-4">
              <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-5 h-5 mr-4 mt-3  inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-Profile-hide="default-modal" onClick={onClose}>
@@ -40,7 +40,7 @@ const ModalProfile = ({ isOpen, onClose, children}) => {
              </button>
            </div>
          
-           <div className="dark:bg-v px-3 pt-5 ">
+           <div className="">
              {children}
            </div>
          

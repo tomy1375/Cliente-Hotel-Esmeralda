@@ -1,21 +1,27 @@
 
 import { useUser } from "@clerk/clerk-react";
 import React, { useState, useEffect } from 'react';
-
+import { useSelector } from "react-redux"; 
+import intlTelInput from 'intl-tel-input';
+// import 'intl-tel-input/build/css/intlTelInput.css';
 
 function ProfileImage() {
 
     
   const { user, isLoaded } = useUser(); 
+  const userInfo = useSelector((state) => state.users.userInfo);
+
 
   if (!isLoaded) {
      return <div>Loading...</div>;
   }
 
+  let imageUrl = user?.imageUrl || userInfo?.Image || "https://cdn.builder.io/api/v1/image/assets/TEMP/26c4709492c00da65d6fa729fa2ab40423d04859a3760111aea4ba2e209a09e2?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&";
+
   return (
     <img
       loading="lazy"
-      src={user.imageUrl}
+      src={imageUrl}
       alt="Profile"
       className="mt-8 max-w-full aspect-square rounded-[200px] w-[235px]"
     />
@@ -107,15 +113,15 @@ function ProfileModal() {
 
   const { user, isLoaded } = useUser();
   const [countries, setCountries] = useState([]);
-
+  const userInfo = useSelector((state) => state.users.userInfo);
 
   // Actualiza el estado formData con el nombre completo del usuario una vez que user esté cargado
   React.useEffect(() => {
      if (isLoaded) {
        setFormData((prevData) => ({
          ...prevData,
-         name: user.fullName,
-         email:user.primaryEmailAddress.emailAddress // Actualiza el nombre con el valor de user.fullName
+         name: user?.fullName || userInfo?.username || "",
+         email: user?.primaryEmailAddress?.emailAddress || userInfo?.email || "", // Actualiza el nombre con el valor de user.fullName
        }));
      }
   }, [isLoaded, user]);
