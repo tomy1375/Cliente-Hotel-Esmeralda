@@ -25,7 +25,7 @@ const ModalProfile = ({ isOpen, onClose, children}) => {
          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
        </div>
        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-       <div className="inline-block align-bottom bg-v rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-2xl  ">
+       <div className="inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-2xl  ">
 
       
          <div className="relative px-3 py-1 w-full max-w-2xl max-h-full">

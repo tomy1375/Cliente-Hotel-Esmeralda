@@ -8,6 +8,7 @@ import lobby1 from "../../assets/rooms.svg";
 import Gallery from "../../assets/gallery.svg";
 import Cookies from "js-cookie";
 import "./Navbar.scss";
+import {jwtDecode} from "jwt-decode";
 
 function Navbar() {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
@@ -16,8 +17,25 @@ function Navbar() {
   const [isLoading, setIsLoading] = useState(false);
   const [isCustomAuthenticated, setIsCustomAuthenticated] = useState(false);
   const [showGalleryDescription, setShowGalleryDescription] = useState(false);
-  const userInfo = useSelector((state) => state.users.userInfo);
+  // const userInfo = useSelector((state) => state.users.userInfo);
   const location = useLocation();
+  const [userInfo, setUserInfo] = useState(null);
+ 
+  
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserInfo(decodedToken);
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+      }
+    }
+  }, []);
+
+
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -225,15 +243,10 @@ function Navbar() {
                       )}
 
                       {user?.firstName ? (
-                        <h1 className="ml-2 text-lg">{`Hi, ${user.firstName}`}</h1>
+                        <h1 className="ml-2 text-lg">Hi,{user.firstName}</h1>
                       ) : (
                         <h1 className="ml-2 text-lg">
-                          Hi,
-                          {userInfo?.full_name
-                            ? userInfo.full_name
-                            : userInfo?.username
-                            ? userInfo.username
-                            : ""}
+                          Hi, {userInfo?.username}
                         </h1>
                       )}
                       <svg

@@ -23,13 +23,15 @@ import { getUserInfo } from "./services/users/userInfo";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "./redux/users/actions/usersActions";
 import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
 import EmailConfirmation from "./views/ConfirmationEmail";
 
+
 function MainLayout() {
+  // const token = Cookies.get("token");
   const location = useLocation();
-  const userInfo = useSelector((state) => state.users.userInfo);
   const dispatch = useDispatch();
+
+   
 
   useEffect(() => {
     const removeModalIndicator = () => {
@@ -42,6 +44,7 @@ function MainLayout() {
       window.removeEventListener("beforeunload", removeModalIndicator);
     };
   }, []);
+  
 
   useEffect(() => {
     const fetchData = async () => {

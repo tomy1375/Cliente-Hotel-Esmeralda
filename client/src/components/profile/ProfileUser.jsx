@@ -47,7 +47,7 @@ function ProfileUser() {
             <div className="flex flex-col grow px-9 pt-8 pb-16 mx-auto w-full text-lg text-white rounded-2xl shadow-sm bg-v bg-opacity-90 max-md:px-5 max-md:mt-10">
             <img
           loading="lazy"
-               src={user.imageUrl}
+               src={user?.imageUrl || "https://cdn.builder.io/api/v1/image/assets/TEMP/26c4709492c00da65d6fa729fa2ab40423d04859a3760111aea4ba2e209a09e2?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&"}
               alt="Profile"
               className="ml-5 w-48 h-48 object-cover rounded-full"
               />
@@ -57,7 +57,7 @@ function ProfileUser() {
                 <div className="flex-auto my-auto">Your name</div>
               </div>
               <div className="self-center mt-6 tracking-normal leading-[145%] text-white text-opacity-90">
-                {user.fullName}
+                {user?.fullName}
               </div>
               <div className="shrink-0 mt-7 ml-4 h-px border border-solid bg-white bg-opacity-10 border-white border-opacity-10 w-[199px] max-md:ml-2.5" />
               <div className="flex gap-5 mt-10 whitespace-nowrap">
@@ -65,7 +65,7 @@ function ProfileUser() {
                 <div className="flex-auto my-auto">Email</div>
               </div>
               <div className="self-end mt-4 tracking-normal leading-[145%]">
-                {user.primaryEmailAddress.emailAddress}
+                {user?.primaryEmailAddress.emailAddress || "No email"} 
               </div>
               <div className="shrink-0 mt-8 ml-4 h-px border border-solid bg-white bg-opacity-10 border-white border-opacity-10 w-[199px] max-md:ml-2.5" />
               <div className="flex gap-5 mt-8">
