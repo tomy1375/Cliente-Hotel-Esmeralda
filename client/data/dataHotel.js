@@ -6,7 +6,7 @@ const dataHotel =
       description: "Panoramic view",
       facilities: ["Piscina al aire libre", "Canchas de tenis"],
       rating: 4.5,
-      Url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIMLy27nYLOZUFqhXiE8tCmtmxdVVMfhtq133zNRNL7Q&s",
+      Url: "https://images.unsplash.com/photo-1606402179428-a57976d71fa4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       location: "Jardín principal",
       capacity: 100
     },
@@ -16,7 +16,7 @@ const dataHotel =
       description: "Relax and rejuvenate in our luxurious spa",
       facilities: ["Sauna", "Jacuzzi", "Masajes"],
       rating: 4.8,
-      Url: "https://i.blogs.es/21a9ef/elba2/450_1000.jpg",
+      Url: "https://images.unsplash.com/photo-1610289982320-3891f7c9fd6d?q=80&w=1976&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       location: "Planta baja",
       capacity: 20
     },

@@ -6,6 +6,7 @@ import LogoImage from "../../assets/logo.svg";
 import lobby from "../../assets/lobby.svg";
 import lobby1 from "../../assets/rooms.svg";
 import Gallery from "../../assets/gallery.svg";
+import dise from "../../assets/dise.png"
 import Cookies from "js-cookie";
 import "./Navbar.scss";
 import {jwtDecode} from "jwt-decode";
@@ -75,7 +76,7 @@ function Navbar() {
     } else if (location.pathname === "/rooms") {
       return lobby1;
     } else if (location.pathname === "/gallery") {
-      return "https://lanzarote-resorts.com/images/hotel_rubicon_palace.jpg";
+      return dise;
     } else if (location.pathname === "/offers") {
       return "https://barcelona.intercontinental.com/wp-content/uploads/2022/01/banner-DSCF2181.jpg";
     } else if (location.pathname === "/restaurant") {
