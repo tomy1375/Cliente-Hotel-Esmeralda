@@ -6,7 +6,6 @@ const ProfileView = () => {
   return (
     <div>
         <ProfileUser/>
-        <ProfileModal/>
     </div>
   )
 }

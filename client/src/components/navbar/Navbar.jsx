@@ -70,15 +70,25 @@ function Navbar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-      await signOut();
-      Cookies.remove("token");
-      setIsCustomAuthenticated(false);
+       await signOut(); 
+       Cookies.remove("token"); 
+       setIsCustomAuthenticated(false); 
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
+       console.error("Error al cerrar sesión:", error);
     } finally {
-      setIsLoading(false);
+       setIsLoading(false);
+       navigate('/'); 
     }
-  };
+   };
+   
+
+
+  const navigate = useNavigate();
+
+ const goToProfile = () => {
+    navigate('/profile'); 
+ };
+
 
   return (
     <div className="nav-container">
@@ -243,7 +253,7 @@ function Navbar() {
                       <div className="absolute top-28 right-3 bg-white border border-gray-300 rounded shadow-md">
                         <ul className="py-2">
                           <li>
-                            <button className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left">
+                            <button className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left " onClick={goToProfile}>
                               Manage Account
                             </button>
                           </li>
@@ -255,7 +265,7 @@ function Navbar() {
                           <li>
                             <button
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
-                              onClick={handleSignOut}
+                              onClick={handleSignOut }
                             >
                               Sign Out
                             </button>
