@@ -1,23 +1,18 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 const ModalProfile = ({ isOpen, onClose, children}) => {
-    const navigate = useNavigate()
+  
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpen]);
 
-    useEffect(() => {
-    
-      if (isOpen) {
-          document.body.style.overflow = 'hidden';
-      } else {
-        
-          document.body.style.overflow = 'auto';
-      }
-  }, [isOpen]); //
+  if (!isOpen) return null;
 
     
  if (!isOpen) return null;
- const handleClick = () => {
-    navigate('/formulario');
-  };
  return (
     <div className="fixed z-50 inset-0 overflow-y-auto " aria-hidden="true">
     <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">

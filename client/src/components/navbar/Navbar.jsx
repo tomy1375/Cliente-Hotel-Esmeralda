@@ -9,7 +9,7 @@ import Gallery from "../../assets/gallery.svg";
 import dise from "../../assets/dise.png";
 import Cookies from "js-cookie";
 import "./Navbar.scss";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; 
 
 function Navbar() {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
