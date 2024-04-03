@@ -22,6 +22,7 @@ function Navbar() {
   const location = useLocation();
   const [userInfo, setUserInfo] = useState(null);
   const [showOffersDescription, setShowOffersDescription] = useState(false);
+  const [showServicesDescription, setShowServicesDescription] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -43,6 +44,7 @@ function Navbar() {
   useEffect(() => {
     setShowOffersDescription(location.pathname === "/offers");
     setShowGalleryDescription(location.pathname === "/gallery");
+    setShowServicesDescription(location.pathname === "/services");
   }, [location.pathname]);
 
   const reloadPage = () => {
@@ -76,7 +78,9 @@ function Navbar() {
     } else if (location.pathname === "/gallery") {
       return dise;
     } else if (location.pathname === "/offers") {
-      return "https://www.oxpasturehallhotel.com/uploads/images/Gallery/secregular27/SPA_Breaks_3.jpg";
+      return "https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/77/2016/11/30020601/Vous-Spa-1500x400.jpg";
+    } else if (location.pathname === "/services") {
+      return "https://www.greenwoodshotel.com/wp-content/uploads/2023/05/Pool-and-massage-banner.jpg";
     } else if (location.pathname === "/restaurant") {
       return Gallery;
     } else {
@@ -326,6 +330,14 @@ function Navbar() {
             in Buenos Aires. A rich, seamless blend of timeless grandeur with
             contemporary style and sophistication
           </p>
+        </div>
+      )}
+      {showServicesDescription && (
+        <div className="header-description absolute left-20 text-white text-left z-10 top-1/2 -translate-y-3/4">
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+            Our services
+          </h1>
         </div>
       )}
     </div>
