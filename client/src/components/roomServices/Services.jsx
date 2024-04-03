@@ -1,5 +1,5 @@
 import React from 'react';
-import dataServices from '../../data/dataServices';
+import dataServices from '../../../data/dataServices';
 import { Link } from 'react-router-dom';
 
 const Services = () => {
@@ -22,7 +22,7 @@ const Services = () => {
   };
 
   return (
-    <div className="container mx-auto mt-4 mb-4 space-y-8">
+    <div className="container mx-auto mt-4 mb-4 space-y-8 overflow-y-hidden">
 
       <div className="flex justify-start items-start" style={{ width: '200%' }}>
         <div className="item" style={{ marginLeft: '-10%' }}>

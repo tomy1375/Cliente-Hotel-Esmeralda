@@ -50,7 +50,7 @@ function CardRoom({ room }) {
             {room.description}
             </div>
             <button
-              className="ml justify-center items-center px-16 py-4  text-base font-extrabold tracking-normal leading-6 text-white rounded-2xl border border-violet-100 border-solid hover:bg-slate-950 transition-colors max-md:px-5 max-md:max-w-full"
+              className="ml justify-center items-center px-16 py-4  text-base font-extrabold tracking-normal leading-6 text-white rounded-2xl border border-violet-100 border-solid hover:bg-green-950 transition-colors max-md:px-5 max-md:max-w-full"
               onClick={() => setIsModalOpen(true)}
             >
               SEE MORE

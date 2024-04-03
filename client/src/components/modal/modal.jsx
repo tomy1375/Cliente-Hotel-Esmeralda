@@ -46,7 +46,7 @@ const Modal = ({ isOpen, onClose, children, room }) => {
            <div className=" px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse justify-center">
             
              
-             <button data-modal-hide="default-modal" type="button" className="text-black bg-amber-300 hover:bg-black focus:ring-4 focus:outline-none focus:ring-white font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-300 dark:hover:bg-amber-400 dark:focus:ring-amber-400 transition-colors" 
+             <button data-modal-hide="default-modal" type="button" className="text-black bg-amber-300 hover:bg-amber-400 transition-colors focus:ring-4 focus:outline-none focus:ring-white font-medium rounded-lg text-sm px-5 py-2.5 text-center " 
              onClick={handleClick}
              >Book Now</button>
              <br />

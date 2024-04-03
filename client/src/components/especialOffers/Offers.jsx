@@ -1,137 +1,46 @@
-import React from 'react';
-import dataOffers from '../../data/dataOffers';
+import React from "react";
+import dataOffers from "../../../data/dataOffers";
 
 const Offers = () => {
-  const imageStyle = {
-    width: '1200px',
-    height: '700px',
-    objectFit: 'cover', 
-    padding: '100px',
-    marginLeft: '-40px', 
-    marginRight: '-10px'
-  };
-
-  const borderBoxStyle = {
-    width: '1200px', 
-    height: '600px', 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    padding: '80px', 
-  };
+  const maxHeight = 540;
 
   return (
-    <div className="container mx-auto mt-4 mb-4 space-y-8">
-
-      <div className="flex justify-start items-start" style={{ width: '200%' }}>
-        <div className="item" style={{ marginLeft: '-10%' }}>
-          <div style={borderBoxStyle}>
-            <img src={dataOffers[0].Url} alt={dataOffers[0].name} style={imageStyle} />
+    <div className="container mx-auto mt-20 mb-20 space-y-20">
+      {dataOffers.map((offer, index) => (
+        <div key={index} className="border-box-style flex items-stretch">
+          <div className="w-3/5 flex items-center">
+            <img
+              src={offer.Url}
+              alt={offer.name}
+              className="rounded-l-3xl w-full h-full object-cover"
+              style={{ maxHeight: `${maxHeight}px` }}
+            />
           </div>
-        </div>
-        <div className="item flex flex-col ml-20 mt-10 p-10 w-1/5"> 
-          <div className="border-box-style"> 
-            <h1 className='text-7xl text-center font-bold mt-0 mb-6'>{dataOffers[0].name}</h1> 
-            <p className="text-4xl leading-relaxed mb-4">{dataOffers[0].description}</p> 
-            <ul className="list-disc pl-6 mb-6"> 
-              {dataOffers[0].services.map((service, index) => (
-                <li key={index} className="text-3xl">{service}</li> 
+          <div
+            className="w-2/5 flex flex-col bg-v px-6 text-white rounded-r-3xl mt-10 mb-10"
+            style={{ height: `${maxHeight}px` }}
+          >
+            <h1 className="text-5xl text-center font-bold mt-10 mb-8">
+              {offer.name}
+            </h1>
+            <p className="text-3xl leading-tight mb-8 overflow-auto mt-5">
+              {offer.description}
+            </p>
+            <ul className="list-disc pl-6 mb-8">
+              {offer.services.map((service, index) => (
+                <li key={index} className="text-2xl">
+                  {service}
+                </li>
               ))}
             </ul>
-            <div className="border border-gray-400 rounded-md px-4 py-2 text-center w-40 mx-auto">
-              {dataOffers[0].price} 
+            <div className="flex justify-center w-30">
+              <button className="justify-center text-xl items-center px-16 py-4 mt-3 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full">
+                {offer.price}
+              </button>
             </div>
           </div>
         </div>
-      </div>  
-
-      <div className="flex justify-end items-center" style={{ width: '120%' }}>
-        <div className="item flex flex-col ml-10 mt-10"> 
-          <div className="border-box-style"> 
-            <h1 className='text-7xl text-center font-bold mt-0 mb-6'>{dataOffers[1].name}</h1> 
-            <p className="text-4xl leading-relaxed mb-4">{dataOffers[1].description}</p> 
-            <ul className="list-disc pl-6 mb-6"> 
-              {dataOffers[1].services.map((service, index) => (
-                <li key={index} className="text-3xl">{service}</li> 
-              ))}
-            </ul>
-            <div className="border border-gray-400 rounded-md px-4 py-2 text-center w-40 mx-auto">
-              {dataOffers[1].price} 
-            </div>
-          </div>
-        </div>
-        <div className="item" style={{ marginRight: '-20px' }}> 
-          <div style={borderBoxStyle}>
-            <img src={dataOffers[1].Url} alt={dataOffers[1].name} style={imageStyle} />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-start items-start" style={{ width: '200%' }}>
-        <div className="item" style={{ marginLeft: '-10%' }}>
-          <div style={borderBoxStyle}>
-            <img src={dataOffers[2].Url} alt={dataOffers[2].name} style={imageStyle} />
-          </div>
-        </div>
-        <div className="item flex flex-col ml-20 mt-20 p-10 w-1/5"> 
-          <div className="border-box-style"> 
-            <h1 className='text-7xl text-center font-bold mt-0 mb-6'>{dataOffers[2].name}</h1> 
-            <p className="text-4xl leading-relaxed mb-4">{dataOffers[2].description}</p> 
-            <ul className="list-disc pl-6 mb-6"> 
-              {dataOffers[2].services.map((service, index) => (
-                <li key={index} className="text-3xl">{service}</li> 
-              ))}
-            </ul>
-            <div className="border border-gray-400 rounded-md px-4 py-2 text-center w-40 mx-auto">
-              {dataOffers[2].price} 
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-end items-center" style={{ width: '120%' }}>
-        <div className="item flex flex-col ml-10 mt-10"> 
-          <div className="border-box-style"> 
-            <h1 className='text-7xl text-center font-bold mt-0 mb-6'>{dataOffers[3].name}</h1> 
-            <p className="text-4xl leading-relaxed mb-4">{dataOffers[3].description}</p> 
-            <ul className="list-disc pl-6 mb-6"> 
-              {dataOffers[3].services.map((service, index) => (
-                <li key={index} className="text-3xl">{service}</li> 
-              ))}
-            </ul>
-            <div className="border border-gray-400 rounded-md px-4 py-2 text-center w-40 mx-auto">
-              {dataOffers[3].price} 
-            </div>
-          </div>
-        </div>
-        <div className="item" style={{ marginRight: '-10px' }}> 
-          <div style={borderBoxStyle}>
-            <img src={dataOffers[3].Url} alt={dataOffers[3].name} style={imageStyle} />
-          </div>
-        </div>
-      </div>
-
-        <div className="flex justify-start items-start" style={{ width: '200%' }}>
-        <div className="item" style={{ marginLeft: '-10%' }}>
-          <div style={borderBoxStyle}>
-            <img src={dataOffers[4].Url} alt={dataOffers[4].name} style={imageStyle} />
-          </div>
-        </div>
-        <div className="item flex flex-col ml-20 mt-20 p-10 w-1/5"> 
-          <div className="border-box-style"> 
-            <h1 className='text-7xl text-center font-bold mt-0 mb-6'>{dataOffers[4].name}</h1> 
-            <p className="text-4xl leading-relaxed mb-4">{dataOffers[4].description}</p> 
-            <ul className="list-disc pl-6 mb-6"> 
-              {dataOffers[4].services.map((service, index) => (
-                <li key={index} className="text-3xl">{service}</li> 
-              ))}
-            </ul>
-            <div className="border border-gray-400 rounded-md px-4 py-2 text-center w-40 mx-auto">
-              {dataOffers[4].price} 
-            </div>
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };

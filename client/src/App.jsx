@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { setUserInfo } from "./redux/users/actions/usersActions";
 import Cookies from "js-cookie";
 import EmailConfirmation from "./views/ConfirmationEmail";
+import ServicesView from "./views/ServicesView";
 
 
 function MainLayout() {
@@ -83,6 +84,7 @@ function MainLayout() {
         <Route path="/register" element={<RegisterView/>}/>
         <Route path="/gallery" element={<GalleryView/>}/>
         <Route path="/offers" element={<OffersView/>}/>
+        <Route path="/services" element={<ServicesView/>}/>
         <Route path="/profile" element={<ProfileView/>}/>
         <Route
           path="/termsAndConditions"

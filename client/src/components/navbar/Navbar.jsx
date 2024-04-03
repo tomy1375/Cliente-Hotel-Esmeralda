@@ -6,10 +6,10 @@ import LogoImage from "../../assets/logo.svg";
 import lobby from "../../assets/lobby.svg";
 import lobby1 from "../../assets/rooms.svg";
 import Gallery from "../../assets/gallery.svg";
-import dise from "../../assets/dise.png"
+import dise from "../../assets/dise.png";
 import Cookies from "js-cookie";
 import "./Navbar.scss";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 function Navbar() {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
@@ -21,8 +21,7 @@ function Navbar() {
   // const userInfo = useSelector((state) => state.users.userInfo);
   const location = useLocation();
   const [userInfo, setUserInfo] = useState(null);
- 
-  
+  const [showOffersDescription, setShowOffersDescription] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -31,12 +30,10 @@ function Navbar() {
         const decodedToken = jwtDecode(token);
         setUserInfo(decodedToken);
       } catch (error) {
-        console.error('Error al decodificar el token:', error);
+        console.error("Error al decodificar el token:", error);
       }
     }
   }, []);
-
-
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -44,14 +41,15 @@ function Navbar() {
   }, []);
 
   useEffect(() => {
+    setShowOffersDescription(location.pathname === "/offers");
     setShowGalleryDescription(location.pathname === "/gallery");
   }, [location.pathname]);
 
   const reloadPage = () => {
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       window.location.reload();
     } else {
-      window.location.href = '/';
+      window.location.href = "/";
     }
   };
 
@@ -78,7 +76,7 @@ function Navbar() {
     } else if (location.pathname === "/gallery") {
       return dise;
     } else if (location.pathname === "/offers") {
-      return "https://barcelona.intercontinental.com/wp-content/uploads/2022/01/banner-DSCF2181.jpg";
+      return "https://www.oxpasturehallhotel.com/uploads/images/Gallery/secregular27/SPA_Breaks_3.jpg";
     } else if (location.pathname === "/restaurant") {
       return Gallery;
     } else {
@@ -89,25 +87,22 @@ function Navbar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-       await signOut(); 
-       Cookies.remove("token"); 
-       setIsCustomAuthenticated(false); 
+      await signOut();
+      Cookies.remove("token");
+      setIsCustomAuthenticated(false);
     } catch (error) {
-       console.error("Error al cerrar sesión:", error);
+      console.error("Error al cerrar sesión:", error);
     } finally {
-       setIsLoading(false);
-       navigate('/'); 
+      setIsLoading(false);
+      navigate("/");
     }
-   };
-   
-
+  };
 
   const navigate = useNavigate();
 
- const goToProfile = () => {
-    navigate('/profile'); 
- };
-
+  const goToProfile = () => {
+    navigate("/profile");
+  };
 
   return (
     <div className="nav-container">
@@ -128,22 +123,6 @@ function Navbar() {
           >
             HOME
           </NavLink>
-          {showGalleryDescription && (
-            <div
-              className="header-description absolute left-20 text-white text-left z-10"
-              style={{ top: "calc(10% + 100px)" }}
-            >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                Gallery
-              </h1>
-              <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-normal md:leading-relaxed lg:leading-normal xl:leading-relaxed">
-                See the image gallery of the Hotel <br /> Esmeralda Resort & Spa
-                and <br /> discover why we are one of the <br /> best hotels in
-                Buenos Aires for <br /> business and leisure stays
-              </p>
-            </div>
-          )}
-
           <NavLink
             to="/rooms"
             className={`text-white hover:text-d ${
@@ -154,7 +133,6 @@ function Navbar() {
           >
             ROOMS
           </NavLink>
-
           <NavLink
             to="/services"
             className={`text-white hover:text-d ${
@@ -163,7 +141,6 @@ function Navbar() {
           >
             SERVICES
           </NavLink>
-
           <NavLink
             to="/restaurant"
             className={`text-white hover:text-d ${
@@ -172,7 +149,6 @@ function Navbar() {
           >
             RESTAURANT
           </NavLink>
-
           <NavLink
             to="/offers"
             className={`text-white hover:text-d transition-colors${
@@ -181,7 +157,6 @@ function Navbar() {
           >
             SPECIAL OFFERS
           </NavLink>
-
           <div className="relative inline-block" onMouseLeave={closeMenu}>
             <button
               onMouseEnter={toggleSeeMoreMenu}
@@ -217,7 +192,6 @@ function Navbar() {
               </div>
             )}
           </div>
-
           <div className="flex space-x-16 ">
             {isLoading ? (
               <div className="custom-loader"></div>
@@ -267,7 +241,10 @@ function Navbar() {
                       <div className="absolute top-28 right-3 bg-white border border-gray-300 rounded shadow-md">
                         <ul className="py-2">
                           <li>
-                            <button className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left " onClick={goToProfile}>
+                            <button
+                              className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left "
+                              onClick={goToProfile}
+                            >
                               Manage Account
                             </button>
                           </li>
@@ -279,7 +256,7 @@ function Navbar() {
                           <li>
                             <button
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
-                              onClick={handleSignOut }
+                              onClick={handleSignOut}
                             >
                               Sign Out
                             </button>
@@ -316,6 +293,41 @@ function Navbar() {
       <header className="flex justify-center items-center">
         <img src={getLobbyImage()} className="w-full" />
       </header>
+  {/* DESCRIPCIONES HEADER */}
+      {showGalleryDescription && (
+        <div
+          className="header-description absolute mt-6 left-20 text-white text-left z-10"
+          style={{ top: "calc(10% + 100px)" }}
+        >
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+            Gallery
+          </h1>
+          <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-normal md:leading-relaxed lg:leading-normal xl:leading-relaxed text-justify w-2/6">
+            See the image gallery of the Hotel Esmeralda Resort & Spa and
+            discover why we are one of the  best hotels in Buenos
+            Aires for  business and leisure stays
+          </p>
+        </div>
+      )}
+
+      {showOffersDescription && (
+        <div
+          className="header-description absolute left-20 text-white text-left z-10"
+          style={{ top: "calc(10% + 150px)" }}
+        >
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+            Offers
+          </h1>
+          <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">
+            Exclusive hotel offers and deals
+          </h2>
+          <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-normal md:leading-relaxed lg:leading-normal xl:leading-relaxed w-1/5 text-justify">
+            Esmeralda Resort & Spa is one of the most unique and historic hotels
+            in Buenos Aires. A rich, seamless blend of timeless grandeur with
+            contemporary style and sophistication
+          </p>
+        </div>
+      )}
     </div>
   );
 }

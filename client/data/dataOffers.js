@@ -1,61 +1,45 @@
 const dataOffers = [
-    {
+  {
       id: 1,
-      name: "Spa",
-      description: "Celebrate a birthday, anniversary, or absolutely nothing at all",
-      services: ["Focused massages facial spa (cleansing, exfoliation, mask and hydration)", "Massage for two people", "Scottish shower"],
+      name: "Relax Night",
+      description: "Celebrate a birthday , anniversary or absolute nothing at all. This package includes:",
+      services: ["Welcome drink", "Massage for two people", "Breakfast in room"],
       rating: 4.8,
-      Url: "https://traveler.marriott.com/es/wp-content/uploads/sites/2/2021/10/MC_MDEMC_Marriott_Medellin_Spa_1920x1080.jpg",
+      Url: "https://img.freepik.com/fotos-premium/masaje-piedras-calientes-salon-spa-resort-lujo-calida-luz-velas-clienta-feliz-disfrutando-masaje-piedras-basalto-spa-desliza-sobre-cuerpo-calidez-relajante_31965-216913.jpg",
       location: "Ground floor",
-      price: 'USD 200'
+      price: 'Since USD 200'
     },
     {
       id: 2,
-      name: "In-Room Spa Experience",
-      description: "Experience relaxation and rejuvenation in the comfort of your own room",
-      services: [
-        "En-suite bathroom",
-        "Massage and spa service in-room",
-        "Complimentary breakfast"
-      ],
+      name: "Month of love",
+      description: "This month with the reservation of the junior suite we include you:",
+      services: ["Buffet breakfast", "WiFi free", "Two premium massage sessions for two people"],
       rating: 4.9,
-      Url: "https://media.istockphoto.com/id/637043760/es/foto/interior-de-balnearios-modernos.jpg?s=612x612&w=0&k=20&c=yxvvx2dxZ-HhwVWVMuGGGYvZrAocBMMMeOlkfGrTmN4=",
+      Url: "https://www.hotelsviva.com/hubfs/FOTOS%20BLOG/FEBRERO/Pareja%20en%20Jacuzzi.jpg",
       location: "Various",
-      price: 'USD 250'
+      price: "Since USD 250"
     },
     {
       id: 3,
-      name: "Restaurant",
-      description: "Indulge in cozy ambiance, impeccable service, and breathtaking views",
-      services: ["Bar", "Terrace with river view", "Live music evenings"],
+      name: "4 days, 3 nights 35% off",
+      description: "Our proposal includes:",
+      services: ["Breakfast buffet", "A complete massage session for two people", "Free WiFi internet in rooms and public areas"],
       rating: 4.7,
-      Url: "https://img.freepik.com/fotos-premium/restaurante-panoramico-hotel-vistas-al-oceano-o-al-paisaje-urbano_148840-14276.jpg",
+      Url: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/534631897.jpg?k=6929e1f247b069991836821e018582a22e29e6ddcd9bb45ff62ebe3d06f8bae0&o=&hp=1",
       location: "Ground floor",
-      price: 'USD 50'
+      price: 'Since USD 700'
     },
     {
       id: 4,
-      name: "Rental Cars",
-      description: "Uncover hidden landscapes and destinations with freedom by renting a car",
-      services: ["State-of-the-art vehicles", "Hotel delivery and pickup"],
+      name: "Weekend XL",
+      description: "Treat yourself to a relaxing staycation in Buenos Aires. This package includes:",
+      services: ["Welcome drink", "Breakfast in rooms", "Bottle of wine + cheese tasting"],
       rating: 4.5,
-      Url: "https://akluxurycabs.com/wp-content/uploads/2023/12/akluxurycabs.jpg",
+      Url: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/23/24/9c/9a/pool.jpg?w=1100&h=-1&s=1",
       location: "Reception",
       capacity: 10,
-      price: 'USD 70'
-    },
-    {
-      id: 5,
-      name: "Special Offers",
-      description: "Celebrate a birthday, anniversary, or absolutely nothing at all",
-      services: ["Complimentary upgrades", "Discounted rates", "Flexible cancellation policies"],
-      rating: 4.9,
-      Url: "https://alsoldelacosta.com/wp-content/uploads/2022/12/Foto-anantara-2.jpg",
-      location: "Online",
-      capacity: "N/A",
-      price: 'USD 250'
+      price: "Since USD 500"
     }
-  ];
-  
-  export default dataOffers;
-  
+];
+
+export default dataOffers;
