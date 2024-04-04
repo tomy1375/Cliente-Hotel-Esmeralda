@@ -55,6 +55,10 @@ function ProfileUser() {
     };
   }, [isModalOpen, isModalOpenReservation]);
 
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
     <>
       <div className="flex flex-row justify-between ml-6 mt-8">

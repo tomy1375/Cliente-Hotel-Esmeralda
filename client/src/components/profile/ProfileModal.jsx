@@ -64,6 +64,10 @@ function ProfileModal({ isOpen, onClose }) {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  useEffect(() => {
+    if (userInfo !== null) setFormData(userInfo);
+  }, [userInfo]);
+
   const handleSubmit = async () => {
     try {
       const token = Cookies.get("token");
@@ -203,7 +207,7 @@ function ProfileModal({ isOpen, onClose }) {
                 />
               </div>
 
-              <disv className="flex flex-col flex-1">
+              <div className="flex flex-col flex-1">
                 <label className="font-medium leading-[143%]  text-font">
                   DNI
                 </label>
@@ -213,7 +217,7 @@ function ProfileModal({ isOpen, onClose }) {
                   onChange={handleChange("document")}
                   className="px-4 py-3 mt-2 leading-6 bg-white rounded-lg border border-solid border-stone-300 text-font"
                 />
-              </disv>
+              </div>
             </div>
 
             <div className="flex flex-row gap-3 mb-4">
@@ -286,7 +290,12 @@ function ProfileModal({ isOpen, onClose }) {
                 <input
                   type="text"
                   className="px-4 py-3 mt-2 leading-6 bg-white rounded-lg border border-solid border-stone-300 text-font"
-                  onChange={setFormData.address}
+                  onChange={(e) =>
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      address: e.target.value,
+                    }))
+                  }
                   value={formData.address}
                 />
               </div>
