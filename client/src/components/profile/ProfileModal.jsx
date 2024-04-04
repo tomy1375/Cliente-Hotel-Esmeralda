@@ -65,7 +65,11 @@ function ProfileModal({ isOpen, onClose }) {
   }, []);
 
   useEffect(() => {
-    if (userInfo !== null) setFormData(userInfo);
+    if (userInfo !== null) {
+      console.log(userInfo);
+      setIsEmailVerified(userInfo.emailVerified);
+      setFormData(userInfo);
+    }
   }, [userInfo]);
 
   const handleSubmit = async () => {
