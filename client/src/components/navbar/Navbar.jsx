@@ -87,16 +87,17 @@ function Navbar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-      await signOut();
-      Cookies.remove("token");
-      setIsCustomAuthenticated(false);
+       await signOut();
+       Cookies.remove("token");
+       setIsCustomAuthenticated(false);
+       dispatch(logout());
+       navigate("/");
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
+       console.error("Error al cerrar sesión:", error);
     } finally {
-      setIsLoading(false);
-      navigate("/");
+       setIsLoading(false);
     }
-  };
+   };
 
   const navigate = useNavigate();
 

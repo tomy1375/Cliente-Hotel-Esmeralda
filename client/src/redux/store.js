@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   foods: foodsReducer,
   rooms: roomsReducer,
   users: userReducer,
-});
+});   
 
 
 

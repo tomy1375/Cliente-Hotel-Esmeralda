@@ -27,7 +27,7 @@ function LoginPage() {
     try {
       const token = await loginUser(usernameOrEmail, password);
       Cookies.set("token", token, { 
-        expiresIn: '1h'
+        expiresIn: '24h'
        });
       
       let userInfo = null;

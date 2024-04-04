@@ -38,15 +38,11 @@ function MainLayout() {
     const removeModalIndicator = () => {
       localStorage.removeItem("modalShown");
     };
-
     window.addEventListener("beforeunload", removeModalIndicator);
-
     return () => {
       window.removeEventListener("beforeunload", removeModalIndicator);
     };
   }, []);
-  
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,7 +50,11 @@ function MainLayout() {
         if (token) {
           const userInfo = await getUserInfo();
           if (userInfo) {
-            dispatch(setUserInfo(userInfo));
+            dispatch({
+              type: "SET_USER_INFO",
+              payload: userInfo,
+            });
+            
           }
         } else {
           console.error("No se encontró el token en las cookies");
@@ -63,9 +63,9 @@ function MainLayout() {
         console.error("Error al obtener información del usuario:", error);
       }
     };
-
     fetchData();
-  }, []);
+  });
+  
 
   return (
     <>
@@ -86,11 +86,6 @@ function MainLayout() {
         <Route path="/offers" element={<OffersView/>}/>
         <Route path="/services" element={<ServicesView/>}/>
         <Route path="/profile" element={<ProfileView/>}/>
-        <Route
-          path="/termsAndConditions"
-          element={<TermsAndConditionsView />}
-        />
-        <Route path="/register" element={<RegisterView />} />
         <Route path="/gallery" element={<GalleryView />} />
         <Route
           path="/email-confirmation/:verificationCode"
