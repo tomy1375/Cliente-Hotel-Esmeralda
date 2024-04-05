@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { addDays } from "date-fns";
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import './DateRangePickerCustomStyles.css'; 
 import { DateRangePicker } from 'react-date-range';
 
 const DateRange = ({ onChangeCheckIn, onChangeCheckOut }) => {
@@ -21,7 +22,7 @@ const DateRange = ({ onChangeCheckIn, onChangeCheckOut }) => {
 
   return (
     <div>
-      <div className=""> {/* Utiliza Tailwind para ocultar el contenedor */}
+      <div className="justify-center items-center ml-28 "> {/* Utiliza Tailwind para ocultar el contenedor */}
         <DateRangePicker
           onChange={handleSelect}
           showSelectionPreview={true}
@@ -32,6 +33,7 @@ const DateRange = ({ onChangeCheckIn, onChangeCheckOut }) => {
           localeText={{ start: 'Check-in', end: 'Check-out' }} // Personaliza las etiquetas aquí
           staticRanges={[]} // Oculta los botones predefinidos
           inputRanges={[]} // Oculta los rangos de entrada
+          rangeColors={['#1F2F1A']}
         />
       </div>
     </div>

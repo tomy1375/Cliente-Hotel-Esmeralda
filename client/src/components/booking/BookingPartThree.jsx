@@ -52,7 +52,7 @@ function Total() {
 
       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cfd75e2fe2da4c4d0e8ac988237a9c31b87f75f2ad3ddecf1b5d6801bdde474?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 self-stretch my-auto w-5 aspect-square" />
       <div className="flex gap-2 self-stretch p-2 whitespace-nowrap rounded-sm">
-        <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center bg-zinc-200 rounded-[50px]">3</div>
+        <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center bg-zinc-200 rounded-[50px]">4</div>
         <div className="text-xl font-extrabold tracking-normal leading-7 ">PAY</div>
       </div>
     </div>
@@ -97,6 +97,7 @@ function YourStay() {
         <div className="flex flex-col flex-1 font-bold">
           <div className="flex flex-col pl-2.5 font-extrabold">
             <div className="font-bold">Your Stay</div>
+            <div className="flex mt-5">Check-In</div>
             <div className="self-center mt-8 font-medium">After 3:00 PM</div>
             <div>2 Adult</div>
             <div className="mt-6 text-2xl tracking-tight text-black">Superior King</div>
@@ -108,11 +109,16 @@ function YourStay() {
           </div>
         </div>
         <div className="flex flex-col flex-1 my-auto font-extrabold">
-          <div>Check-out</div>
+          <div>
+
+          <div className="flex">Check-out</div>
+          </div>
           <div className="mt-3 font-medium">Before 10:00 AM</div>
           <div className="self-end mt-16 text-2xl tracking-tight max-md:mt-10">$ 200.00</div>
         </div>
       </div>
+      <EnhanceStayDetails />
+            <TotalPrice />
     </div>
   );
 }
@@ -126,11 +132,10 @@ function EnhanceStayDetails() {
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="shrink-0 self-start aspect-[0.89] w-[25px]" />
           <div className="flex gap-0">
             <div className="z-10">Remove</div>
-            <div>Remove</div>
           </div>
         </div>
         <div className="mt-7">Family Car Rental</div>
-        <div className="self-center mt-2.5 text-xl font-bold tracking-normal leading-7 text-black">Remove</div>
+        <div className=" self-center mt-2.5 text-xl font-bold tracking-normal leading-7 text-black">Remove</div>
         <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="mt-4 aspect-[0.89] w-[25px]" />
       </div>
       <div className="flex flex-col self-start tracking-tight leading-[140%] text-neutral-800">
@@ -151,7 +156,10 @@ function TotalPrice() {
 }
 
 function BookingPartThree() {
-
+  const navigate = useNavigate()
+    const handleClickTwo = () => {
+        navigate('/bookingTwo');
+      };
     
   return (
     <div className="flex flex-col px-44 pt-14 pb-12 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">
@@ -172,13 +180,12 @@ function BookingPartThree() {
           <SpaAndBeautyDetails />
           <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
             <YourStay />
-            <EnhanceStayDetails />
-            <TotalPrice />
+            
           </div>
         </div>
       </div>
       <div className="flex gap-5 justify-between pr-2.5 mt-64 text-xl font-extrabold tracking-normal leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
-        <button className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5">RETURN</button>
+        <button className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5" onClick={handleClickTwo}>RETURN</button>
         <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5">Continue</button>
       </div>
     </div>

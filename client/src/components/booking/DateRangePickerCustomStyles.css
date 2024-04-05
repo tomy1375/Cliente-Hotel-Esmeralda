@@ -1,0 +1,25 @@
+/* DateRangePickerCustomStyles.css */
+
+/* Cambia el color de fondo del calendario */
+.rdrCalendarWrapper {
+    background-color: #f0f0f0; /* Cambia este color según tus necesidades */
+   }
+   
+   /* Cambia el color de los días seleccionados */
+   .rdrDayNumberSelected {
+    background-color: #00e969; /* Cambia este color según tus necesidades */
+    color: rgb(133, 26, 26); /* Cambia el color del texto según tus necesidades */
+   }
+   
+   /* Cambia el color de los días en el rango seleccionado */
+   .rdrDayNumberInRange {
+    background-color: #641818; /* Cambia este color según tus necesidades */
+   }
+   
+   /* Puedes agregar más estilos personalizados según tus necesidades */
+   .rdrDefinedRangesWrapper {
+    display: none;
+}
+
+
+/* Cambia el color de la rayita del día actual */

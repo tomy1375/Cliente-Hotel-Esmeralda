@@ -25,7 +25,7 @@ function DateOfStay() {
 function Accommodations() {
   return (
     <div className="flex gap-2 p-6 whitespace-nowrap rounded-sm">
-      <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center text-white bg-amber-300 rounded-[50px]">2</div>
+      <div className=" flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center text-white bg-amber-300 rounded-[50px]">2</div>
       <div className=" text-xl font-extrabold tracking-normal leading-7 text-zinc-800">ACCOMMODATIONS</div>
     </div>
   );
@@ -54,20 +54,23 @@ function BookingPartTwo() {
     const handleClickThree = () => {
         navigate('/bookingThree');
       };
+      const handleClick = () => {
+        navigate('/booking');
+      };
   return (
     <div className="flex flex-col px-44 pt-12 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">
       <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
         <div className="flex gap-5 justify-between max-md:flex-wrap">
           <DateOfStay />
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9b936466ba9e195c9951ced6f94513d497b953ed9a2477f1d2cdf89b9ea8a2e?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 my-auto w-5 aspect-square mr-6" />
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9b936466ba9e195c9951ced6f94513d497b953ed9a2477f1d2cdf89b9ea8a2e?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 my-auto w-5 aspect-square mr-9" />
           <Accommodations />
         </div>
-        <div className="flex gap-5 justify-between items-center text-neutral-400 max-md:flex-wrap">
+        <div className="flex gap-5 justify-between items-center text-neutral-400 max-md:flex-wrap ">
           <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/5661c16c6e6c925a8fbb623c03668955e8ba6eef9d9ee9088c1a2a0562471744?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 self-stretch my-auto w-5 aspect-square " />
           <EnhanceYourStay />
-          <div className="flex gap-5 justify-between items-center text-neutral-400 max-md:flex-wrap">
+          <div className="flex gap-5 justify-between items-center text-neutral-400 max-md:flex-wrap ">
 
-          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/05474e88431e7a9110b9a21bcf722dae765bd5ea13436d5df55ad479efa957db?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 self-stretch my-auto w-5 aspect-square mr-5" />
+          <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/05474e88431e7a9110b9a21bcf722dae765bd5ea13436d5df55ad479efa957db?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 self-stretch my-auto w-5 aspect-square " />
           <Total />
           </div>
         </div>
@@ -110,7 +113,7 @@ function BookingPartTwo() {
         </div>
       </div>
       <div className="flex gap-5 justify-between pr-5 mt-8 text-xl font-extrabold tracking-normal leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:max-w-full">
-        <button className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5">RETURN</button>
+        <button className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5" onClick={handleClick}>RETURN</button>
         <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5" onClick={handleClickThree} >Continue</button>
       </div>
     </div>

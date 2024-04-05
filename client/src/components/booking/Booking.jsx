@@ -61,10 +61,10 @@ const GuestSelector = () => {
 const CheckInOut = ({ title, date, time }) => {
   return (
     <div className="flex flex-col grow text-sm text-neutral-800 max-md:mt-10">
-      <div className="self-start ml-11 font-medium max-md:ml-2.5">{title}</div>
-      <div className="flex flex-col justify-center px-6 py-4 mt-3.5 w-full bg-amber-300 rounded-md max-md:px-5">
+      <div className="self-start ml-16 font-medium max-md:ml-2.5">{title}</div>
+      <div className="flex flex-col justify-center px-6 py-4 mt-3.5 w-full bg-amber-300 rounded-md max-md:px-10">
         <div className="flex gap-4 justify-between py-1">
-          <div className="flex gap-2 justify-center">
+          <div className="flex gap-1 justify-center">
             <img
               loading="lazy"
               src={date.icon}
@@ -305,7 +305,7 @@ const Booking = () => {
           <div className="relative max-md:max-w-full">
             <div className="flex gap-5 max-md:flex-col max-md:gap-0">
               <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                <div className="w-full overflow-visible items-center justify-center mt-">
+                <div className="flex w-full overflow-visible items-center justify-center mt-4 ml-16">
 
                 <DateRange
             onChangeCheckIn={handleCheckInChange}
