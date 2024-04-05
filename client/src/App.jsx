@@ -25,6 +25,10 @@ import { setUserInfo } from "./redux/users/actions/usersActions";
 import Cookies from "js-cookie";
 import EmailConfirmation from "./views/ConfirmationEmail";
 import ServicesView from "./views/ServicesView";
+import BookingView from "./views/BookingView";
+import BookingPartTwoView from "./views/BookingPartTwoView";
+import BookingPartThreeView from "./views/BookingPartThreeView";
+
 
 
 function MainLayout() {
@@ -86,6 +90,9 @@ function MainLayout() {
         <Route path="/offers" element={<OffersView/>}/>
         <Route path="/services" element={<ServicesView/>}/>
         <Route path="/profile" element={<ProfileView/>}/>
+        <Route path="/booking" element={<BookingView/>}/>
+        <Route path="/bookingTwo" element={<BookingPartTwoView/>}/>
+        <Route path="/bookingThree" element={<BookingPartThreeView/>}/>
         <Route
           path="/termsAndConditions"
           element={<TermsAndConditionsView />}
