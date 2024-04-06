@@ -88,87 +88,71 @@ const CheckInOut = ({ title, date, time }) => {
   );
 };
 
-// const Calendar = ({ month, prevDays, currentDays, nextDays }) => {
-//   const weekDays = ["SUN", "MON", "TUE", "WEN", "THU", "FRI", "SAT"];
+function YourStay() {
+  return (
+    <div className="flex overflow-hidden relative flex-col px-6 py-5 border border-solid aspect-[0.58] border-neutral-800 fill-zinc-100 stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-7">
+      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/bd201d65503d2f3715d5936dcb646eb90c12e6ca29e28ca97d15109ab3b4f5c5?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="object-cover absolute inset-0 size-full" />
+      <div className="flex relative gap-2.5 text-xl tracking-normal leading-7 text-neutral-800">
+        <div className="flex flex-col flex-1 font-bold">
+          <div className="flex flex-col pl-2.5 font-extrabold">
+            <div className="font-bold">Your Stay</div>
+            <div className="flex mt-5">Check-In</div>
+            <div className="self-center mt-8 font-medium">After 3:00 PM</div>
+            <div>2 Adult</div>
+            <div className="mt-6 text-2xl tracking-tight text-black">Superior King</div>
+          </div>
+          <div className="mt-2">5 night</div>
+          <div className="flex gap-3.5 mt-3 text-black whitespace-nowrap">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="shrink-0 self-start aspect-[0.89] w-[25px]" />
+            <div>Remove</div>
+          </div>
+        </div>
+        <div className="flex flex-col flex-1 my-auto font-extrabold">
+          <div>
 
-//   return (
-//     <div className="flex relative flex-col grow justify-center text-base whitespace-nowrap max-md:mt-10">
-//       <div className="flex flex-col justify-center py-0.5">
-//         <div className="flex gap-5 justify-center items-center pr-3.5 text-lg font-bold text-neutral-800">
-//           <img
-//             loading="lazy"
-//             src="https://cdn.builder.io/api/v1/image/assets/TEMP/ba4c82e084ae407f4b5cc252c2a0cc7174a95f45600516969505a6a1205c3e5b?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
-//             alt=""
-//             className="shrink-0 self-stretch my-auto border-2 border-solid aspect-[0.45] border-neutral-800 stroke-[2px] stroke-neutral-800 w-[5px]"
-//           />
-//           <div className="self-stretch">{month}</div>
-//           <img
-//             loading="lazy"
-//             src="https://cdn.builder.io/api/v1/image/assets/TEMP/b196464c4ed53b7af5d0224ce09b4903de3df79dad2bea5f590e892c829de20f?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
-//             alt=""
-//             className="shrink-0 self-stretch my-auto w-1 border-2 border-solid aspect-[0.36] border-neutral-800 stroke-[2px] stroke-neutral-800"
-//           />
-//         </div>
-//         <div className="flex gap-4 mt-11 font-medium text-neutral-800 max-md:mt-10 max-md:mr-0.5">
-//           {weekDays.map((day) => (
-//             <div key={day} className={day === "SUN" ? "grow" : ""}>
-//               {day}
-//             </div>
-//           ))}
-//         </div>
-//         <div className="flex gap-5 mt-5 font-medium text-amber-300 max-md:mr-0.5">
-//           {prevDays.map((day, index) => (
-//             <div key={index} className={index === 0 ? "grow" : ""}>
-//               {day}
-//             </div>
-//           ))}
-//           {currentDays.slice(0, 2).map((day, index) => (
-//             <div key={index} className="text-neutral-800">
-//               {day}
-//             </div>
-//           ))}
-//         </div>
-//         <div className="flex gap-5 mt-4 max-md:mr-0.5">
-//           <div className="flex flex-auto gap-4">
-//             <div className="flex gap-5 justify-between py-2 pr-9 rounded bg-neutral-800 text-zinc-100">
-//               {currentDays.slice(2, 7).map((day, index) => (
-//                 <div key={index}>{day}</div>
-//               ))}
-//             </div>
-//             <div className="my-auto font-medium text-neutral-800">
-//               {currentDays[7]}
-//             </div>
-//           </div>
-//           <div className="my-auto font-medium text-neutral-800">
-//             {currentDays[8]}
-//           </div>
-//         </div>
-//         <div className="flex flex-col px-2.5 mt-4 font-medium text-neutral-800 max-md:mr-0.5">
-//           <div className="flex gap-5 justify-between px-px max-md:mr-1">
-//             {currentDays.slice(9, 16).map((day, index) => (
-//               <div key={index}>{day}</div>
-//             ))}
-//           </div>
-//           <div className="flex gap-5 justify-between px-0.5 mt-6">
-//             {currentDays.slice(16, 23).map((day, index) => (
-//               <div key={index}>{day}</div>
-//             ))}
-//           </div>
-//           <div className="flex gap-5 px-0.5 mt-6">
-//             {currentDays.slice(23).map((day, index) => (
-//               <div key={index} className={index === 0 ? "grow" : ""}>
-//                 {day}
-//               </div>
-//             ))}
-//             {nextDays.map((day, index) => (
-//               <div key={index}>{day}</div>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+          <div className="flex">Check-out</div>
+          </div>
+          <div className="mt-3 font-medium">Before 10:00 AM</div>
+          <div className="self-end mt-16 text-2xl tracking-tight max-md:mt-10">$ 200.00</div>
+        </div>
+      </div>
+      <EnhanceStayDetails />
+            <TotalPrice />
+    </div>
+  );
+}
+
+function EnhanceStayDetails() {
+  return (
+    <div className="flex relative gap-5 justify-between mt-9 text-2xl font-extrabold">
+      <div className="flex flex-col text-neutral-800">
+        <div className="self-start ml-2.5">Spa and Beauty</div>
+        <div className="flex gap-2.5 mt-5 text-xl font-bold tracking-normal leading-7 text-black whitespace-nowrap">
+          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="shrink-0 self-start aspect-[0.89] w-[25px]" />
+          <div className="flex gap-0">
+            <div className="z-10">Remove</div>
+          </div>
+        </div>
+        <div className="mt-7">Family Car Rental</div>
+        <div className=" self-center mt-2.5 text-xl font-bold tracking-normal leading-7 text-black">Remove</div>
+        <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="mt-4 aspect-[0.89] w-[25px]" />
+      </div>
+      <div className="flex flex-col self-start tracking-tight leading-[140%] text-neutral-800">
+        <div>$ 200.00</div>
+        <div className="mt-20 max-md:mt-10">$ 50.00</div>
+      </div>
+    </div>
+  );
+}
+
+function TotalPrice() {
+  return (
+    <div className="flex relative gap-5 justify-between mt-20 font-extrabold leading-[140%] max-md:mt-10 max-md:mr-2 max-md:ml-2">
+      <div className="justify-center px-10 py-0.5 text-xl tracking-normal text-center whitespace-nowrap bg-amber-300 rounded-md text-zinc-100 max-md:px-5">TOTAL</div>
+      <div className="my-auto text-2xl tracking-tight text-neutral-800">$ 1300.00</div>
+    </div>
+  );
+}
 
 const Booking = () => {
     const [checkInDate, setCheckInDate] = useState({
@@ -214,8 +198,17 @@ const Booking = () => {
     };
     const navigate = useNavigate()
     const handleClick = () => {
-        navigate('/bookingTwo');
-      };
+      navigate('/bookingTwo', {
+         state: {
+           checkInDate: checkInDate.text,
+           checkOutDate: checkOutDate.text,
+          //  selectedGuests: selectedGuests, // Añade esta línea
+          //  selectedChildren: selectedChildren, // Añade esta línea
+         },
+      });
+     };
+     
+     
   return (
     <div className="flex flex-col px-52 pt-16 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">
       
@@ -274,6 +267,7 @@ const Booking = () => {
         </div>
       </div>
         <div className="shrink-0 mt-12 max-w-full h-px border border-solid bg-zinc-200 border-zinc-200 justify-center flex items-center max-md:mr-2.5" />
+        
       <div className="px-9 pt-7 pb-10 mt-16 max-w-full w-[802px] max-md:px-5 max-md:mt-10">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <GuestSelector />
@@ -287,15 +281,20 @@ const Booking = () => {
             date={checkOutDate}
             time={checkOutTime}
           />
+        
+    
         </div>
       </div>
                 <div className="">
                 {/* <CardTotal/> */}
+        {/* <div className="flex gap-5 max-md:flex-col max-md:gap-0 justify-end"> 
+  <YourStay />
+</div> */}
                 </div>
- 
        
       <div className="flex flex-col pb-7 mt-8 max-w-full ">
         <div className="flex overflow-hidden relative flex-col justify-center px-14 pt-11 pb-4 w-full min-h-[416px] max-md:px-5 max-md:max-w-full">
+          <div className="flex">
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/36756baee048f2a7eed6e82f8f138f0d61655475fed090b94bfa15413ef208c6?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
@@ -305,7 +304,7 @@ const Booking = () => {
           <div className="relative max-md:max-w-full">
             <div className="flex gap-5 max-md:flex-col max-md:gap-0">
               <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                <div className="flex w-full overflow-visible items-center justify-center mt-4 ml-16">
+                <div className="flex w-full overflow-visible items-center justify-center mt-4 ml-20">
 
                 <DateRange
             onChangeCheckIn={handleCheckInChange}
@@ -315,13 +314,16 @@ const Booking = () => {
               </div>
             </div>
           </div>
-          <button className="relative justify-center self-end px-10 py-4 mt-11 mr-auto  text-xl font-extrabold tracking-normal leading-7 text-center whitespace-nowrap rounded-md bg-v text-zinc-100 max-md:px-5 max-md:mt-10">
+      
+
+          {/* <button className="relative ml-auto justify-end self-end px-10 py-4 mt-11 mr-auto  text-xl font-extrabold tracking-normal  leading-7 text-center whitespace-nowrap rounded-md bg-v text-zinc-100 max-md:px-5 max-md:mt-10">
             Apply
-          </button>
+          </button> */}
+          </div>
         </div>
       </div>
       <div className="flex flex-col justify-end items-end px-16 pb-3.5=== mt-3 text-2xl font-extrabold tracking-tight leading-8 text-white uppercase whitespace-nowrap max-md:pl-5 max-md:max-w-full">
-        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5" onClick={handleClick}>
+        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mr-56 mt-5" onClick={handleClick}>
           Continue
         </button>
       </div>
