@@ -6,9 +6,16 @@ import { faChild } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const GuestSelector = () => {
-    const [selectedGuests, setSelectedGuests] = React.useState(1);
-    const [selectedChildren, setSelectedChildren] = React.useState(0);
+const GuestSelector = ({ onGuestsChange, onChildrenChange }) => {
+  const [selectedGuests, setSelectedGuests] = React.useState(1);
+  const [selectedChildren, setSelectedChildren] = React.useState(0);
+
+  React.useEffect(() => {
+    onGuestsChange(selectedGuests);
+    onChildrenChange(selectedChildren);
+}, [selectedGuests, selectedChildren, onGuestsChange, onChildrenChange]);
+
+
     return (
         <div className="flex flex-col whitespace-nowrap max-md:mt-10">
           <div className="self-center text-sm font-medium text-neutral-800">
@@ -33,6 +40,7 @@ const GuestSelector = () => {
                   <option key={number} value={number}>{number}</option>
                 ))}
               </select>
+              
             </div>
             <div className="my-auto text-base tracking-normal text-neutral-800">
               Adult
@@ -155,6 +163,10 @@ function TotalPrice() {
 }
 
 const Booking = () => {
+  const [selectedGuests, setSelectedGuests] = useState(1);
+  const [selectedChildren, setSelectedChildren] = useState(0);
+
+
     const [checkInDate, setCheckInDate] = useState({
       icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/e723daaa5705c3c60192811b2d4c4d34ea0086691260ccd5f565983c96238170?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&",
       text: "-",
@@ -198,12 +210,18 @@ const Booking = () => {
     };
     const navigate = useNavigate()
     const handleClick = () => {
+      console.log({
+        checkInDate: checkInDate.text,
+        checkOutDate: checkOutDate.text,
+        selectedGuests: selectedGuests,
+        selectedChildren: selectedChildren,
+     });
       navigate('/bookingTwo', {
          state: {
            checkInDate: checkInDate.text,
            checkOutDate: checkOutDate.text,
-          //  selectedGuests: selectedGuests, // Añade esta línea
-          //  selectedChildren: selectedChildren, // Añade esta línea
+           selectedGuests: selectedGuests, 
+           selectedChildren: selectedChildren,
          },
       });
      };
@@ -270,7 +288,10 @@ const Booking = () => {
         
       <div className="px-9 pt-7 pb-10 mt-16 max-w-full w-[802px] max-md:px-5 max-md:mt-10">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-          <GuestSelector />
+        <GuestSelector 
+                onGuestsChange={setSelectedGuests} 
+                onChildrenChange={setSelectedChildren} 
+            />
           <CheckInOut
             title="Check-in"
             date={checkInDate}

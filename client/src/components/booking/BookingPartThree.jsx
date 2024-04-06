@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function DateOfStay() {
   return (
@@ -90,16 +90,46 @@ function SpaAndBeautyDetails() {
 }
 
 function YourStay() {
+  const location = useLocation();
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren } = location.state || {};
   return (
     <div className="flex overflow-hidden relative flex-col grow px-6 py-5 border border-solid aspect-[0.58] border-neutral-800 fill-zinc-100 stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-7">
       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/bd201d65503d2f3715d5936dcb646eb90c12e6ca29e28ca97d15109ab3b4f5c5?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="object-cover absolute inset-0 size-full" />
       <div className="flex relative gap-2.5 text-xl tracking-normal leading-7 text-neutral-800">
         <div className="flex flex-col flex-1 font-bold">
           <div className="flex flex-col pl-2.5 font-extrabold">
-            <div className="font-bold">Your Stay</div>
-            <div className="flex mt-5">Check-In</div>
-            <div className="self-center mt-8 font-medium">After 3:00 PM</div>
-            <div>2 Adult</div>
+            <div className="font-bold mt-3">Your Stay</div>
+            <div className="flex flex-col flex-1 my-auto font-extrabold mt-8">
+                    <div className="flex flex-grow gap-16">
+                  <div >Check-in</div>
+                  <div>Check-out</div>
+                
+
+                    </div>
+                    <div className="flex gap-14">
+
+                  <div className=" mt-3 font-medium">
+                    {checkInDate}
+                    </div>
+                  <div className="mt-3 font-medium">
+                    {checkOutDate}
+                    </div>
+                    </div>
+                </div>
+                <div className="ml-6 flex gap-24 mt-4">
+
+                  <div className="font-extrabold">Adult</div>
+                  <div className=" font-extrabold">Children</div>
+                </div>
+                <div className="ml-11 flex gap-36">
+
+                <div className="font-extrabold">
+                  {selectedGuests}
+                  </div>
+                <div className=" font-extrabold">
+                  {selectedChildren}
+                  </div>
+                </div>
             <div className="mt-6 text-2xl tracking-tight text-black">Superior King</div>
           </div>
           <div className="mt-2">5 night</div>
@@ -111,10 +141,10 @@ function YourStay() {
         <div className="flex flex-col flex-1 my-auto font-extrabold">
           <div>
 
-          <div className="flex">Check-out</div>
+         
           </div>
-          <div className="mt-3 font-medium">Before 10:00 AM</div>
-          <div className="self-end mt-16 text-2xl tracking-tight max-md:mt-10">$ 200.00</div>
+         
+          <div className="self-end mt-52 text-2xl tracking-tight max-md:mt-16 ">$ 200.00</div>
         </div>
       </div>
       <EnhanceStayDetails />
@@ -138,7 +168,7 @@ function EnhanceStayDetails() {
         <div className=" self-center mt-2.5 text-xl font-bold tracking-normal leading-7 text-black">Remove</div>
         <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="mt-4 aspect-[0.89] w-[25px]" />
       </div>
-      <div className="flex flex-col self-start tracking-tight leading-[140%] text-neutral-800">
+      <div className="flex flex-col self-start tracking-tight leading-[140%] text-neutral-800 ">
         <div>$ 200.00</div>
         <div className="mt-20 max-md:mt-10">$ 50.00</div>
       </div>
@@ -156,7 +186,9 @@ function TotalPrice() {
 }
 
 function BookingPartThree() {
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
+
     const handleClickTwo = () => {
         navigate('/bookingTwo');
       };

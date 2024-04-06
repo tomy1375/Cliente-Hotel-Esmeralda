@@ -52,14 +52,24 @@ function Total() {
 function BookingPartTwo() {
     const navigate = useNavigate()
     const handleClickThree = () => {
-        navigate('/bookingThree');
-      };
+      navigate('/bookingThree', {
+          state: {
+              checkInDate: checkInDate,
+              checkOutDate: checkOutDate,
+              selectedGuests: selectedGuests,
+              selectedChildren: selectedChildren,
+          },
+      });
+  };
+  
+
+
       const handleClick = () => {
         navigate('/booking');
       };
 
       const location = useLocation();
-      const { checkInDate, checkOutDate } = location.state || {};
+      const { checkInDate, checkOutDate  ,selectedGuests, selectedChildren} = location.state || {};
     
   return (
     <div className="flex flex-col px-44 pt-12 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">
@@ -113,8 +123,8 @@ function BookingPartTwo() {
                 </div>
                 <div className="ml-11 flex gap-36">
 
-                <div className="font-extrabold">1</div>
-                <div className=" font-extrabold">0</div>
+                <div className="font-extrabold">{selectedGuests}</div>
+                <div className=" font-extrabold">{selectedChildren}</div>
                 </div>
                   <div className="mt-6 text-2xl font-extrabold tracking-tight text-black">Superior King</div>
                   <div className="mt-2 ml-6">5 night</div>
