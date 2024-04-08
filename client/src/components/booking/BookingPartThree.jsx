@@ -5,7 +5,7 @@ function DateOfStay() {
   return (
     <div className="flex gap-2 self-stretch p-2 rounded-sm mt-2">
       <div className="flex justify-center items-center px-4 py-2 w-7 h-7 bg-green-700 rounded-[50px] ml-20">
-      <span class="flex text-white ">&#10003;</span>
+      <span className="flex text-white ">&#10003;</span>
       </div>
       <div className="text-xl font-extrabold tracking-normal leading-7 text-zinc-800 ml">DATES OF STAY</div>
     </div>
@@ -14,16 +14,26 @@ function DateOfStay() {
 
 function Accommodations() {
     const navigate = useNavigate()
+    const location = useLocation();
+    const { checkInDate, checkOutDate, selectedGuests, selectedChildren } = location.state || {};
+  
     const handleClickTwo = () => {
-        navigate('/bookingTwo');
-      };
+      navigate('/bookingTwo', {
+          state: {
+              checkInDate: checkInDate,
+              checkOutDate: checkOutDate,
+              selectedGuests: selectedGuests,
+              selectedChildren: selectedChildren,
+          },
+      });
+  };
   return (
     <>
     <div className="flex gap-4 self-stretch p-2 rounded-sm" >
 
       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5ff6ee10c3e91ecd77dbca7c59bc5000d5be1b61ea3eae709dc2418717a6ea2b?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 self-stretch my-auto w-5 aspect-square mr-16" />
       <div className="flex justify-center items-center self-stretch px-4 py-2 my-auto w-7 h-7 bg-green-700 rounded-[50px]">
-      <span class="flex text-white ">&#10003;</span>
+      <span className="flex text-white ">&#10003;</span>
       </div>
       <button className="self-stretch my-auto text-xl font-extrabold tracking-normal leading-7 text-zinc-800" onClick={handleClickTwo}>ACCOMMODATIONS</button>
       
@@ -123,10 +133,10 @@ function YourStay() {
                 </div>
                 <div className="ml-11 flex gap-36">
 
-                <div className="font-extrabold">
+                <div className="font-medium">
                   {selectedGuests}
                   </div>
-                <div className=" font-extrabold">
+                <div className="font-medium">
                   {selectedChildren}
                   </div>
                 </div>
@@ -188,10 +198,20 @@ function TotalPrice() {
 function BookingPartThree() {
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren } = location.state || {};
 
-    const handleClickTwo = () => {
-        navigate('/bookingTwo');
-      };
+  const handleClickTwo = () => {
+    navigate('/bookingTwo', {
+        state: {
+            checkInDate: checkInDate,
+            checkOutDate: checkOutDate,
+            selectedGuests: selectedGuests,
+            selectedChildren: selectedChildren,
+        },
+    });
+};
+
     
   return (
     <div className="flex flex-col px-44 pt-14 pb-12 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">

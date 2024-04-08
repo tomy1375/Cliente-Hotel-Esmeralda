@@ -10,10 +10,10 @@ function DateOfStay() {
        <div className="flex gap-2 p-6 rounded-sm px-9">
          <div className="flex justify-center items-center px-4 py-2 w-7 h-7 bg-green-700 rounded-[50px]">
            {/* Utiliza el código Unicode para el símbolo de check y aplica estilos CSS para cambiar su color a blanco */}
-           <span class="flex text-white ">&#10003;</span>
+           <span className="flex text-white ">&#10003;</span>
 
          </div>
-         <button class="text-xl font-extrabold tracking-normal leading-7 text-zinc-800" onClick={handleClick}>
+         <button className="text-xl font-extrabold tracking-normal leading-7 text-zinc-800" onClick={handleClick}>
             DATES OF STAY
         </button>
 
@@ -123,8 +123,8 @@ function BookingPartTwo() {
                 </div>
                 <div className="ml-11 flex gap-36">
 
-                <div className="font-extrabold">{selectedGuests}</div>
-                <div className=" font-extrabold">{selectedChildren}</div>
+                <div className="font-medium">{selectedGuests}</div>
+                <div className="font-medium">{selectedChildren}</div>
                 </div>
                   <div className="mt-6 text-2xl font-extrabold tracking-tight text-black">Superior King</div>
                   <div className="mt-2 ml-6">5 night</div>
