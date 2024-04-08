@@ -18,7 +18,6 @@ function Navbar() {
   const [isLoading, setIsLoading] = useState(false);
   const [isCustomAuthenticated, setIsCustomAuthenticated] = useState(false);
   const [showGalleryDescription, setShowGalleryDescription] = useState(false);
-  // const userInfo = useSelector((state) => state.users.userInfo);
   const location = useLocation();
   const [userInfo, setUserInfo] = useState(null);
   const [showOffersDescription, setShowOffersDescription] = useState(false);
@@ -55,7 +54,7 @@ function Navbar() {
 
   const toggleProfileMenu = () => {
     setIsOpenProfileMenu(!isOpenProfileMenu);
-    setIsOpenSeeMoreMenu(false);
+    setIsOpenSeeMoreMenu(false);      
   };
 
   const toggleSeeMoreMenu = () => {
@@ -64,8 +63,8 @@ function Navbar() {
   };
 
   const closeMenu = () => {
-    setIsOpenSeeMoreMenu(false);
     setIsOpenProfileMenu(false);
+    setIsOpenSeeMoreMenu(false);
   };
 
   const getLobbyImage = () => {

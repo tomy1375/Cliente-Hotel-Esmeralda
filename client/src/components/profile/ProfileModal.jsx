@@ -81,6 +81,7 @@ function ProfileModal({ isOpen, onClose }) {
           full_name: formData.full_name,
           email: formData.email,
           phone_number: formData.phone_number,
+          gender: formData.gender,
           document: formData.document,
           country: formData.country,
           birth: formData.birth,
@@ -108,21 +109,42 @@ function ProfileModal({ isOpen, onClose }) {
     return null;
   }
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-900 bg-opacity-60">
-      <div className="flex flex-col items-center bg-white rounded-lg p-4 w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-xl">
-        <h1 className="text-2xl p-4 font-bold text-font">Edit profile</h1>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60 overflow-y-auto">
+      <div className="relative flex flex-col items-center bg-white rounded-lg p-4 w-full max-w-screen-sm sm:max-w-xl md:max-w-2xl lg:max-w-xl overflow-y-auto">
+        <h1 className="text-2xl mt-4 font-bold text-font">Edit profile</h1>
+        <div className="absolute top-0 right-0 p-4">
+          <button
+            type="button"
+            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="default-modal"
+            onClick={onClose}
+          >
+            <svg
+              className="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+            <span className="sr-only">Close modal</span>
+          </button>
+        </div>
 
         <div className="flex justify-center items-center relative m-3">
           <img
             loading="lazy"
             src={formData.photo_url}
             alt="Profile"
-            className="mt-0 max-w-full aspect-square rounded-[200px] w-[235px]"
+            className="mt-0 max-w-full w-auto md:max-w-[200px] aspect-square rounded-[200px] md:rounded-[100px]"
             onMouseEnter={() => setShowEditIcon(true)}
             onMouseLeave={() => setShowEditIcon(false)}
             onClick={() => setShowImageInput(true)}
@@ -137,26 +159,28 @@ function ProfileModal({ isOpen, onClose }) {
             </div>
           )}
           {showImageInput && (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-4">
-              <input
-                type="text"
-                placeholder="Enter image URL"
-                className="w-full mb-2"
-                value={formData.photo_url}
-                onChange={(e) => setNewImageUrl(e.target.value)}
-              />
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-                onClick={handleUpdateImage}
-              >
-                Save
-              </button>
-              <button
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded ml-2"
-                onClick={() => setShowImageInput(false)}
-              >
-                Cancel
-              </button>
+            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+              <div className="bg-white rounded-lg p-4">
+                <input
+                  type="text"
+                  placeholder="Enter image URL"
+                  className="w-full mb-2"
+                  value={formData.photo_url}
+                  onChange={(e) => setNewImageUrl(e.target.value)}
+                />
+                <button
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                  onClick={handleUpdateImage}
+                >
+                  Save
+                </button>
+                <button
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded ml-2"
+                  onClick={() => setShowImageInput(false)}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -164,7 +188,7 @@ function ProfileModal({ isOpen, onClose }) {
           <div className="">
             <div className="flex flex-row gap-3 mb-4 items-center">
               <div className="flex flex-col flex-1">
-                <label className="font-medium leading-[143%] text-font ">
+                <label className="font-extrabold  leading-[143%] p-1 text-font ">
                   Full Name
                 </label>
                 <input
@@ -176,11 +200,11 @@ function ProfileModal({ isOpen, onClose }) {
               </div>
               <div className="flex flex-col flex-1">
                 <div className="flex items-center">
-                  <label className="font-medium leading-[143%] text-font">
+                  <label className="font-extrabold  leading-[143%] text-font">
                     Email
                   </label>
                   <label
-                    className={`ml-2  rounded-lg ${
+                    className={`ml-2 p-1  rounded-lg ${
                       isEmailVerified
                         ? "bg-green-500 text-white"
                         : "bg-red-500 text-white"
@@ -200,7 +224,7 @@ function ProfileModal({ isOpen, onClose }) {
 
             <div className="flex flex-row gap-3 mb-4">
               <div className="flex flex-col flex-1">
-                <label className="font-medium leading-[143%] text-font">
+                <label className="font-extrabold  leading-[143%] text-font">
                   Contact
                 </label>
                 <input
@@ -212,7 +236,7 @@ function ProfileModal({ isOpen, onClose }) {
               </div>
 
               <div className="flex flex-col flex-1">
-                <label className="font-medium leading-[143%]  text-font">
+                <label className="font-extrabold  leading-[143%]  text-font">
                   DNI
                 </label>
                 <input
@@ -226,7 +250,7 @@ function ProfileModal({ isOpen, onClose }) {
 
             <div className="flex flex-row gap-3 mb-4">
               <div className="flex flex-col flex-1">
-                <label className="font-medium leading-[143%]  text-font">
+                <label className="font-extrabold  leading-[143%]  text-font">
                   Gender
                 </label>
                 <select
@@ -246,7 +270,7 @@ function ProfileModal({ isOpen, onClose }) {
                 </select>
               </div>
               <div className="flex flex-col flex-1">
-                <label className="font-medium leading-[143%]  text-font">
+                <label className="font-extrabold  leading-[143%]  text-font">
                   Country
                 </label>
                 <select
@@ -271,7 +295,7 @@ function ProfileModal({ isOpen, onClose }) {
 
             <div className="flex flex-row gap-3 mb-4">
               <div className="flex flex-col flex-1">
-                <label className="font-medium leading-[143%] text-font">
+                <label className="font-extrabold  leading-[143%] text-font">
                   Date of Birth
                 </label>
                 <input
@@ -288,7 +312,7 @@ function ProfileModal({ isOpen, onClose }) {
               </div>
 
               <div className="flex flex-col flex-1">
-                <label className="font-medium leading-[143%] text-neutral-700">
+                <label className="font-extrabold  leading-[143%] text-neutral-700">
                   Address
                 </label>
                 <input
@@ -305,15 +329,9 @@ function ProfileModal({ isOpen, onClose }) {
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-4 mt-4 w-full  flex-wrap">
+          <div className="flex justify-center flex-wrap">
             <button
-              className="flex flex-1 justify-center px-5 hover:bg-red-400 py-3 rounded-lg text-font font-bold bg-white border border-solid border-neutral-700"
-              onClick={onClose}
-            >
-              CANCEL
-            </button>
-            <button
-              className="flex flex-1 justify-center font-bold px-5 py-3 rounded-lg text-b bg-v hover:brightness-75 transition-color"
+              className="font-bold px-5 w-2/3 py-3 rounded-lg  text-b bg-v hover:brightness-75 transition-color"
               onClick={handleSubmit}
             >
               SUBMIT
