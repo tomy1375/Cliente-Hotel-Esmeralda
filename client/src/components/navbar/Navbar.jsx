@@ -12,6 +12,7 @@ import "./Navbar.scss";
 import { jwtDecode } from "jwt-decode";
 import { fetchUserInfo, logout } from "../../redux/users/actions/usersActions";
 import { useDispatch } from "react-redux";
+//userinfo
 
 function Navbar() {
   const dispatch = useDispatch();
