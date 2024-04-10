@@ -2,6 +2,7 @@ import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Services from "../roomServices/Services";
 import ServicesBooking from "./ServicesBooking";
+import Pay from "./Pay";
 
 function DateOfStay() {
   return (
@@ -47,10 +48,12 @@ function Accommodations() {
 function EnhanceYourStay() {
   return (
     <>
-    <div   className="flex gap-4 self-stretch p-2 rounded-sm ml-8">
+    <div   className="flex gap-4 self-stretch p-2 rounded-sm ml-10">
 
       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/5012f0bfc14ae2fedc99b5f10e623cd13170d158cb2ff1f52713c714c26265a1?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 self-stretch my-auto w-5 aspect-square ml-5" />
-      <div className="flex justify-center items-center self-stretch px-4 py-2 my-auto w-7 h-7 text-sm font-bold leading-5 text-center text-white whitespace-nowrap bg-amber-300 rounded-[50px] ml-16">3</div>
+      <div className="flex justify-center items-center self-stretch px-4 py-2 my-auto w-7 h-7 bg-green-700 rounded-[50px] ml-20">
+      <span className="flex text-white ">&#10003;</span>
+      </div>
       <div className="self-stretch my-auto text-xl font-extrabold tracking-normal  text-zinc-800 leading-7">ENHANCE YOUR STAY</div>
     </div>
     </>
@@ -64,42 +67,19 @@ function Total() {
 
       <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/4cfd75e2fe2da4c4d0e8ac988237a9c31b87f75f2ad3ddecf1b5d6801bdde474?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="shrink-0 self-stretch my-auto w-5 aspect-square" />
       <div className="flex gap-2 self-stretch p-2 whitespace-nowrap rounded-sm">
-        <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center bg-zinc-200 rounded-[50px]">4</div>
-        <div className="text-xl font-extrabold tracking-normal leading-7 ">PAY</div>
+      <div className="flex justify-center items-center self-stretch px-4 py-2 my-auto w-7 h-7 bg-green-700 rounded-[50px]">
+      <span className="flex text-white ">&#10003;</span>
+      </div>
+        <div className="self-stretch my-auto text-xl font-extrabold tracking-normal  text-zinc-800 leading-7">PAY</div>
       </div>
     </div>
     </>
   );
 }
 
-function SpaAndBeauty() {
-  return (
-    <div className="flex flex-col w-[39%] max-md:ml-0 max-md:w-full">
-      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/1a6cb475de5c585675a9c47295fb6b162aa71a88acbd9321e0f87c37f9b8ec6d?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Spa and beauty" className="mt-14 w-full shadow-sm aspect-[1.25] max-md:mt-10 max-md:max-w-full" />
-    </div>
-  );
-}
 
-function SpaAndBeautyDetails() {
-  return (
-    <div className="flex flex-col ml-5 w-[30%] max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col mt-16 font-medium max-md:mt-10">
-        <h2 className="self-center text-3xl text-neutral-800">Spa and Beauty</h2>
-        <p className="mt-5 text-xl text-black">
-          Celebrate a birthday, anniversary or absolutely nothing at all. This package includes:
-          <br />
-          Focused massages
-          Facial spa (cleansing, exfoliation, mask and hydration)
-          <br />
-          Massages for 2 people
-          <br />
-          Scottish shower
-        </p>
-        <div className="shrink-0 mt-9 ml-5 rounded-2xl border border-black border-solid h-[42px] w-[146px] max-md:ml-2.5" />
-      </div>
-    </div>
-  );
-}
+
+
 
 function YourStay() {
   const location = useLocation();
@@ -197,7 +177,7 @@ function TotalPrice() {
   );
 }
 
-function BookingPartThree() {
+function BookingPartFour() {
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -232,7 +212,8 @@ function BookingPartThree() {
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           {/* <SpaAndBeauty />
           <SpaAndBeautyDetails /> */}
-          <ServicesBooking/>
+          {/* <ServicesBooking/> */}
+          <Pay/>
           <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
             <YourStay />
             
@@ -240,11 +221,10 @@ function BookingPartThree() {
         </div>
       </div>
       <div className="flex gap-5 justify-between pr-2.5 mt-64 text-xl font-extrabold tracking-normal leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
-        <button className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5" onClick={handleClickTwo}>RETURN</button>
-        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 hover:bg-amber-400 transition-colors">Continue</button>
+    
       </div>
     </div>
   );
 }
 
-export default BookingPartThree;
+export default BookingPartFour;

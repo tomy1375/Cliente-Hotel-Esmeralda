@@ -98,8 +98,8 @@ function BookingPartTwo() {
             </div>
           </div>
           <div className="flex flex-col mr-14 w-[30%] max-md:ml-0 max-md:w-full  ">
-            <div className="flex overflow-hidden relative flex-col px-7 pt-5 pb-9 border border-solid aspect-[0.86] border-neutral-800 fill-zinc-100 leading-[140%] stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-4">
-              <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ba4fb2b322078b7e4a5ea5fe723325431ba24b9867be7c79c0dac97267225c2e?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="object-cover absolute inset-0 size-full" />
+            <div className="flex overflow-hidden relative flex-col px-7 pt-5 pb-9 border border-solid aspect-[0.86] bg-gray-200 rounded-xl border-neutral-800 fill-slate-500 leading-[140%] stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-4">
+              {/* <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ba4fb2b322078b7e4a5ea5fe723325431ba24b9867be7c79c0dac97267225c2e?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="object-cover absolute inset-0 size-full" /> */}
               <div className="flex relative gap-2.5 text-xl tracking-normal text-neutral-800">
                 <div className="flex flex-col flex-1 font-bold ml-6 mt-2">
                   <div>Your Stay</div>
@@ -137,9 +137,9 @@ function BookingPartTwo() {
                   <div className="self-end mt-40 text-2xl tracking-tight max-md:mt-10 ">$ 200.00</div>
                 </div>
               </div>
-              <div className="flex relative gap-5 mt-24 font-extrabold max-md:mt-10">
-                <div className="justify-center px-10 py-0.5 text-xl tracking-normal text-center whitespace-nowrap bg-amber-300 rounded-md text-zinc-100 max-md:px-5">TOTAL</div>
-                <div className="flex-auto my-auto text-2xl tracking-tight text-neutral-800">$ 1000.00</div>
+              <div className="flex relative gap-5 mt-16 font-extrabold max-md:mt-10 ">
+                <div className="justify-center px-10 py-0.5 text-xl tracking-normal text-center whitespace-nowrap bg-amber-300 rounded-md text-zinc-100 max-md:px-5 mb" >TOTAL</div>
+                <div className="flex-auto  text-2xl tracking-tight text-neutral-800 mb">$ 1000.00</div>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ function BookingPartTwo() {
       </div>
       <div className="flex gap-5 justify-between pr-5 mt-8 text-xl font-extrabold tracking-normal leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:max-w-full">
         <button className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5 mt-7" onClick={handleClick}>RETURN</button>
-        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mt-7" onClick={handleClickThree} >Continue</button>
+        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mt-7 hover:bg-amber-400 transition-colors" onClick={handleClickThree} >Continue</button>
       </div>
     </div>
   );

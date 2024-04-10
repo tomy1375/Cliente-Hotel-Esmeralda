@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import DateRange from "./Calendar";
-import CardTotal from "./CardTotal";
+// import CardTotal from "./CardTotal";
 import { useNavigate } from "react-router-dom";
 import { faChild } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import axios from "axios";
 
 const GuestSelector = ({ onGuestsChange, onChildrenChange }) => {
   const [selectedGuests, setSelectedGuests] = React.useState(1);
@@ -344,7 +344,7 @@ const Booking = () => {
         </div>
       </div>
       <div className="flex flex-col justify-end items-end px-16 pb-3.5=== mt-3 text-2xl font-extrabold tracking-tight leading-8 text-white uppercase whitespace-nowrap max-md:pl-5 max-md:max-w-full">
-        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mr-56 mt-5" onClick={handleClick}>
+        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mr-56 mt-5  hover:bg-amber-400 transition-colors" onClick={handleClick}>
           Continue
         </button>
       </div>

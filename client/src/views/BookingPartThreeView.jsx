@@ -4,7 +4,8 @@ import BookingPartThree from '../components/booking/BookingPartThree'
 const BookingPartThreeView = () => {
   return (
     <div>
-        <BookingPartThree/>
+        <BookingPartThree />
+        {/* <BookingPartThree totalPrice={totalPrice} /> */}
     </div>
   )
 }

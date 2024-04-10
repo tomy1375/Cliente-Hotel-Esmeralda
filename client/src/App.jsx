@@ -28,6 +28,7 @@ import ServicesView from "./views/ServicesView";
 import BookingView from "./views/BookingView";
 import BookingPartTwoView from "./views/BookingPartTwoView";
 import BookingPartThreeView from "./views/BookingPartThreeView";
+import BookingPartFourView from "./views/BookingPartFourView";
 
 
 
@@ -93,6 +94,7 @@ function MainLayout() {
         <Route path="/booking" element={<BookingView/>}/>
         <Route path="/bookingTwo" element={<BookingPartTwoView/>}/>
         <Route path="/bookingThree" element={<BookingPartThreeView/>}/>
+        <Route path="/bookingFour" element={<BookingPartFourView/>}/>
         <Route
           path="/termsAndConditions"
           element={<TermsAndConditionsView />}
