@@ -5,18 +5,11 @@ import ModalReservation from "./ModalReservation";
 import ReservationModal from "./ReservationModal";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-
-const Icon = ({ src, alt }) => (
-  <div className="flex items-center">
-    <img
-      loading="lazy"
-      src={src}
-      alt={alt}
-      className="shrink-0 mx-auto mt-2.5 rounded-full hover:brightness-75 transition-all duration-300 aspect-square bg-v h-[50px] w-[50px] max-md:mt-10"
-      
-    />
-  </div>
-);
+import { FaUserEdit } from "react-icons/fa";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { MdHotel, MdOutlinePayments } from "react-icons/md";
+import { fetchUserInfo } from "../../redux/users/actions/usersActions";
+import { useDispatch } from "react-redux";
 
 const SectionHeader = ({ title, description }) => (
   <div className="flex flex-col text-black max-md:mt-10">
@@ -32,12 +25,18 @@ function ProfileUser() {
   const [isModalOpenReservation, setIsModalOpenReservation] = useState(false);
   const { user } = useUser();
   const userInfo = useSelector((state) => state.users.userInfo);
+  const dispatch = useDispatch();
+
 
   let displayName = user?.fullName || userInfo?.username || "Desconocido";
   let displayEmail =
     user?.primaryEmailAddress.emailAddress || userInfo?.email || "Desconocido";
   let displayPhoneNumber =
     user?.phoneNumbers || userInfo?.phone_number || "Desconocido";
+
+  useEffect(() => {
+    dispatch(fetchUserInfo()); 
+  }, [dispatch]);
 
   useEffect(() => {
     if (isModalOpen || isModalOpenReservation) {
@@ -60,7 +59,7 @@ function ProfileUser() {
       <div className="flex flex-row ustify-center sm:justify-start xl:justify-start ml-2 mt-8 md:ml-0">
         <div className="max-w-full w-full flex justify-center items-center p-8">
           <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-            <div className="flex flex-col w-1/3 max-md:ml-0 max-md:w-full">
+            <div className="flex flex-col w-1/7 max-md:ml-0 max-md:w-full">
               <div className="flex flex-col grow px-9 pt-8 pb-16 mx-auto w-full text-lg text-white rounded-2xl shadow-sm bg-v bg-opacity-90 max-md:px-5 max-md:mt-10">
                 <img
                   loading="lazy"
@@ -103,19 +102,14 @@ function ProfileUser() {
               </div>
             </div>
 
-            <div className="flex flex-col ml-5 w-6/12  max-md:ml-0 max-md:w-full">
+            <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
               <div className="flex flex-col max-md:mt-10 gap-3">
                 <div className="flex flex-col justify-center">
                   <div className="px-8 py-6 rounded-2xl border border-solid border-stone-500 max-md:px-5 flex items-center">
-                    <div
-                      className="flex flex-col w-full max-md:w-1/3 cursor-pointer"
+                    <FaUserEdit
+                      className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
                       onClick={() => setIsModalOpen(true)}
-                    >
-                      <Icon
-                        src="https://img.icons8.com/tiny-glyph/32/fcd34d/edit-user-male.png"
-                        alt="edit-user-male"
-                      />
-                    </div>
+                    />
                     <div className="flex flex-col w-full max-md:w-1/3 ml-5 max-md:ml-0">
                       <SectionHeader
                         title="Personal Details"
@@ -126,12 +120,10 @@ function ProfileUser() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <div className="px-8 py-6 rounded-2xl border border-solid border-stone-500 max-md:px-5 flex items-center">
-                    <div className="flex flex-col w-full max-md:w-1/3 cursor-pointer">
-                      <Icon
-                        src="https://img.icons8.com/tiny-glyph/64/000000/grand-master-key.png"
-                        alt="grand-master-key"
-                      />
-                    </div>
+                    <RiLockPasswordFill
+                      className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
+                      onClick={() => setIsModalOpen(true)}
+                    />
                     <div className="flex flex-col w-full max-md:w-2/3 ml-5 max-md:ml-0">
                       <SectionHeader
                         title="Security"
@@ -142,12 +134,10 @@ function ProfileUser() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <div className="px-8 py-6 rounded-2xl border border-solid border-stone-500 max-md:px-5 flex items-center">
-                    <div className="flex flex-col w-full max-md:w-1/3 cursor-pointer">
-                      <Icon
-                        src="https://img.icons8.com/tiny-glyph/16/fcd34d/edit-user-male.png"
-                        alt="edit-user-male"
-                      />
-                    </div>
+                    <MdHotel
+                      className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
+                      onClick={() => setIsModalOpenReservation(true)}
+                    />
                     <div className="flex flex-col w-full max-md:w-2/3 ml-5 max-md:ml-0">
                       <SectionHeader
                         title="Reservation"
@@ -158,17 +148,14 @@ function ProfileUser() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <div className="px-8 py-6 rounded-2xl border border-solid border-stone-500 max-md:px-5 flex items-center">
-                    <div className="flex flex-col w-full max-md:w-1/3 cursor-pointer">
-                      <Icon
-                        src="https://img.icons8.com/tiny-glyph/16/fcd34d/edit-user-male.png"
-                        alt="edit-user-male"
-                        className="shrink-0 aspect-[0.93] w-[27px]"
-                      />
-                    </div>
+                    <MdOutlinePayments
+                      className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
+                      onClick={() => setIsModalOpen(true)}
+                    />
                     <div className="flex flex-col w-full max-md:w-2/3 ml-5 max-md:ml-0">
                       <SectionHeader
                         title="Payment details"
-                        description="Manage your payment methods, update billing information, view transaction history, or delete payment accounts. "
+                        description="Manage your payment methods, update billing information, view transaction history, or delete payment accounts."
                       />
                     </div>
                   </div>

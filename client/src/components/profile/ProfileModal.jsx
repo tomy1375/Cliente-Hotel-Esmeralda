@@ -4,14 +4,22 @@ import Cookies from "js-cookie";
 import requestCreateProfile from "../../services/users/requestCreateProfile";
 import { useSelector } from "react-redux";
 import { FaCamera } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { fetchUserInfo, setUserInfo } from "../../redux/users/actions/usersActions";
+import Swal from "sweetalert2";
+import { getUserInfo } from "../../services/users/userInfo";
 
 function ProfileModal({ isOpen, onClose }) {
   const { user, isLoaded } = useUser();
   const [countries, setCountries] = useState([]);
   const userInfo = useSelector((state) => state.users.userInfo);
-  const [newImageUrl, setNewImageUrl] = useState("");
-  const [showEditIcon, setShowEditIcon] = useState(false);
+  const [updatedUserInfo, setUpdatedUserInfo] = useState(null);
+
+  const dispatch = useDispatch();
   const [showImageInput, setShowImageInput] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showEditIcon, setShowEditIcon] = useState(false);
+
   const [isEmailVerified, setIsEmailVerified] = useState(
     userInfo?.emailVerified
   );
@@ -29,13 +37,14 @@ function ProfileModal({ isOpen, onClose }) {
       "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
   });
 
-  const handleUpdateImage = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      photo_url: newImageUrl,
-    }));
-    setShowImageInput(false);
-  };
+  useEffect(() => {
+    console.log("Nuevos datos de userInfo:", userInfo);
+  }, [userInfo]);
+
+  useEffect(() => {
+    dispatch(fetchUserInfo()); 
+  }, [dispatch]);
+
 
   useEffect(() => {
     fetch("https://www.universal-tutorial.com/api/getaccesstoken", {
@@ -75,24 +84,49 @@ function ProfileModal({ isOpen, onClose }) {
   const handleSubmit = async () => {
     try {
       const token = Cookies.get("token");
-      if (token) {
-        const response = await requestCreateProfile(token, {
-          userId: userInfo.id,
-          full_name: formData.full_name,
-          email: formData.email,
-          phone_number: formData.phone_number,
-          gender: formData.gender,
-          document: formData.document,
-          country: formData.country,
-          birth: formData.birth,
-          address: formData.address,
-          photo_url: formData.photo_url,
-        });
-        console.log(response);
-        onClose();
-      } else {
+      if (!token) {
         console.error("No se encontró el token en las cookies");
+        return;
       }
+
+      if (!userInfo || !userInfo.id) {
+        console.error("El usuario o el ID del usuario no está definido.");
+        return;
+      }
+
+      const requestData = {
+        userId: userInfo.id,
+        full_name: formData.full_name,
+        email: formData.email,
+        phone_number: formData.phone_number,
+        gender: formData.gender,
+        document: formData.document,
+        country: formData.country,
+        birth: formData.birth,
+        address: formData.address,
+      };
+
+      if (selectedFile) {
+        requestData.photo = selectedFile;
+      }
+
+      const response = await requestCreateProfile(
+        token,
+        userInfo.id,
+        requestData
+      );
+      console.log("Perfil creado:", response);
+      dispatch(setUserInfo(userInfo));
+      dispatch(fetchUserInfo());
+
+      Swal.fire({
+        icon: "success",
+        title: "Profile updated",
+        text: "Profile updated successfully.",
+      });
+      setUpdatedUserInfo(response);
+
+      onClose();
     } catch (error) {
       console.error("Error al crear perfil:", error);
     }
@@ -103,6 +137,19 @@ function ProfileModal({ isOpen, onClose }) {
       ...prevData,
       [field]: event.target.value,
     }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prevData) => ({
+        ...prevData,
+        photo_url: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
   };
 
   if (!isOpen) {
@@ -149,39 +196,22 @@ function ProfileModal({ isOpen, onClose }) {
             onMouseLeave={() => setShowEditIcon(false)}
             onClick={() => setShowImageInput(true)}
           />
-          {showEditIcon && (
-            <div className="absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 cursor-pointer">
-              <FaCamera
-                size={40}
-                color="#333"
-                onClick={() => setShowImageInput(true)}
-              />
-            </div>
-          )}
+
+          <div className="absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 cursor-pointer opacity-50">
+            <FaCamera
+              size={30}
+              color="#333"
+              onClick={() => setShowImageInput(true)}
+            />
+          </div>
+
           {showImageInput && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-              <div className="bg-white rounded-lg p-4">
-                <input
-                  type="text"
-                  placeholder="Enter image URL"
-                  className="w-full mb-2"
-                  value={formData.photo_url}
-                  onChange={(e) => setNewImageUrl(e.target.value)}
-                />
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded"
-                  onClick={handleUpdateImage}
-                >
-                  Save
-                </button>
-                <button
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded ml-2"
-                  onClick={() => setShowImageInput(false)}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
+            <input
+              type="file"
+              accept="image/*"
+              className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+              onChange={handleFileChange}
+            />
           )}
         </div>
         <div className="flex flex-col">

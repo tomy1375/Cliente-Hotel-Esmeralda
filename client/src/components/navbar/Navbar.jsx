@@ -9,30 +9,60 @@ import Gallery from "../../assets/gallery.svg";
 import dise from "../../assets/dise.png";
 import Cookies from "js-cookie";
 import "./Navbar.scss";
-import {jwtDecode} from "jwt-decode"; 
+import { jwtDecode } from "jwt-decode";
+import { fetchUserInfo, logout } from "../../redux/users/actions/usersActions";
+import { useDispatch } from "react-redux";
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const { signOut, user } = useClerk();
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
   const [isOpenSeeMoreMenu, setIsOpenSeeMoreMenu] = useState(false);
-  const { signOut, user } = useClerk();
   const [isLoading, setIsLoading] = useState(false);
   const [isCustomAuthenticated, setIsCustomAuthenticated] = useState(false);
   const [showGalleryDescription, setShowGalleryDescription] = useState(false);
   const location = useLocation();
-  const [userInfo, setUserInfo] = useState(null);
+  const userInfo = useSelector((state) => state.users.userInfo);
+  const [token, setToken] = useState(null);
+  
+  
+
   const [showOffersDescription, setShowOffersDescription] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchUserInfo());
+  }, [dispatch]);
 
   useEffect(() => {
     const token = Cookies.get("token");
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        setUserInfo(decodedToken);
+        setToken(decodedToken);
+        fetchUserInfo(); 
+
+        const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+
+        if (decodedToken.exp && currentTimeInSeconds > decodedToken.exp) {
+          Cookies.remove("token");
+          console.log("El token ha expirado. Token eliminado de las cookies.");
+          dispatch(logout());
+        }
       } catch (error) {
         console.error("Error al decodificar el token:", error);
       }
     }
-  }, []);
+  }, [dispatch]);
+
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      dispatch(fetchUserInfo());
+    }
+  }, [dispatch]);
+
+  
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -54,7 +84,7 @@ function Navbar() {
 
   const toggleProfileMenu = () => {
     setIsOpenProfileMenu(!isOpenProfileMenu);
-    setIsOpenSeeMoreMenu(false);      
+    setIsOpenSeeMoreMenu(false);
   };
 
   const toggleSeeMoreMenu = () => {
@@ -86,17 +116,17 @@ function Navbar() {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-       await signOut();
-       Cookies.remove("token");
-       setIsCustomAuthenticated(false);
-       dispatch(logout());
-       navigate("/");
+      await signOut();
+      Cookies.remove("token");
+      setIsCustomAuthenticated(false);
+      dispatch(logout());
+      navigate("/");
     } catch (error) {
-       console.error("Error al cerrar sesión:", error);
+      console.error("Error al cerrar sesión:", error);
     } finally {
-       setIsLoading(false);
+      setIsLoading(false);
     }
-   };
+  };
 
   const navigate = useNavigate();
 
@@ -192,6 +222,7 @@ function Navbar() {
               </div>
             )}
           </div>
+
           <div className="flex space-x-16 ">
             {isLoading ? (
               <div className="custom-loader"></div>
@@ -213,7 +244,7 @@ function Navbar() {
                         <img
                           alt="Profile"
                           className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1564078516393-cf04bd966897?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Cambia esto por la URL de la imagen por defecto
+                          src={userInfo?.photo_url}
                         />
                       )}
 
@@ -293,7 +324,7 @@ function Navbar() {
       <header className="flex justify-center items-center">
         <img src={getLobbyImage()} className="w-full" />
       </header>
-  {/* DESCRIPCIONES HEADER */}
+      {/* DESCRIPCIONES HEADER */}
       {showGalleryDescription && (
         <div
           className="header-description absolute mt-6 left-20 text-white text-left z-10"
@@ -304,8 +335,8 @@ function Navbar() {
           </h1>
           <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-normal md:leading-relaxed lg:leading-normal xl:leading-relaxed text-justify w-2/6">
             See the image gallery of the Hotel Esmeralda Resort & Spa and
-            discover why we are one of the  best hotels in Buenos
-            Aires for  business and leisure stays
+            discover why we are one of the best hotels in Buenos Aires for
+            business and leisure stays
           </p>
         </div>
       )}

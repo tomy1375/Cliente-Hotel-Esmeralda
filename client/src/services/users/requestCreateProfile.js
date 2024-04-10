@@ -1,13 +1,19 @@
 import axios from "axios";
 
-const requestCreateProfile = async (token, profileData) => {
+const requestCreateProfile = async (token, userId, profileData,) => {
+  const formData = new FormData();
+  for (const key in profileData) {
+    formData.append(key, profileData[key]);
+  }
+
   try {
-    const response = await axios.post(
-      `http://localhost:4000/auth/profile/${profileData.userId}`,
-      profileData,
+    const response = await axios.put(
+      `http://localhost:4000/auth/profile/${userId}`,
+      formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
         },
       }
     );
