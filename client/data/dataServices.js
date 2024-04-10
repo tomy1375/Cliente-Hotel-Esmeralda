@@ -10,20 +10,15 @@ const dataServices = [
     price: 'Since USD 200'
   },
   {
-      "id": 2,
-      "name": "Luxury In-Room Services",
-      "description": "Indulge in ultimate relaxation and pampering with our exclusive in-room services",
-      "services": [
-        "24/7 personalized concierge assistance",
-        "Turndown service with gourmet treats",
-        "Luxury bath amenities",
-        "Complimentary breakfast served in-room"
-      ],
-      "rating": 4.9,
-      "Url": "https://media.istockphoto.com/id/1332743059/es/v%C3%ADdeo/vista-trasera-del-carro-de-equipaje-de-transporte-de-portero-en-el-hotel.jpg?s=640x640&k=20&c=G9NDCH7x39MkFvBKJTyP4WR6LYNFyyBg1SJlCEGqOIM=",
-      "location": "Various",
-      "price": "Since USD 150"
-    },
+    id: 2,
+    name: "Luxury In-Room Services",
+    description: "Indulge in ultimate relaxation and pampering with our exclusive in-room services",
+    services: ["24/7 personalized concierge assistance", "Turndown service with gourmet treats", "Luxury bath amenities", "Complimentary breakfast served in-room"],
+    rating: 4.9,
+    Url: "https://media.istockphoto.com/id/1332743059/es/v%C3%ADdeo/vista-trasera-del-carro-de-equipaje-de-transporte-de-portero-en-el-hotel.jpg?s=640x640&k=20&c=G9NDCH7x39MkFvBKJTyP4WR6LYNFyyBg1SJlCEGqOIM=",
+    location: "Various",
+    price: "Since USD 150"
+  },
   {
     id: 3,
     name: "Restaurant",
@@ -35,31 +30,27 @@ const dataServices = [
     price: 'Since USD 50'
   },
   {
-      "id": 4,
-      "name": "Rental Cars",
-      "description": "Uncover hidden landscapes and destinations with freedom by renting a car",
-      "services": [
-        "State-of-the-art vehicles",
-        "Hotel delivery and pickup",
-        "Family-friendly and sports car rentals"
-      ],
-      "rating": 4.5,
-      "Url": "https://akluxurycabs.com/wp-content/uploads/2023/12/akluxurycabs.jpg",
-      "location": "Reception",
-      "capacity": 10,
-      "price": "Since USD 70"
-    },
-    {
-      "id": 5,
-      "name": "Special Offers",
-      "description": "Celebrate special occasions such as Christmas, Easter, New Year, and more with our exclusive deals.",
-      "services": ["Complimentary upgrades", "Discounted rates", "Flexible cancellation policies"],
-      "rating": 4.9,
-      "Url": "https://alsoldelacosta.com/wp-content/uploads/2022/12/Foto-anantara-2.jpg",
-      "location": "Online",
-      "capacity": "N/A",
-      "price": "Since USD 250"
-    }
+    id: 4,
+    name: "Rental Cars",
+    description: "Uncover hidden landscapes and destinations with freedom by renting a car",
+    services: ["State-of-the-art vehicles", "Hotel delivery and pickup", "Family-friendly and sports car rentals"],
+    rating: 4.5,
+    Url: "https://www.enterprise.com/es/exotic-car-rental/_jcr_content/root/container/container/container_1060086341/teaser.coreimg.jpeg/1667858318518/explore-our-vehicles-1920x1080-vehicles.jpeg",
+    location: "Reception",
+    capacity: 10,
+    price: "Since USD 70"
+  },
+  {
+    id: 5,
+    name: "Special Offers",
+    description: "Celebrate special occasions such as Christmas, Easter, New Year, and more with our exclusive deals.",
+    services: ["Complimentary upgrades", "Discounted rates", "Flexible cancellation policies"],
+    rating: 4.9,
+    Url: "https://alsoldelacosta.com/wp-content/uploads/2022/12/Foto-anantara-2.jpg",
+    location: "Online",
+    capacity: "N/A",
+    price: "Since USD 250"
+  }
 ];
 
 export default dataServices;

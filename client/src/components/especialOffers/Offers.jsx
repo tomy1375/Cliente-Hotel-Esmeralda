@@ -1,5 +1,6 @@
 import React from "react";
 import dataOffers from "../../../data/dataOffers";
+import { Link } from 'react-router-dom'
 
 const Offers = () => {
   const maxHeight = 540;
@@ -33,10 +34,15 @@ const Offers = () => {
                 </li>
               ))}
             </ul>
-            <div className="flex justify-center w-30">
-              <button className="justify-center text-xl items-center px-16 py-4 mt-3 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full">
+            <div className="flex justify-center">
+              <button className="w-1/4 mx-4 text-xl py-4 font-bold text-white bg-amber-300 rounded-2xl shadow-lg">
                 {offer.price}
               </button>
+              <Link to={`/reservas/${offer.id}`} className="w-1/4 mx-4">
+                <button className="text-xl py-4 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full">
+                  BOOK
+                </button>
+              </Link>
             </div>
           </div>
         </div>
