@@ -5,6 +5,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../home/SearchBar.scss";
 import { TbCalendar } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+
 
 const SearchBar = () => {
   const [checkInDate, setCheckInDate] = useState(null);
@@ -25,37 +27,63 @@ const SearchBar = () => {
 
   const handleSearch = async () => {
     try {
-      const capacity = numberOfAdults + numberOfChildren;
-      const formattedCheckInDate = checkInDate ? formatDate(checkInDate) : null;
-      const formattedCheckOutDate = checkOutDate
-        ? formatDate(checkOutDate)
-        : null;
-
-      const searchData = {
-        from: formattedCheckInDate,
-        to: formattedCheckOutDate,
-        capacity,
-      };
-
-      console.log("searchData:", searchData);
-
-      const response = await axios.post(
-        "https://backend-hotelesmeralda.onrender.com/api/rooms/available",
-        searchData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setAvailableRooms(response.data.rooms);
-      console.log("availableRooms after API call:", response.data.rooms);
-
-      navigate("/results", { state: { availableRooms: response.data.rooms } });
+       const capacity = numberOfAdults + numberOfChildren;
+       const formattedCheckInDate = checkInDate ? formatDate(checkInDate) : null;
+       const formattedCheckOutDate = checkOutDate ? formatDate(checkOutDate) : null;
+   
+       const searchData = {
+         from: formattedCheckInDate,
+         to: formattedCheckOutDate,
+         capacity,
+       };
+   
+       console.log("searchData:", searchData);
+   
+       const response = await axios.post(
+         "https://backend-hotelesmeralda.onrender.com/api/rooms/available",
+         searchData,
+         {
+           headers: {
+             "Content-Type": "application/json",
+           },
+         }
+       );
+       setAvailableRooms(response.data.rooms);
+       console.log("availableRooms after API call:", response.data.rooms);
+   
+       // Verifica si hay habitaciones disponibles
+       if (response.data.rooms.length === 0) {
+         // Muestra un alerta de SweetAlert2 si no hay habitaciones disponibles
+         Swal.fire({
+           icon: 'error',
+           title: 'Oops...',
+           text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
+         });
+       } else {
+        navigate("/bookingTwo", { state: { 
+          checkInDate: formattedCheckInDate, 
+          checkOutDate: formattedCheckOutDate, 
+          selectedGuests: numberOfAdults, 
+          selectedChildren: numberOfChildren, 
+          availableRooms: response.data.rooms 
+         }});
+         
+       }
     } catch (error) {
-      console.error("Error al enviar la solicitud de disponibilidad:", error);
+       console.error("Error al enviar la solicitud de disponibilidad:", error);
+       // Opcionalmente, puedes mostrar un alerta de error aquí también
+       Swal.fire({
+         icon: 'error',
+         title: 'Error',
+         text: 'No rooms are available for the selected check-in and check-out dates and number of guests. Please try different dates or adjust the number of guests.',
+         confirmButtonColor: '#fcd34d', 
+         customClass: {
+            confirmButton: 'custom-confirm-button' 
+         }
+       });
     }
-  };
+   };
+   
 
   const handleReservation = async (room_id) => {
     try {

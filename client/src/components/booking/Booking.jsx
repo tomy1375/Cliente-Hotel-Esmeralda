@@ -210,12 +210,12 @@ const Booking = () => {
     };
     const navigate = useNavigate()
     const handleClick = () => {
-      console.log({
-        checkInDate: checkInDate.text,
-        checkOutDate: checkOutDate.text,
-        selectedGuests: selectedGuests,
-        selectedChildren: selectedChildren,
-     });
+    //   console.log({
+    //     checkInDate: checkInDate.text,
+    //     checkOutDate: checkOutDate.text,
+    //     selectedGuests: selectedGuests,
+    //     selectedChildren: selectedChildren,
+    //  });
       navigate('/bookingTwo', {
          state: {
            checkInDate: checkInDate.text,

@@ -25,6 +25,31 @@ const ServicesBooking = () => {
           return null;
         }
 
+
+        const handleRoomClick = () => {
+          const isCardSelected = service.find(service => service.id === service.id);
+          if (isCardSelected) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Oops...',
+              text: 'You have already selected this room!',
+              confirmButtonColor: '#fcd34d', 
+              customClass: {
+                 confirmButton: 'custom-confirm-button' 
+              }
+            });
+          } else {
+            onRoomSelect(room);
+            Swal.fire({
+              icon: 'success',
+              title: `${room.room_type.name} booked successfully! `,
+              confirmButtonColor: '#fcd34d', 
+              customClass: {
+                 confirmButton: 'custom-confirm-button' 
+              }
+            });
+          }
+        };
         return (
           <div className={`flex flex-wrap justify-center items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`} key={index}>
             <div className="w-full lg:w-1/2 p-4">
@@ -56,7 +81,7 @@ const ServicesBooking = () => {
                     </div>
                       <button
               className="flex justify-center items-center px-16 py-4 mt-3 text-base font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full"
-              
+              onClick={handleRoomClick}
             >
               ADD CARD
             </button>

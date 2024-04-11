@@ -29,7 +29,7 @@ function Pay() {
   };
 
   return (
-    <div className="flex flex-col justify-center p-10 text-2xl leading-8 bg-white shadow-2xl rounded-[39.969px] max-md:px-5 w-full md:w-3/4 lg:w-1/2 ml-72">
+    <div className="flex flex-col justify-center p-10 text-2xl leading-8 bg-white shadow-2xl rounded-[39.969px] max-md:px-5 w-full md:w-3/4 lg:w-1/2 ml-96">
       <img
         loading="lazy"
         src="https://cdn.builder.io/api/v1/image/assets/TEMP/8e3728f6d703a1c24b9f2b34bc4c67159236d2740277f84f27711e488db70fb8?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"

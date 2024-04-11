@@ -215,8 +215,8 @@ function BookingPartFour() {
           {/* <ServicesBooking/> */}
           <Pay/>
           <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
-            <YourStay />
-            
+            {/* <YourStay />
+             */}
           </div>
         </div>
       </div>

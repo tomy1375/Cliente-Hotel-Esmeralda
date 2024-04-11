@@ -1,7 +1,72 @@
 import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Services from "../roomServices/Services";
-import ServicesBooking from "./ServicesBooking";
+import dataServices from '../../../data/dataServices';
+import { Link } from 'react-router-dom';
+
+const ServicesBooking = () => {
+  return (
+     <div className="container mx-auto mt-4 mb-4 space-y-8">
+       {dataServices.map((service, index) => {
+
+         if (service.id === 3) {
+
+           return null;
+         }
+         if (service.name === "Special Offers") {
+           return null;
+         }
+         if (service.name === "Luxury In-Room Services") {
+           return null;
+         }
+         if (service.name === "Rental Cars") {  
+           return null;
+         }
+ 
+         return (
+           <div className={`flex flex-wrap justify-center items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`} key={index}>
+             <div className="w-full lg:w-1/2 p-4">
+               <div className="h-96 overflow-hidden">
+                 <img src={service.Url} alt={service.name} className="w-full h-full object-cover" />
+               </div>
+             </div>
+             <div className="w-full lg:w-1/2 p-4 flex flex-col justify-center gap-4">
+               <div>
+                 <h1 className='text-3xl lg:text-6xl text-center font-bold mt-0 mb-6'>{service.name}</h1>
+                 <p className="text-lg lg:text-3xl leading-relaxed mb-4">{service.description}</p>
+                 <ul className="list-disc pl-6 mb-6">
+                  {service.services.map((serviceItem, index) => (
+                     <li key={index} className="text-base lg:text-3xl">{serviceItem}</li>
+                   ))}
+                 </ul>
+                 {index === 2 ? (
+                  <div className="flex justify-center">
+                     <Link to='/restaurant' className='w-1/4 mx-4'>
+                       <button className="text-xl py-4 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full">
+                         BOOK
+                       </button>
+                     </Link>
+                  </div>
+                 ) : (
+                  <div className="flex justify-center gap-2">
+                     <div className="flex justify-center items-center px-16 py-4 mt-3 text-base font-bold text-white bg-v hover:bg-green-950 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full">
+                      USD {service.price}
+                     </div>
+                       <button
+               className="flex justify-center items-center px-16 py-4 mt-3 text-base font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full"
+               
+             >
+               BOOK NOW
+             </button>
+                  </div>
+                 )}
+               </div>
+             </div>
+           </div>
+         );
+       })}
+     </div>
+  );
+ };
 
 function DateOfStay() {
   return (
@@ -17,7 +82,7 @@ function DateOfStay() {
 function Accommodations() {
     const navigate = useNavigate()
     const location = useLocation();
-    const { checkInDate, checkOutDate, selectedGuests, selectedChildren } = location.state || {};
+    const { checkInDate, checkOutDate, selectedGuests, selectedChildren ,total, selectedRoomsDetails} = location.state || {};
   
     const handleClickTwo = () => {
       navigate('/bookingTwo', {
@@ -26,6 +91,9 @@ function Accommodations() {
               checkOutDate: checkOutDate,
               selectedGuests: selectedGuests,
               selectedChildren: selectedChildren,
+              total: total, // Agrega el total como parte del estado
+              selectedRoomsDetails: selectedRoomsDetails 
+              
           },
       });
   };
@@ -103,7 +171,7 @@ function SpaAndBeautyDetails() {
 
 function YourStay() {
   const location = useLocation();
-  const { checkInDate, checkOutDate, selectedGuests, selectedChildren } = location.state || {};
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total, selectedRoomsDetails } = location.state || {};
   return (
     <div className="flex overflow-hidden relative flex-col grow px-6 py-5 border border-solid aspect-[0.58]  bg-zinc-200 border-neutral-800 fill-zinc-100 rounded-md 00 stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-7">
       {/* <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/bd201d65503d2f3715d5936dcb646eb90c12e6ca29e28ca97d15109ab3b4f5c5?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="object-cover absolute inset-0 size-full" /> */}
@@ -142,24 +210,26 @@ function YourStay() {
                   {selectedChildren}
                   </div>
                 </div>
-            <div className="mt-6 text-2xl tracking-tight text-black">Superior King</div>
-          </div>
-          <div className="mt-2">5 night</div>
-          <div className="flex gap-3.5 mt-3 text-black whitespace-nowrap">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="shrink-0 self-start aspect-[0.89] w-[25px]" />
-            <div>Remove</div>
-          </div>
-        </div>
-        <div className="flex flex-col flex-1 my-auto font-extrabold">
-          <div>
+                {selectedRoomsDetails.map((room, index) => (
+                    <div key={index} className="flex gap-2.5 mt-10 text-black whitespace-nowrap">
+                      <div className="font-extrabold">{room.name}</div>
+                      <div className="flex flex-col">
+                        <div className="font-medium">${room.price_per_night } x {room.numberOfNights } nights</div>
+                        <div className="flex">
+                          {/* <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Remove icon" className="shrink-0 self-start aspect-[0.89] w-[25px]" />
+                          <button onClick={() => handleRemoveRoom(index)} className="flex">Remove</button> */}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
 
          
           </div>
          
-          <div className="self-end mt-52 text-2xl tracking-tight max-md:mt-16 ">$ 200.00</div>
+          {/* <div className="self-end mt-52 text-2xl tracking-tight max-md:mt-16 ">$ 200.00</div> */}
         </div>
       </div>
-      <EnhanceStayDetails />
+      {/* <EnhanceStayDetails /> */}
             <TotalPrice />
     </div>
   );
@@ -189,10 +259,12 @@ function EnhanceStayDetails() {
 }
 
 function TotalPrice() {
+  const location = useLocation();
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total, selectedRoomsDetails } = location.state || {};
   return (
     <div className="flex relative gap-5 justify-between mt-20 font-extrabold leading-[140%] max-md:mt-10 max-md:mr-2 max-md:ml-2">
       <div className="justify-center px-10 py-0.5 text-xl tracking-normal text-center whitespace-nowrap bg-amber-300 rounded-md text-zinc-100 max-md:px-5">TOTAL</div>
-      <div className="my-auto text-2xl tracking-tight text-neutral-800">$ 1300.00</div>
+      <div className="my-auto text-2xl tracking-tight text-neutral-800">$ {total}</div>
     </div>
   );
 }
@@ -210,6 +282,8 @@ function BookingPartThree() {
             checkOutDate: checkOutDate,
             selectedGuests: selectedGuests,
             selectedChildren: selectedChildren,
+            total: total, // Agrega el total como parte del estado
+            selectedRoomsDetails: selectedRoomsDetails 
         },
     });
 };

@@ -11,7 +11,7 @@ function CardRoom({ room }) {
    const [isModalOpen, setIsModalOpen] = useState(false); 
 
    const handleClick = () => {
-    navigate('/formulario');
+    navigate('/booking');
   };
 
   return (
