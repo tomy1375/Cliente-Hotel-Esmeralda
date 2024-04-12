@@ -171,6 +171,8 @@ function BookingPartTwo() {
       selectedRoomsDetails: selectedRoomsDetails 
       },
     });
+
+    
   };
 
   const handleClick = () => {
@@ -178,7 +180,7 @@ function BookingPartTwo() {
   };
 
   const location = useLocation();
-  const { checkInDate = 'defaultCheckInDate', checkOutDate = 'defaultCheckOutDate', selectedGuests = 1, selectedChildren = 0 } = location.state || {};
+  const { checkInDate = 'defaultCheckInDate', checkOutDate = 'defaultCheckOutDate', selectedGuests = 1, selectedChildren = 0  } = location.state || {};
 
   const [selectedRooms, setSelectedRooms] = React.useState([]);
   const [total, setTotal] = React.useState(0);

@@ -1,72 +1,8 @@
 import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import dataServices from '../../../data/dataServices';
-import { Link } from 'react-router-dom';
+import ServicesBooking from "./ServicesBooking";
 
-const ServicesBooking = () => {
-  return (
-     <div className="container mx-auto mt-4 mb-4 space-y-8">
-       {dataServices.map((service, index) => {
 
-         if (service.id === 3) {
-
-           return null;
-         }
-         if (service.name === "Special Offers") {
-           return null;
-         }
-         if (service.name === "Luxury In-Room Services") {
-           return null;
-         }
-         if (service.name === "Rental Cars") {  
-           return null;
-         }
- 
-         return (
-           <div className={`flex flex-wrap justify-center items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`} key={index}>
-             <div className="w-full lg:w-1/2 p-4">
-               <div className="h-96 overflow-hidden">
-                 <img src={service.Url} alt={service.name} className="w-full h-full object-cover" />
-               </div>
-             </div>
-             <div className="w-full lg:w-1/2 p-4 flex flex-col justify-center gap-4">
-               <div>
-                 <h1 className='text-3xl lg:text-6xl text-center font-bold mt-0 mb-6'>{service.name}</h1>
-                 <p className="text-lg lg:text-3xl leading-relaxed mb-4">{service.description}</p>
-                 <ul className="list-disc pl-6 mb-6">
-                  {service.services.map((serviceItem, index) => (
-                     <li key={index} className="text-base lg:text-3xl">{serviceItem}</li>
-                   ))}
-                 </ul>
-                 {index === 2 ? (
-                  <div className="flex justify-center">
-                     <Link to='/restaurant' className='w-1/4 mx-4'>
-                       <button className="text-xl py-4 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full">
-                         BOOK
-                       </button>
-                     </Link>
-                  </div>
-                 ) : (
-                  <div className="flex justify-center gap-2">
-                     <div className="flex justify-center items-center px-16 py-4 mt-3 text-base font-bold text-white bg-v hover:bg-green-950 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full">
-                      USD {service.price}
-                     </div>
-                       <button
-               className="flex justify-center items-center px-16 py-4 mt-3 text-base font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full"
-               
-             >
-               BOOK NOW
-             </button>
-                  </div>
-                 )}
-               </div>
-             </div>
-           </div>
-         );
-       })}
-     </div>
-  );
- };
 
 function DateOfStay() {
   return (
@@ -140,34 +76,8 @@ function Total() {
   );
 }
 
-function SpaAndBeauty() {
-  return (
-    <div className="flex flex-col w-[39%] max-md:ml-0 max-md:w-full">
-      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/1a6cb475de5c585675a9c47295fb6b162aa71a88acbd9321e0f87c37f9b8ec6d?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="Spa and beauty" className="mt-14 w-full shadow-sm aspect-[1.25] max-md:mt-10 max-md:max-w-full" />
-    </div>
-  );
-}
 
-function SpaAndBeautyDetails() {
-  return (
-    <div className="flex flex-col ml-5 w-[30%] max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col mt-16 font-medium max-md:mt-10">
-        <h2 className="self-center text-3xl text-neutral-800">Spa and Beauty</h2>
-        <p className="mt-5 text-xl text-black">
-          Celebrate a birthday, anniversary or absolutely nothing at all. This package includes:
-          <br />
-          Focused massages
-          Facial spa (cleansing, exfoliation, mask and hydration)
-          <br />
-          Massages for 2 people
-          <br />
-          Scottish shower
-        </p>
-        <div className="shrink-0 mt-9 ml-5 rounded-2xl border border-black border-solid h-[42px] w-[146px] max-md:ml-2.5" />
-      </div>
-    </div>
-  );
-}
+
 
 function YourStay() {
   const location = useLocation();
@@ -229,7 +139,7 @@ function YourStay() {
           {/* <div className="self-end mt-52 text-2xl tracking-tight max-md:mt-16 ">$ 200.00</div> */}
         </div>
       </div>
-      {/* <EnhanceStayDetails /> */}
+      <EnhanceStayDetails />
             <TotalPrice />
     </div>
   );
@@ -273,7 +183,7 @@ function BookingPartThree() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { checkInDate, checkOutDate, selectedGuests, selectedChildren } = location.state || {};
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total, selectedRoomsDetails  } = location.state || {};
 
   const handleClickTwo = () => {
     navigate('/bookingTwo', {
@@ -306,7 +216,7 @@ function BookingPartThree() {
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           {/* <SpaAndBeauty />
           <SpaAndBeautyDetails /> */}
-          <ServicesBooking/>
+         <ServicesBooking/>
           <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
             <YourStay />
             
