@@ -1,105 +1,127 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../home/SearchBar.scss";
 import { TbCalendar } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2';
 
-
 const SearchBar = () => {
-  const [checkInDate, setCheckInDate] = useState(null);
-  const [checkOutDate, setCheckOutDate] = useState(null);
-  const [numberOfAdults, setNumberOfAdults] = useState(1);
-  const [numberOfChildren, setNumberOfChildren] = useState(0);
-  const [availableRooms, setAvailableRooms] = useState([]);
-  const [reservationStatus, setReservationStatus] = useState("");
+ const [checkInDate, setCheckInDate] = useState(null);
+ const [checkOutDate, setCheckOutDate] = useState(null);
+ const [numberOfAdults, setNumberOfAdults] = useState(1);
+ const [numberOfChildren, setNumberOfChildren] = useState(0);
+ const [availableRooms, setAvailableRooms] = useState([]);
+ const [reservationStatus, setReservationStatus] = useState("");
 
-  const navigate = useNavigate();
+ const navigate = useNavigate();
+ const location = useLocation();
 
-  const formatDate = (date) => {
+ useEffect(() => {
+    // Parsea los parámetros de la URL
+    const params = new URLSearchParams(location.search);
+    const checkin = params.get('checkin');
+    const checkout = params.get('checkout');
+    const group_adults = params.get('group_adults');
+    const group_children = params.get('group_children');
+
+    // Si los parámetros existen, actualiza el estado inicial
+    if (checkin && checkout) {
+      setCheckInDate(new Date(checkin));
+      setCheckOutDate(new Date(checkout));
+    }
+    if (group_adults) {
+      setNumberOfAdults(Number(group_adults));
+    }
+    if (group_children) {
+      setNumberOfChildren(Number(group_children));
+    }
+ }, [location.search]);
+
+ const formatDate = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
-  };
+ };
 
-  const handleSearch = async () => {
-    try {
-      // Verifica si tanto checkInDate como checkOutDate están establecidos
-      if (!checkInDate || !checkOutDate) {
-        // Muestra una alerta de SweetAlert2 de tipo "warning"
-        Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'You must select both the check-in and check-out dates.',
-          confirmButtonColor: '#fcd34d', 
-        customClass: {
-          confirmButton: 'custom-confirm-button' 
-        }
-        });
-        return; // Detén la ejecución de la función
-      }
-  
-      const capacity = numberOfAdults + numberOfChildren;
-      const formattedCheckInDate = formatDate(checkInDate);
-      const formattedCheckOutDate = formatDate(checkOutDate);
-  
-      const searchData = {
-        from: formattedCheckInDate,
-        to: formattedCheckOutDate,
-        capacity,
-      };
-  
-      console.log("searchData:", searchData);
-  
-      const response = await axios.post(
-        "https://backend-hotelesmeralda.onrender.com/api/rooms/available",
-        searchData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setAvailableRooms(response.data.rooms);
-      console.log("availableRooms after API call:", response.data.rooms);
-  
-      // Verifica si hay habitaciones disponibles
-      if (response.data.rooms.length === 0) {
-        // Muestra un alerta de SweetAlert2 si no hay habitaciones disponibles
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
-        });
-      } else {
-        navigate("/bookingTwo", { state: { 
-          checkInDate: formattedCheckInDate, 
-          checkOutDate: formattedCheckOutDate, 
-          selectedGuests: numberOfAdults, 
-          selectedChildren: numberOfChildren, 
-          availableRooms: response.data.rooms 
-        }});
-      }
-    } catch (error) {
-      console.error("Error al enviar la solicitud de disponibilidad:", error);
-      // Opcionalmente, puedes mostrar un alerta de error aquí también
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Sorry, there are no rooms available for the selected dates and number of guests.',
-        confirmButtonColor: '#fcd34d', 
-        customClass: {
-          confirmButton: 'custom-confirm-button' 
-        }
-      });
-    }
-  };
-  
+ const handleSearch = async () => {
+  try {
+     if (!checkInDate || !checkOutDate) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must select both the check-in and check-out dates.',
+         confirmButtonColor: '#fcd34d', 
+         customClass: {
+           confirmButton: 'custom-confirm-button' 
+         }
+       });
+       return;
+     }
+ 
+     const capacity = numberOfAdults + numberOfChildren;
+     const formattedCheckInDate = formatDate(checkInDate);
+     const formattedCheckOutDate = formatDate(checkOutDate);
+ 
+     const searchData = {
+       from: formattedCheckInDate,
+       to: formattedCheckOutDate,
+       capacity,
+     };
+ 
+     const response = await axios.post(
+       "https://backend-hotelesmeralda.onrender.com/api/rooms/available",
+       searchData,
+       {
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
+     setAvailableRooms(response.data.rooms);
+ 
+     if (response.data.rooms.length === 0) {
+       Swal.fire({
+         icon: 'error',
+         title: 'Oops...',
+         text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
+       });
+     } else {
+       // Construye la cadena de consulta de la URL
+       const queryParams = new URLSearchParams({
+         checkin: formattedCheckInDate,
+         checkout: formattedCheckOutDate,
+         group_adults: numberOfAdults,
+         group_children: numberOfChildren,
+       }).toString();
+ 
+       // Navega a la nueva URL con los parámetros de búsqueda
+       navigate(`/bookingTwo?${queryParams}`, { state: { 
+         checkInDate: formattedCheckInDate, 
+         checkOutDate: formattedCheckOutDate, 
+         selectedGuests: numberOfAdults, 
+         selectedChildren: numberOfChildren, 
+         availableRooms: response.data.rooms 
+       }});
+     }
+  } catch (error) {
+     console.error("Error al enviar la solicitud de disponibilidad:", error);
+     Swal.fire({
+       icon: 'error',
+       title: 'Error',
+       text: 'Sorry, there are no rooms available for the selected dates and number of guests.',
+       confirmButtonColor: '#fcd34d', 
+       customClass: {
+         confirmButton: 'custom-confirm-button' 
+       }
+     });
+  }
+ };
+ 
 
-  const handleReservation = async (room_id) => {
+ const handleReservation = async (room_id) => {
     try {
       const reservationData = {
         user_id,
@@ -118,9 +140,9 @@ const SearchBar = () => {
     } catch (error) {
       console.error("Error al enviar la solicitud de reserva:", error);
     }
-  };
+ };
 
-  const handleAdultsChange = (value) => {
+ const handleAdultsChange = (value) => {
     const adults = Number(value);
     const maxAdults = 4;
     const maxChildren = 4 - adults;
@@ -134,9 +156,9 @@ const SearchBar = () => {
     if (numberOfChildren > maxChildren) {
       setNumberOfChildren(maxChildren);
     }
-  };
+ };
 
-  const handleChildrenChange = (value) => {
+ const handleChildrenChange = (value) => {
     const children = Number(value);
     const maxChildren = 4 - numberOfAdults;
 
@@ -145,9 +167,9 @@ const SearchBar = () => {
     } else {
       setNumberOfChildren(maxChildren);
     }
-  };
+ };
 
-  const CustomDatePickerInput = forwardRef(({ value, onClick }, ref) => (
+ const CustomDatePickerInput = forwardRef(({ value, onClick }, ref) => (
     <div className="custom-datepicker-input" ref={ref}>
       <input
         type="text"
@@ -161,11 +183,11 @@ const SearchBar = () => {
         <TbCalendar />
       </div>
     </div>
-  ));
+ ));
 
-  return (
+ return (
     <div>
-      <div className="m-8  w-3/6 md:w-7/8 lg:w-1/2 mx-auto p-4 bg-v rounded-lg shadow-md flex flex-wrap">
+      <div className="m-8 w-3/6 md:w-7/8 lg:w-1/2 mx-auto p-4 bg-v rounded-lg shadow-md flex flex-wrap">
         <div className="w-full md:w-auto md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
           <label className="block mb-1 text-white text-center">CHECK-IN</label>
           <DatePicker

@@ -14,7 +14,9 @@ function Pay() {
     const navigate = useNavigate()
 
   const paymentDetails = [
-    { label: "Ref Number", value: "000085752257" },
+    { label: "Location Number", value: "000085752257" },
+    { label: "Description",},
+    { label: "TypeRoom", value: "Standard Room" },
     { label: "Payment Time", value: "25-02-2023, 13:22:16" },
     { label: "Payment Method", value: "Bank Transfer" },
     { label: "Sender Name", value: "Tomas Ramos" },
@@ -22,7 +24,9 @@ function Pay() {
 
   const amountDetails = [
     { label: "Amount", value: "IDR 1,000,000" },
+   
     { label: "Admin Fee", value: "IDR 193.00" },
+   
   ];
   const handleClick = () => {
     navigate('/');

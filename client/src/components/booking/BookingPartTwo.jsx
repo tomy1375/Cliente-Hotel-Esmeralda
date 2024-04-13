@@ -161,7 +161,53 @@ function BookingPartTwo() {
   const navigate = useNavigate();
 
   const handleClickThree = () => {
-    navigate('/bookingThree', {
+    if (selectedRooms.length === 0) {
+      // Si no se ha seleccionado ninguna habitación, muestra el SweetAlert de advertencia
+      Swal.fire({
+        icon: 'warning',
+        title: 'Warning',
+        text: 'Please select at least one room to proceed with your reservation. Thank you for your cooperation.',
+        confirmButtonColor: '#fcd34d',
+        customClass: {
+          confirmButton: 'custom-confirm-button'
+        }
+      });
+    } else {
+      // Si se ha seleccionado al menos una habitación, procede con la navegación o el proceso de reserva
+      const queryParams = new URLSearchParams({
+        checkInDate: checkInDate,
+        checkOutDate: checkOutDate,
+        selectedGuests: selectedGuests,
+        selectedChildren: selectedChildren,
+        total: total,
+        selectedRoomsDetails: selectedRoomsDetails
+      }).toString();
+
+      navigate(`/bookingThree?${queryParams}`, {
+        state: {
+          checkInDate: checkInDate,
+          checkOutDate: checkOutDate,
+          selectedGuests: selectedGuests,
+          selectedChildren: selectedChildren,
+          total: total,
+          selectedRoomsDetails: selectedRoomsDetails
+        },
+      });
+    }
+ };
+
+  const handleClick = () => {
+
+    const queryParams = new URLSearchParams({
+      checkInDate: checkInDate,
+      checkOutDate: checkOutDate,
+      selectedGuests: selectedGuests,
+      selectedChildren: selectedChildren,
+      total: total, // Agrega el total como parte del estado
+    selectedRoomsDetails: selectedRoomsDetails 
+    }).toString();
+
+     navigate(`/booking?${queryParams}`, {
       state: {
         checkInDate: checkInDate,
         checkOutDate: checkOutDate,
@@ -171,12 +217,6 @@ function BookingPartTwo() {
       selectedRoomsDetails: selectedRoomsDetails 
       },
     });
-
-    
-  };
-
-  const handleClick = () => {
-    navigate('/booking');
   };
 
   const location = useLocation();
@@ -203,6 +243,8 @@ function BookingPartTwo() {
     setTotal(total + totalPriceForRoom );
     setSelectedRoomName(room.room_type.name);
   };
+
+  
   
   const handleRemoveRoom = (index) => {
     const updatedRooms = [...selectedRooms];
