@@ -26,7 +26,6 @@ function DateOfStay() {
 const Results = ({ onRoomSelect, selectedRooms }) => {
   const location = useLocation();
   const availableRooms = location.state?.availableRooms || [];
-  const navigate = useNavigate();
 
   const handleRoomClick = (room) => {
     const isRoomSelected = selectedRooms.find(selectedRoom => selectedRoom.id === room.id);
@@ -193,7 +192,9 @@ function BookingPartTwo() {
           selectedRoomsDetails: selectedRoomsDetails
         },
       });
+     
     }
+
  };
 
   const handleClick = () => {

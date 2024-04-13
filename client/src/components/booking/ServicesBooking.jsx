@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import dataServices from '../../../data/dataServices';
 
 const ServicesBooking = () => {
  const navigate = useNavigate();
+ const [total, setTotal] = useState(0);
+
 
  const handleBookNow = (service) => {
-    navigate('/bookingThree', {
-      state: {
-        serviceName: service.name,
-        servicePrice: service.price,
-      },
-    });
- };
+  console.log("Service name:", service.name); // Agregar este console.log para ver el nombre del servicio
+  console.log("Service price:", service.price); // Agregar este console.log para ver el precio del servicio
+  navigate('/bookingThree', {
+    state: {
+      serviceName: service.name,
+      servicePrice: service.price,
+    
+    },
+  });
+};
+
 
  return (
     <div className="container mx-auto mt-4 mb-4 space-y-8">
@@ -43,7 +49,7 @@ const ServicesBooking = () => {
                  </div>
                  <button
                     className="flex justify-center items-center px-16 py-4 mt-3 text-base font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full"
-                 
+                    onClick={() => handleBookNow(service)}
                  >
                     ADD BOOK
                  </button>

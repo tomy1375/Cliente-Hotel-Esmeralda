@@ -81,7 +81,8 @@ function Total() {
 
 function YourStay() {
   const location = useLocation();
-  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total, selectedRoomsDetails } = location.state || {};
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total: initialTotal, selectedRoomsDetails  } = location.state || {};
+  console.log("Location state:", location.state); 
   return (
     <div className="flex overflow-hidden relative flex-col grow px-6 py-5 border border-solid aspect-[0.58]  bg-zinc-200 border-neutral-800 fill-zinc-100 rounded-md 00 stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-7">
       {/* <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/bd201d65503d2f3715d5936dcb646eb90c12e6ca29e28ca97d15109ab3b4f5c5?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&" alt="" className="object-cover absolute inset-0 size-full" /> */}
@@ -183,7 +184,8 @@ function BookingPartThree() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total, selectedRoomsDetails  } = location.state || {};
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total: initialTotal, selectedRoomsDetails   } = location.state || {};
+  const [total, setTotal] = React.useState(initialTotal || 0);
 
   const handleClickTwo = () => {
     navigate('/bookingTwo', {
