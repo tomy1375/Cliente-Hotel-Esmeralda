@@ -19,14 +19,12 @@ const SearchBar = () => {
  const location = useLocation();
 
  useEffect(() => {
-    // Parsea los parámetros de la URL
     const params = new URLSearchParams(location.search);
-    const checkin = params.get('checkin');
-    const checkout = params.get('checkout');
+    const checkin = params.get('from');
+    const checkout = params.get('to');
     const group_adults = params.get('group_adults');
     const group_children = params.get('group_children');
 
-    // Si los parámetros existen, actualiza el estado inicial
     if (checkin && checkout) {
       setCheckInDate(new Date(checkin));
       setCheckOutDate(new Date(checkout));
@@ -48,77 +46,79 @@ const SearchBar = () => {
 
  const handleSearch = async () => {
   try {
-     if (!checkInDate || !checkOutDate) {
-       Swal.fire({
-         icon: 'warning',
-         title: 'Oops...',
-         text: 'You must select both the check-in and check-out dates.',
-         confirmButtonColor: '#fcd34d', 
-         customClass: {
-           confirmButton: 'custom-confirm-button' 
-         }
-       });
-       return;
-     }
- 
-     const capacity = numberOfAdults + numberOfChildren;
-     const formattedCheckInDate = formatDate(checkInDate);
-     const formattedCheckOutDate = formatDate(checkOutDate);
- 
-     const searchData = {
-       from: formattedCheckInDate,
-       to: formattedCheckOutDate,
-       capacity,
-     };
- 
-     const response = await axios.post(
-       "https://backend-hotelesmeralda.onrender.com/api/rooms/available",
-       searchData,
-       {
-         headers: {
-           "Content-Type": "application/json",
-         },
-       }
-     );
-     setAvailableRooms(response.data.rooms);
- 
-     if (response.data.rooms.length === 0) {
-       Swal.fire({
-         icon: 'error',
-         title: 'Oops...',
-         text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
-       });
-     } else {
-       // Construye la cadena de consulta de la URL
-       const queryParams = new URLSearchParams({
-         checkin: formattedCheckInDate,
-         checkout: formattedCheckOutDate,
-         group_adults: numberOfAdults,
-         group_children: numberOfChildren,
-       }).toString();
- 
-       // Navega a la nueva URL con los parámetros de búsqueda
-       navigate(`/bookingTwo?${queryParams}`, { state: { 
-         checkInDate: formattedCheckInDate, 
-         checkOutDate: formattedCheckOutDate, 
-         selectedGuests: numberOfAdults, 
-         selectedChildren: numberOfChildren, 
-         availableRooms: response.data.rooms 
-       }});
-     }
+    if (!checkInDate || !checkOutDate) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Oops...',
+        text: 'You must select both the check-in and check-out dates.',
+        confirmButtonColor: '#fcd34d', 
+        customClass: {
+          confirmButton: 'custom-confirm-button' 
+        }
+      });
+      return;
+    }
+
+    const capacity = numberOfAdults + numberOfChildren;
+    const formattedCheckInDate = formatDate(checkInDate);
+    const formattedCheckOutDate = formatDate(checkOutDate);
+
+    const searchData = {
+      from: formattedCheckInDate,
+      to: formattedCheckOutDate,
+      capacity,
+    };
+
+    const response = await axios.get(
+      "http://localhost:4000/api/rooms/available",
+      {
+        params: searchData, 
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    setAvailableRooms(response.data.rooms);
+
+    if (response.data.rooms.length === 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
+      });
+    } else {
+      const queryParams = new URLSearchParams({
+        from: formattedCheckInDate,
+        to: formattedCheckOutDate,
+        adults: numberOfAdults,
+        children: numberOfChildren,
+      }).toString();
+
+      // Navega a la nueva URL con los parámetros de búsqueda
+      navigate(`/bookingTwo?${queryParams}`, { state: { 
+        checkInDate: formattedCheckInDate, 
+        checkOutDate: formattedCheckOutDate, 
+        selectedGuests: numberOfAdults, 
+        selectedChildren: numberOfChildren, 
+        availableRooms: response.data.rooms 
+      }});
+    }
   } catch (error) {
-     console.error("Error al enviar la solicitud de disponibilidad:", error);
-     Swal.fire({
-       icon: 'error',
-       title: 'Error',
-       text: 'Sorry, there are no rooms available for the selected dates and number of guests.',
-       confirmButtonColor: '#fcd34d', 
-       customClass: {
-         confirmButton: 'custom-confirm-button' 
-       }
-     });
+    console.error("Error al enviar la solicitud de disponibilidad:", error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Sorry, there are no rooms available for the selected dates and number of guests.',
+      confirmButtonColor: '#fcd34d', 
+      customClass: {
+        confirmButton: 'custom-confirm-button' 
+      }
+    });
   }
- };
+};
+
+
  
 
  const handleReservation = async (room_id) => {

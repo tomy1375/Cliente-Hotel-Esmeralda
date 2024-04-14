@@ -1,44 +1,32 @@
-/* DateRangePickerCustomStyles.css */
-
-/* Cambia el color de fondo del calendario */
 .rdrCalendarWrapper {
-    background-color: #f0f0f0; /* Cambia este color según tus necesidades */
+    background-color: #f0f0f0;
    }
    
-   /* Cambia el color de los días seleccionados */
-   .rdrDayNumberSelected {
-    background-color: #00e969; /* Cambia este color según tus necesidades */
-    color: rgb(133, 26, 26); /* Cambia el color del texto según tus necesidades */
+.rdrDayNumberSelected {
+    background-color: #00e969;
+    color: rgb(133, 26, 26);
    }
    
-   /* Cambia el color de los días en el rango seleccionado */
-   .rdrDayNumberInRange {
-    background-color: #641818; /* Cambia este color según tus necesidades */
+.rdrDayNumberInRange {
+    background-color: #641818;
    }
    
-   /* Puedes agregar más estilos personalizados según tus necesidades */
-   .rdrDefinedRangesWrapper {
+.rdrDefinedRangesWrapper {
     display: none;
 }
 
-
-/* Cambia el color de la rayita del día actual */
-
-/* Estilo para el botón de confirmación */
 .custom-confirm-button {
-    background-color: #fcd34d; /* Color de fondo */
-    border-color: #fcd34d; /* Color del borde */
+    background-color: #fcd34d;
+    border-color: #fcd34d;
     transition: background-color 0.5s ease, border-color 0.5s ease;
    }
    
-   /* Estilo para el hover del botón de confirmación */
-   .custom-confirm-button:hover {
-    background-color: #fcd34d; /* Color de fondo al pasar el mouse */
-    border-color: #fcd34d; /* Color del borde al pasar el mouse */
+.custom-confirm-button:hover {
+    background-color: #fcd34d;
+    border-color: #fcd34d;
    }
-   
 
-   .custom-confirm-button:focus {
-    outline: none; /* Elimina el foco predeterminado */
-    box-shadow: 0 0 0 2px #030303; /* Color de la línea alrededor del botón */
+.custom-confirm-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #030303;
 }

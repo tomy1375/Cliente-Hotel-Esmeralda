@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DateRange from "./Calendar";
-import { useNavigate } from "react-router-dom";
-import { faChild } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate, useLocation } from "react-router-dom";
+import { faChild } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const GuestSelector = ({ onGuestsChange, onChildrenChange }) => {
   const [selectedGuests, setSelectedGuests] = React.useState(1);
@@ -30,11 +30,13 @@ const GuestSelector = ({ onGuestsChange, onChildrenChange }) => {
           />
           <select
             value={selectedGuests}
-            onChange={e => setSelectedGuests(Number(e.target.value))}
+            onChange={(e) => setSelectedGuests(Number(e.target.value))}
             className="text-2xl tracking-tight bg-white rounded-md border border-white border-solid text-neutral-500 cursor-pointer"
           >
-            {[1, 2, 3, 4, 5, 6].map(number => (
-              <option key={number} value={number}>{number}</option>
+            {[1, 2, 3, 4, 5, 6].map((number) => (
+              <option key={number} value={number}>
+                {number}
+              </option>
             ))}
           </select>
         </div>
@@ -42,14 +44,19 @@ const GuestSelector = ({ onGuestsChange, onChildrenChange }) => {
           Adult
         </div>
         <div className="flex gap-2.5 justify-center px-2.5 py-px text-2xl tracking-tight bg-white rounded-md border border-white border-solid text-neutral-500">
-          <FontAwesomeIcon icon={faChild} className="shrink-0 my-auto aspect-[0.9] w-[18px]" />
+          <FontAwesomeIcon
+            icon={faChild}
+            className="shrink-0 my-auto aspect-[0.9] w-[18px]"
+          />
           <select
             value={selectedChildren}
-            onChange={e => setSelectedChildren(Number(e.target.value))}
+            onChange={(e) => setSelectedChildren(Number(e.target.value))}
             className="text-2xl tracking-tight bg-white rounded-md border border-white border-solid text-neutral-500 cursor-pointer"
           >
-            {[0,1, 2, 3, 4, 5, 6].map(number => (
-              <option key={number} value={number}>{number}</option>
+            {[0, 1, 2, 3, 4, 5, 6].map((number) => (
+              <option key={number} value={number}>
+                {number}
+              </option>
             ))}
           </select>
         </div>
@@ -95,7 +102,12 @@ const Booking = () => {
   const [selectedGuests, setSelectedGuests] = useState(1);
   const [selectedChildren, setSelectedChildren] = useState(0);
   const [availableRooms, setAvailableRooms] = useState([]);
-  const [reservationStatus, setReservationStatus] = useState("");
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const from = queryParams.get("from");
+  const to = queryParams.get("to");
+  const capacity = queryParams.get("capacity");
+ 
   const [checkInDate, setCheckInDate] = useState({
     icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/e723daaa5705c3c60192811b2d4c4d34ea0086691260ccd5f565983c96238170?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&",
     text: "-",
@@ -114,58 +126,44 @@ const Booking = () => {
   };
   const navigate = useNavigate();
 
+
   const handleCheckInChange = (startDate) => {
     setCheckInDate((prevCheckInDate) => ({
-       ...prevCheckInDate,
-       text: startDate.toLocaleDateString("en-GB", {
-         day: "2-digit",
-         month: "2-digit",
-         year: "numeric",
-       }),
+      ...prevCheckInDate,
+      text: startDate.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
     }));
   };
 
   const handleCheckOutChange = (endDate) => {
     setCheckOutDate((prevCheckOutDate) => ({
-       ...prevCheckOutDate,
-       text: endDate.toLocaleDateString("en-GB", {
-         day: "2-digit",
-         month: "2-digit",
-         year: "numeric",
-       }),
+      ...prevCheckOutDate,
+      text: endDate.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
     }));
   };
 
   const handleSearch = async () => {
     try {
-      if (!checkInDate || !checkOutDate) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'You must select both the check-in and check-out dates.',
-          confirmButtonColor: '#fcd34d', 
-          customClass: {
-            confirmButton: 'custom-confirm-button' 
-          }
-        });
-        return;
-      }
-
-      const capacity = selectedGuests + selectedChildren;
-      const formattedCheckInDate = checkInDate.text;
-      const formattedCheckOutDate = checkOutDate.text;
+      const formattedCheckInDate = from;
+      const formattedCheckOutDate = to;
 
       const searchData = {
         from: formattedCheckInDate,
         to: formattedCheckOutDate,
         capacity,
-    
       };
 
-      const response = await axios.post(
-        "https://backend-hotelesmeralda.onrender.com/api/rooms/available",
-        searchData,
+      const response = await axios.get(
+        "http://localhost:4000/api/rooms/available",
         {
+          params: searchData,
           headers: {
             "Content-Type": "application/json",
           },
@@ -176,32 +174,42 @@ const Booking = () => {
 
       if (response.data.rooms.length === 0) {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
+          icon: "error",
+          title: "Oops...",
+          text: "No hay habitaciones disponibles con esta cantidad o fecha que busca",
         });
       } else {
-        navigate("/bookingTwo", { state: { 
-          checkInDate: checkInDate.text,
-          checkOutDate: checkOutDate.text,
-          selectedGuests: selectedGuests, 
-          selectedChildren: selectedChildren,
-          availableRooms: response.data.rooms 
-        }});
+        navigate("/bookingTwo", {
+          state: {
+            checkInDate: formattedCheckInDate,
+            checkOutDate: formattedCheckOutDate,
+            selectedGuests,
+            selectedChildren,
+            availableRooms: response.data.rooms,
+          },
+        });
       }
     } catch (error) {
       console.error("Error al enviar la solicitud de disponibilidad:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Sorry, there are no rooms available for the selected dates and number of guests.',
-        confirmButtonColor: '#fcd34d', 
+        icon: "error",
+        title: "Error",
+        text: "Sorry, there are no rooms available for the selected dates and number of guests.",
+        confirmButtonColor: "#fcd34d",
         customClass: {
-          confirmButton: 'custom-confirm-button' 
-        }
+          confirmButton: "custom-confirm-button",
+        },
       });
     }
   };
+
+  React.useEffect(() => {
+    
+    if (from && to && capacity) {
+      handleSearch();
+    }
+  }
+  , [from, to, capacity]);
 
   return (
     <div className="flex flex-col px-52 pt-16 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">
@@ -239,7 +247,7 @@ const Booking = () => {
             3
           </div>
           <div className="self-stretch my-auto text-xl font-extrabold tracking-normal leading-7 text-neutral-400">
-            ENHANCE YOUR STAY{" "}
+            ENHANCE YOUR STAY
           </div>
         </div>
         <img
@@ -260,15 +268,11 @@ const Booking = () => {
       <div className="shrink-0 mt-12 max-w-full h-px border border-solid bg-zinc-200 border-zinc-200 justify-center flex items-center max-md:mr-2.5" />
       <div className="px-9 pt-7 pb-10 mt-16 max-w-full w-[802px] max-md:px-5 max-md:mt-10">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-          <GuestSelector 
-            onGuestsChange={setSelectedGuests} 
-            onChildrenChange={setSelectedChildren} 
+          <GuestSelector
+            onGuestsChange={setSelectedGuests}
+            onChildrenChange={setSelectedChildren}
           />
-          <CheckInOut
-            title="Check-in"
-            date={checkInDate}
-            time={checkInTime}
-          />
+          <CheckInOut title="Check-in" date={checkInDate} time={checkInTime} />
           <CheckInOut
             title="Check-out"
             date={checkOutDate}
@@ -301,12 +305,15 @@ const Booking = () => {
         </div>
       </div>
       <div className="flex flex-col justify-end items-end px-16 pb-3.5=== mt-3 text-2xl font-extrabold tracking-tight leading-8 text-white uppercase whitespace-nowrap max-md:pl-5 max-md:max-w-full">
-        <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mr-56 mt-5  hover:bg-amber-400 transition-colors" onClick={handleSearch}>
+        <button
+          className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mr-56 mt-5  hover:bg-amber-400 transition-colors"
+          onClick={handleSearch}
+        >
           Continue
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default Booking;

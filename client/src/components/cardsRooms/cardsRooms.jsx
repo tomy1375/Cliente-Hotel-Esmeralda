@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import CardRoom from '../cardRooms/cardRoom';
+import { API_URL } from '../../utils/global';
+
+const baseURL = API_URL;
+
 
 const CardsRooms = () => {
   const [rooms, setRooms] = useState([]);
@@ -7,7 +11,7 @@ const CardsRooms = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://backend-hotelesmeralda.onrender.com/api/rooms')
+    fetch(`${baseURL}api/rooms`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

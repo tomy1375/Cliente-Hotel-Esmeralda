@@ -14,7 +14,7 @@ const MenuPage = ({ setCurrentPage }) => {
  const handleCategoryClick = (category) => {
   dispatch(filterFoods({ category }));
   setActiveItem(category);
-  setCurrentPage(1); // Reinicia la página a 1
+  setCurrentPage(1); 
 };
 
  const handlePriceOrder = (orderType) => {

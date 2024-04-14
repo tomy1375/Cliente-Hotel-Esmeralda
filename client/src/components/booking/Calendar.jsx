@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { addDays, isBefore } from "date-fns";
-import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/styles.css'; 
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import './DateRangePickerCustomStyles.css'; 
 import { DateRangePicker } from 'react-date-range';
@@ -10,7 +10,7 @@ const DateRange = ({ onChangeCheckIn, onChangeCheckOut }) => {
  const [state, setState] = useState([
     {
       startDate: new Date(),
-      endDate: addDays(new Date(), 7),
+      endDate: addDays(new Date(), 0),
       key: "selection",
     },
  ]);
@@ -50,10 +50,11 @@ const DateRange = ({ onChangeCheckIn, onChangeCheckOut }) => {
           months={2}
           ranges={state}
           direction="horizontal"
-          localeText={{ start: 'Check-in', end: 'Check-out' }} // Personaliza las etiquetas aquí
+          localeText={{ start: 'Check-in', end: 'Check-out' }} 
           staticRanges={[]} 
-          inputRanges={[]} // Oculta los rangos de entrada
+          inputRanges={[]} 
           rangeColors={['#1F2F1A']}
+          minDate={new Date()}
         />
       </div>
     </div>

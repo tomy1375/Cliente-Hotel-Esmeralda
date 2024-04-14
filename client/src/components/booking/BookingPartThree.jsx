@@ -17,21 +17,8 @@ function DateOfStay() {
 
 function Accommodations() {
     const navigate = useNavigate()
-    const location = useLocation();
-    const { checkInDate, checkOutDate, selectedGuests, selectedChildren ,total, selectedRoomsDetails} = location.state || {};
-  
     const handleClickTwo = () => {
-      navigate('/bookingTwo', {
-          state: {
-              checkInDate: checkInDate,
-              checkOutDate: checkOutDate,
-              selectedGuests: selectedGuests,
-              selectedChildren: selectedChildren,
-              total: total, // Agrega el total como parte del estado
-              selectedRoomsDetails: selectedRoomsDetails 
-              
-          },
-      });
+      navigate(-1)
   };
   return (
     <>
@@ -188,19 +175,9 @@ function BookingPartThree() {
   const [total, setTotal] = React.useState(initialTotal || 0);
 
   const handleClickTwo = () => {
-    navigate('/bookingTwo', {
-        state: {
-            checkInDate: checkInDate,
-            checkOutDate: checkOutDate,
-            selectedGuests: selectedGuests,
-            selectedChildren: selectedChildren,
-            total: total, // Agrega el total como parte del estado
-            selectedRoomsDetails: selectedRoomsDetails 
-        },
-    });
+    navigate(-1)
 };
 
-    
   return (
     <div className="flex flex-col px-44 pt-14 pb-12 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">
       <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:mr-2.5 max-md:max-w-full">
