@@ -25,6 +25,11 @@ import { setUserInfo } from "./redux/users/actions/usersActions";
 import Cookies from "js-cookie";
 import EmailConfirmation from "./views/ConfirmationEmail";
 import ServicesView from "./views/ServicesView";
+import BookingView from "./views/BookingView";
+import BookingPartTwoView from "./views/BookingPartTwoView";
+import BookingPartThreeView from "./views/BookingPartThreeView";
+import BookingPartFourView from "./views/BookingPartFourView";
+
 
 function MainLayout() {
   const location = useLocation();
@@ -70,10 +75,20 @@ function MainLayout() {
         <Route path="/" element={<HomeView />} />
         <Route path="/landing" element={<LandingView />} />
         <Route path="/detail/:id" element={<DetailView />} />
-        <Route path="/rooms" element={<Rooms />} />
-        <Route path="/restaurant" element={<Restaurant />} />
-        <Route path="/login" element={<LoginView />} />
-        <Route path="/results" element={<ResultsView />} />
+        <Route path="/rooms" element={<Rooms/>}/>
+        <Route path="/restaurant" element={<Restaurant/>}/>
+        <Route path="/login" element={<LoginView/>}/>
+        <Route path="/results" element={<ResultsView/>}/>
+        <Route path="/termsAndConditions" element={<TermsAndConditionsView/>}/>
+        <Route path="/register" element={<RegisterView/>}/>
+        <Route path="/gallery" element={<GalleryView/>}/>
+        <Route path="/offers" element={<OffersView/>}/>
+        <Route path="/services" element={<ServicesView/>}/>
+        <Route path="/profile" element={<ProfileView/>}/>
+        <Route path="/booking" element={<BookingView/>}/>
+        <Route path="/bookingTwo" element={<BookingPartTwoView/>}/>
+        <Route path="/bookingThree" element={<BookingPartThreeView/>}/>
+        <Route path="/bookingFour" element={<BookingPartFourView/>}/>
         <Route
           path="/termsAndConditions"
           element={<TermsAndConditionsView />}

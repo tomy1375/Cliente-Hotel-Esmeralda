@@ -14,7 +14,7 @@ const MenuPage = ({ setCurrentPage }) => {
  const handleCategoryClick = (category) => {
   dispatch(filterFoods({ category }));
   setActiveItem(category);
-  setCurrentPage(1); // Reinicia la página a 1
+  setCurrentPage(1); 
 };
 
  const handlePriceOrder = (orderType) => {
@@ -54,13 +54,13 @@ const MenuPage = ({ setCurrentPage }) => {
           <label className="text-left text-6xl text-black font-extrabold tracking-tighter leading-[70.4px] m-1 mt-10">Order by</label>
           <div className="flex mt-4">
             <button
-              className="border rounded-md px-3 py-2 mr-2 bg-blue-950 text-white hover:bg-black"
+              className="border rounded-md px-3 py-2 mr-2 bg-v text-white hover:bg-green-900"
               onClick={() => handlePriceOrder("A")}
             >
               Lowest Price
             </button>
             <button
-              className="border rounded-md px-3 py-2 mr-2 bg-blue-950 text-white hover:bg-black"
+              className="border rounded-md px-3 py-2 mr-2 bg-v text-white hover:bg-green-900"
               onClick={() => handlePriceOrder("D")}
             >
               Highest Price
