@@ -1,98 +1,215 @@
-import React, { useState } from 'react';
-import axios from 'axios'; 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import Select from 'react-select';
+import React, { forwardRef, useState } from "react";
+import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../home/SearchBar.scss";
+import { TbCalendar } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const [checkInDate, setCheckInDate] = useState(null);
   const [checkOutDate, setCheckOutDate] = useState(null);
-  const [numberOfPeople, setNumberOfPeople] = useState('1'); 
+  const [numberOfAdults, setNumberOfAdults] = useState(1);
+  const [numberOfChildren, setNumberOfChildren] = useState(0);
   const [availableRooms, setAvailableRooms] = useState([]);
-  const [reservationStatus, setReservationStatus] = useState('');
+  const [reservationStatus, setReservationStatus] = useState("");
+
+  const navigate = useNavigate();
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
   const handleSearch = async () => {
     try {
+      const capacity = numberOfAdults + numberOfChildren;
+      const formattedCheckInDate = checkInDate ? formatDate(checkInDate) : null;
+      const formattedCheckOutDate = checkOutDate
+        ? formatDate(checkOutDate)
+        : null;
+
       const searchData = {
-        checkInDate,
-        checkOutDate,
-        numberOfPeople
+        from: formattedCheckInDate,
+        to: formattedCheckOutDate,
+        capacity,
       };
-      const response = await axios.get('/ruta-disponibilidad', {
-        params: searchData
-      });
+
+      console.log("searchData:", searchData);
+
+      const response = await axios.post(
+        "https://backend-hotelesmeralda.onrender.com/api/rooms/available",
+        searchData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       setAvailableRooms(response.data.rooms);
+      console.log("availableRooms after API call:", response.data.rooms);
+
+      navigate("/results", { state: { availableRooms: response.data.rooms } });
     } catch (error) {
-      console.error('Error al enviar la solicitud de disponibilidad:', error);
+      console.error("Error al enviar la solicitud de disponibilidad:", error);
     }
   };
-  const handleReservation = async (roomId) => {
+
+  const handleReservation = async (room_id) => {
     try {
       const reservationData = {
-        roomId,
-        checkInDate,
-        checkOutDate,
-        numberOfPeople
+        user_id,
+        formattedCheckInDate,
+        formattedCheckOutDate,
+        room_id,
       };
-      const response = await axios.post('/ruta-reserva', reservationData);
+      const response = await axios.post(
+        "http://localhost:4000/api/reservations",
+        reservationData
+      );
       setReservationStatus(response.data.message);
-      // Actualización de la lista de habitaciones disponibles después de la reserva exitosa
-      setAvailableRooms(prevRooms => prevRooms.filter(room => room.id !== roomId));
+      setAvailableRooms((prevRooms) =>
+        prevRooms.filter((room) => room.id !== roomId)
+      );
     } catch (error) {
-      console.error('Error al enviar la solicitud de reserva:', error);
-      // Manejo de errores de red
+      console.error("Error al enviar la solicitud de reserva:", error);
     }
   };
 
+  const handleAdultsChange = (value) => {
+    const adults = Number(value);
+    const maxAdults = 4;
+    const maxChildren = 4 - adults;
+
+    if (adults <= maxAdults) {
+      setNumberOfAdults(adults);
+    } else {
+      setNumberOfAdults(maxAdults);
+    }
+
+    if (numberOfChildren > maxChildren) {
+      setNumberOfChildren(maxChildren);
+    }
+  };
+
+  const handleChildrenChange = (value) => {
+    const children = Number(value);
+    const maxChildren = 4 - numberOfAdults;
+
+    if (children <= maxChildren) {
+      setNumberOfChildren(children);
+    } else {
+      setNumberOfChildren(maxChildren);
+    }
+  };
+
+  const CustomDatePickerInput = forwardRef(({ value, onClick }, ref) => (
+    <div className="custom-datepicker-input" ref={ref}>
+      <input
+        type="text"
+        value={value}
+        onClick={onClick}
+        readOnly
+        className="custom-datepicker-input__input"
+        placeholder="Date"
+      />
+      <div className="custom-datepicker-input__icon" onClick={onClick}>
+        <TbCalendar />
+      </div>
+    </div>
+  ));
+
   return (
-    <div className="max-w-lg mx-auto p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">Search for Rooms</h2>
-      <div className="mb-4">
-        <label className="block mb-1">Check-in Date:</label>
-        <DatePicker
-          className="w-full px-3 py-2 border rounded-lg"
-          selected={checkInDate}
-          onChange={date => setCheckInDate(date)}
-        />
+    <div>
+      <div className="m-8  w-3/6 md:w-7/8 lg:w-1/2 mx-auto p-4 bg-v rounded-lg shadow-md flex flex-wrap">
+        <div className="w-full md:w-auto md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
+          <label className="block mb-1 text-white text-center">CHECK-IN</label>
+          <DatePicker
+            selected={checkInDate}
+            onChange={(date) => setCheckInDate(date)}
+            minDate={new Date()}
+            dateFormat="dd/MM/yyyy"
+            customInput={<CustomDatePickerInput />}
+          />
+        </div>
+        <div className="w-full md:w-auto md:flex-1 md:mr-2 mb-1 md:mb-0 mr-2 ml-2">
+          <label className="block mb-1 text-white text-center">CHECK-OUT</label>
+          <DatePicker
+            selected={checkOutDate}
+            onChange={(date) => setCheckOutDate(date)}
+            minDate={
+              checkInDate
+                ? new Date(checkInDate.getTime() + 86400000)
+                : new Date()
+            }
+            dateFormat="dd/MM/yyyy"
+            customInput={<CustomDatePickerInput />}
+            className="w-full px-3 py-2 border rounded-lg bg-v text-b"
+          />
+        </div>
+
+        <div className="w-full md:w-1/4 md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
+          <label className="block mb-1 text-white text-center">ADULTS</label>
+          <select
+            className="w-full px-3 py-2 border rounded-lg bg-v text-b text-center"
+            value={numberOfAdults.toString()}
+            onChange={(event) => handleAdultsChange(event.target.value)}
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+        </div>
+
+        <div className="w-full md:w-1/4 md:flex-1 md:mr-2 mb-4 md:mb-0 mr-1 ml-1">
+          <label className="block mb-1 text-white text-center">CHILDREN</label>
+          <select
+            className="w-full px-3 py-2 border rounded-lg bg-v text-b text-center"
+            value={numberOfChildren.toString()}
+            onChange={(event) => handleChildrenChange(event.target.value)}
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+        <div className="ml-8 md:mt-7 flex items-center justify-center">
+          <button
+            className="w-full px-8 py-3 text-white bg-d rounded-lg hover:bg-amber-400 color transition-colors"
+            onClick={handleSearch}
+          >
+            SEARCH
+          </button>
+        </div>
       </div>
-      <div className="mb-4">
-        <label className="block mb-1">Check-out Date:</label>
-        <DatePicker
-          className="w-full px-3 py-2 border rounded-lg"
-          selected={checkOutDate}
-          onChange={date => setCheckOutDate(date)}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-1">Number of People:</label>
-        <Select
-          className="w-full px-3 py-2 border rounded-lg"
-          options={[
-            { value: '1', label: '1' },
-            { value: '2', label: '2' },
-            { value: '3', label: '3' },
-            { value: '4', label: '4' },            
-          ]}
-          value={{ value: numberOfPeople, label: numberOfPeople }}
-          onChange={option => setNumberOfPeople(option.value)}
-        />
-      </div>
-      <button
-        className="block w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-        onClick={handleSearch}
-      >
-        Search
-      </button>
 
       {availableRooms.length > 0 && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-2">Available Rooms</h3>
+        <div className="w-full mt-4">
+          <h3 className="text-lg font-semibold mb-2 text-white">
+            AVAILABLE ROOMS
+          </h3>
           <ul>
-            {availableRooms.map(room => (
-              <li key={room.id} className="mb-2">
-                <span className="mr-2">{room.name} - Price: {room.price}</span>
+            {availableRooms.map((room) => (
+              <li key={room.id} className="mb-4">
+                <div className="flex items-center">
+                  <img
+                    src={room.photo_url}
+                    alt={room.photo}
+                    className="mr-4 w-24 h-auto"
+                  />
+                  <div>
+                    <p className="text-white font-semibold mb-1">
+                      max: {room.max_capacity} p
+                    </p>
+                    <p className="text-white">U$ {room.price_per_night}</p>
+                  </div>
+                </div>
                 <button
-                  className="px-3 py-1 text-sm text-white bg-green-500 rounded-lg hover:bg-green-600"
+                  className="px-3 py-1 mt-2 text-sm text-white bg-yellow- 500 rounded-lg hover:bg-yellow-600"
                   onClick={() => handleReservation(room.id)}
                 >
                   BOOK
@@ -102,8 +219,9 @@ const SearchBar = () => {
           </ul>
         </div>
       )}
-
-      {reservationStatus && <p className="mt-4 text-green-600">{reservationStatus}</p>}
+      {reservationStatus && (
+        <p className="mt-4 text-black">{reservationStatus}</p>
+      )}
     </div>
   );
 };

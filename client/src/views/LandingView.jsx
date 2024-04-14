@@ -3,7 +3,7 @@ import LandingPages from '../components/landing/LandingPage'
 
 const LandingView = () => {
   return (
-    <div>
+    <div >
       <LandingPages/>
     </div>
   )

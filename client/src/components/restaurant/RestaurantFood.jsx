@@ -91,7 +91,7 @@ function Food({ currentPage, setCurrentPage }) {
                <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
                  <img
                    loading="lazy"
-                   src={food.image}
+                   src={food.imageUrl}
                    alt={food.name}
                    className="grow w-full aspect-[0.89] max-md:mt-10 max-md:max-w-full shadow-lg"
                  />
@@ -118,7 +118,10 @@ function Food({ currentPage, setCurrentPage }) {
            
           ))
         ) : (
-          <p>Loading dishes...</p>
+          <div className="flex justify-center items-center max-md:pr-5 mb-4 shadow-lg">
+
+            <p className="flex justify-center items-center max-md:pr-5 mb-4 shadow-lg">Loading dishes...</p>
+          </div>
         )}
         <div className="flex justify-between mt-4">
           <button

@@ -8,7 +8,7 @@ const MenuPage = ({ setCurrentPage }) => {
  const allFoodsData = useSelector((state) => state.foods.foodsAll);
  const filteredFoods = useSelector((state) => state.foods.filteredFoods);
 
- const [activeItem, setActiveItem] = useState("Italian");
+ const [activeItem, setActiveItem] = useState("All Dishes");
 
 
  const handleCategoryClick = (category) => {
@@ -28,7 +28,7 @@ const MenuPage = ({ setCurrentPage }) => {
 };
 
  return (
-    <main className="flex  flex-col px-5 text-3xl text-black max-w-[299px] justify-start">
+    <main className="isolate md:isolation-auto  flex  flex-col px-5 text-3xl text-black max-w-[299px] justify-start">
       <div className="flex text-left flex-col self-start mt-8 text-stone-700">
       <h1 className="w-full text-left text-6xl text-black font-extrabold tracking-tighter leading-[70.4px]">
         Menu
@@ -68,7 +68,6 @@ const MenuPage = ({ setCurrentPage }) => {
           </div>
         </div>
       </div>
-      {/* <Food currentPage={currentPage}/> */}
     </main>
  );
 };

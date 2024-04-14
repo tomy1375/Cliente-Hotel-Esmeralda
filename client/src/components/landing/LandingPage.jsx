@@ -1,31 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function LandingPages({ showModal, setShowModal }) {
-  const navigate = useNavigate();
-  
+function LandingPages() {
+ const navigate = useNavigate();
+ const [showModal, setShowModal] = useState(false);
 
-  const handleClick = () => {
+ const handleClick = () => {
     navigate("/formulario");
     console.log("yendo a formulario");
-  };
+ };
 
-  const handleClickDetails = () => {
-    navigate("/termsAndCondicitions");
-  };
-  const handleClose = () => {
+ const handleClickDetails = () => {
+    navigate("/termsAndConditions");
+    handleClose();
+ };
+
+ const handleClose = () => {
     setShowModal(false);
     document.body.style.overflow = "auto";
-  };
+    localStorage.setItem('modalShown', 'true'); // Indica que el modal ya ha sido mostrado
+ };
 
-  useEffect(() => {
-    setShowModal(true);
-    document.body.style.overflow = "hidden";
-  }, []);
+ useEffect(() => {
+    const modalShown = localStorage.getItem('modalShown');
+    if (!modalShown) {
+      setShowModal(true);
+      document.body.style.overflow = "hidden";
+    }
+ }, []);
 
-  if (!showModal) {
+ if (!showModal) {
     return null;
-  }
+ }
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-70 flex items-center justify-center">
@@ -46,7 +52,7 @@ function LandingPages({ showModal, setShowModal }) {
               <div className="shrink-0 mt-3.5 h-px bg-white border border-white border-solid max-md:max-w-full" />
             </div>
             <button
-              className="shrink-0 self-start mt-2 aspect-[0.83] fill-white w-[15px] "
+              className="bg-transparent hover:bg-transparent hover:backdrop-blur-md  hover:text-gray-900 transition-colors rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-transparent dark:hover:backdrop-blur-md dark:hover:text-white"
               onClick={handleClose}
             >
               <img

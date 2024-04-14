@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  allFoods,
-  filterFoods,
-  orderFoods,
-} from "../../redux/foods/actions/foodActions";
+import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 import LandingPages from "../landing/LandingPage";
+import IconRow from "./Icons.jsx";
+import About from "./About.jsx";
 
 function Home() {
-  const dispatch = useDispatch();
-  const allFoodsData = useSelector((state) => state.foods.foodsAll);
-  const filteredFoods = useSelector((state) => state.foods.filteredFoods);
 
-  const PageSize = 3;
-  const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(true);
 
 
@@ -22,13 +13,11 @@ function Home() {
   return (
     <>
       <LandingPages showModal={showModal} setShowModal={setShowModal} />
-
         <SearchBar />
-
-
-
-
-      
+        <IconRow />
+        <About />
+        
+        
     </>
   );
 }
