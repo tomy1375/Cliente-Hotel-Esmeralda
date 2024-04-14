@@ -46,6 +46,7 @@ function LandingPages() {
           src="https://d1csarkz8obe9u.cloudfront.net/index.php/posterbuilder/view/361a4970a60f6035f9faf484a5525ed0/1"
           className="w-full h-full border-none"
           style={{ minHeight: "640px" }}
+          
         ></iframe>
       </div>
     </div>
