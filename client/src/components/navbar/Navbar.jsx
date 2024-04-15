@@ -239,19 +239,27 @@ function Navbar() {
                       className="flex items-center space-x-2"
                       onClick={toggleProfileMenu}
                     >
-                      {user?.imageUrl ? (
-                        <img
-                          alt="Profile"
-                          className="h-8 w-8 rounded-full"
-                          src={user.imageUrl}
-                        />
-                      ) : (
-                        <img
-                          alt="Profile"
-                          className="h-8 w-8 rounded-full"
-                          src={userInfo?.photo_url}
-                        />
-                      )}
+                    {user?.imageUrl ? (
+                          <img
+                              alt="Profile"
+                              className="h-8 w-8 rounded-full"
+                              src={user.imageUrl}
+                          />
+                          ) : (
+                          userInfo?.photo_url ? (
+                              <img
+                                alt="Profile"
+                                className="h-8 w-8 rounded-full"
+                                src={userInfo.photo_url}
+                              />
+                          ) : (
+                              <img
+                                alt="Default Profile"
+                                className="h-8 w-8 rounded-full"
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                              />
+                          )
+                          )}
 
                       {user?.firstName ? (
                         <h1 className="ml-2 text-lg">Hi,{user.firstName}</h1>

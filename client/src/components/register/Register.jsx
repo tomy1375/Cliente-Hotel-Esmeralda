@@ -11,6 +11,7 @@ import registerUser from "../../services/users/requestRegister";
 import Cookies from "js-cookie";
 import loginUser from "../../services/users/requestLogin";
 import { getUserInfo } from "../../services/users/userInfo";
+import Swal from 'sweetalert2';
 
 function SignUpForm({ onSubmit }) {
   const [email, setEmail] = useState("");
@@ -20,23 +21,100 @@ function SignUpForm({ onSubmit }) {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (password !== confirmPassword) {
-        return;
-      }
-      if (!acceptTerms) {
-        return;
-      }
-      const userData = await registerUser(username, email, password);
-      onSubmit(userData); // Invoca la función onSubmit con los datos del usuario
-      await handleLoginAndRedirect(username, password);
-    } catch (error) {
-      console.error("Error al registrar el usuario:", error);
+   
+    // Verifica si el campo de correo electrónico está vacío
+    if (!email) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'Debes colocar un correo electrónico válido',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
     }
-  };
+   
+    // Verifica si el campo de nombre de usuario está vacío
+    if (!username) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'Debes colocar un nombre de usuario válido',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    // Aquí continúa con la validación de las contraseñas y los términos y condiciones
+    if (password !== confirmPassword) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'Las contraseñas tienen que ser iguales',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+    if (!acceptTerms) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'Debes aceptar los términos y condiciones para continuar con el registro',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    try {
+       const userData = await registerUser(username, email, password);
+       onSubmit(userData); // Invoca la función onSubmit con los datos del usuario
+   
+       // Muestra un SweetAlert de éxito después del registro exitoso
+       Swal.fire({
+         icon: 'success',
+         title: 'Registro exitoso',
+         text: `El usuario ${username} se registró exitosamente. Por favor, confirma el mail.`,
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+   
+       await handleLoginAndRedirect(username, password);
+    } catch (error) {
+       if (error.response && error.response.status === 409) {
+         Swal.fire({
+           icon: 'error',
+           title: 'Oops...',
+           text: 'Este correo electrónico ya ha sido registrado. Por favor, utiliza otro correo electrónico.',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
+         });
+       } else {
+         console.error("Error al registrar el usuario:", error);
+       }
+    }
+   };
+   
+  
+   
 
   const handleLoginAndRedirect = async (usernameOrEmail, password) => {
     try {

@@ -8,6 +8,7 @@ import BackToHomeButton from "./BackToHomeButton";
 import { SignIn } from "@clerk/clerk-react";
 import { login } from "../../redux/users/actions/usersActions";
 import { getUserInfo } from "../../services/users/userInfo";
+import Swal from 'sweetalert2';
 
 
 function LoginPage() {
@@ -23,25 +24,43 @@ function LoginPage() {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-  
+   
     try {
-      const token = await loginUser(usernameOrEmail, password);
-      Cookies.set("token", token, { 
-        expiresIn: '24h'
+       const token = await loginUser(usernameOrEmail, password);
+       Cookies.set("token", token, { 
+         expiresIn: '24h'
        });
-      
-      let userInfo = null;
-      if (token) {
-        userInfo = await getUserInfo(); 
-      }
-  
-      dispatch(login(userInfo));
-  
-      navigate('/');
-    } catch (error){ 
-      console.error('Error al iniciar sesión:', error);
+   
+       let userInfo = null;
+       if (token) {
+         userInfo = await getUserInfo(); 
+       }
+   
+       dispatch(login(userInfo));
+   
+       navigate('/');
+    } catch (error) {
+       console.error('Error al iniciar sesión:', error);
+       if (error.response && error.response.status === 401) {
+         Swal.fire({
+           icon: 'error',
+           title: 'Error de inicio de sesión',
+           text: 'El usuario/mail o contraseñas son incorrectos. Por favor, inténtalo de nuevo.',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
+         });
+       } else {
+         Swal.fire({
+           icon: 'error',
+           title: 'Error',
+           text: 'Ocurrió un error durante el inicio de sesión.',
+         });
+       }
     }
-  };
+   };
+   
   return (
     <div className="flex flex-col self-stretch my-auto  max-md:max-w-full">
       <div className="bg-v h-screen">
