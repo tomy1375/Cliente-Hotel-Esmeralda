@@ -2,6 +2,11 @@ import axios from "axios";
 import { FOODS, FILTER_FOODS, ORDER_FOODS } from "./types";
 import { API_URL } from "../../../utils/global";
 
+const baseURL = API_URL;
+
+
+import { API_URL } from "../../../utils/global";
+
 const baseURL = API_URL
 
    
