@@ -31,7 +31,7 @@ function SignUpForm({ onSubmit }) {
        Swal.fire({
          icon: 'warning',
          title: 'Oops...',
-         text: 'Debes colocar un correo electrónico válido',
+         text: 'You must enter a valid email address.',
          confirmButtonColor: '#fcd34d',
          customClass: {
            confirmButton: 'custom-confirm-button'
@@ -45,7 +45,7 @@ function SignUpForm({ onSubmit }) {
        Swal.fire({
          icon: 'warning',
          title: 'Oops...',
-         text: 'Debes colocar un nombre de usuario válido',
+         text: 'You must enter a valid username.',
          confirmButtonColor: '#fcd34d',
          customClass: {
            confirmButton: 'custom-confirm-button'
@@ -54,24 +54,26 @@ function SignUpForm({ onSubmit }) {
        return; // Evita continuar con el proceso de registro
     }
    
-    // Aquí continúa con la validación de las contraseñas y los términos y condiciones
+    // Verifica si ambas contraseñas están vacías
+    if (!password && !confirmPassword) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must enter a password.',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    // Verifica si las contraseñas no coinciden
     if (password !== confirmPassword) {
        Swal.fire({
          icon: 'warning',
          title: 'Oops...',
-         text: 'Las contraseñas tienen que ser iguales',
-         confirmButtonColor: '#fcd34d',
-         customClass: {
-           confirmButton: 'custom-confirm-button'
-         }
-       });
-       return; // Evita continuar con el proceso de registro
-    }
-    if (!acceptTerms) {
-       Swal.fire({
-         icon: 'warning',
-         title: 'Oops...',
-         text: 'Debes aceptar los términos y condiciones para continuar con el registro',
+         text: 'The passwords must match.',
          confirmButtonColor: '#fcd34d',
          customClass: {
            confirmButton: 'custom-confirm-button'
@@ -80,6 +82,21 @@ function SignUpForm({ onSubmit }) {
        return; // Evita continuar con el proceso de registro
     }
    
+    // Verifica si los términos y condiciones no están aceptados
+    if (!acceptTerms) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must accept the terms and conditions to proceed with registration.',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    // Si todas las validaciones pasan, procede con el registro del usuario
     try {
        const userData = await registerUser(username, email, password);
        onSubmit(userData); // Invoca la función onSubmit con los datos del usuario
@@ -88,7 +105,7 @@ function SignUpForm({ onSubmit }) {
        Swal.fire({
          icon: 'success',
          title: 'Registro exitoso',
-         text: `El usuario ${username} se registró exitosamente. Por favor, confirma el mail.`,
+         text: `The user ${username} has been successfully registered. Please confirm your email.`,
          confirmButtonColor: '#fcd34d',
          customClass: {
            confirmButton: 'custom-confirm-button'
@@ -101,7 +118,7 @@ function SignUpForm({ onSubmit }) {
          Swal.fire({
            icon: 'error',
            title: 'Oops...',
-           text: 'Este correo electrónico ya ha sido registrado. Por favor, utiliza otro correo electrónico.',
+           text: 'This email has already been registered. Please use another email.',
            confirmButtonColor: '#fcd34d',
            customClass: {
              confirmButton: 'custom-confirm-button'
@@ -112,6 +129,7 @@ function SignUpForm({ onSubmit }) {
        }
     }
    };
+   
    
   
    

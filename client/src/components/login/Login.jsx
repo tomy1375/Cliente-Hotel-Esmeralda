@@ -44,8 +44,8 @@ function LoginPage() {
        if (error.response && error.response.status === 401) {
          Swal.fire({
            icon: 'error',
-           title: 'Error de inicio de sesión',
-           text: 'El usuario/mail o contraseñas son incorrectos. Por favor, inténtalo de nuevo.',
+           title: 'Login error',
+           text: 'The username/email or password is incorrect. Please try again.',
            confirmButtonColor: '#fcd34d',
            customClass: {
              confirmButton: 'custom-confirm-button'
@@ -55,7 +55,11 @@ function LoginPage() {
          Swal.fire({
            icon: 'error',
            title: 'Error',
-           text: 'Ocurrió un error durante el inicio de sesión.',
+           text: 'Please ensure all fields are filled in to proceed with the login.',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
          });
        }
     }

@@ -14,6 +14,7 @@ function ProfileModal({ isOpen, onClose }) {
   const [countries, setCountries] = useState([]);
   const userInfo = useSelector((state) => state.users.userInfo);
   const [updatedUserInfo, setUpdatedUserInfo] = useState(null);
+  
 
   const dispatch = useDispatch();
   const [showImageInput, setShowImageInput] = useState(false);
@@ -33,7 +34,8 @@ function ProfileModal({ isOpen, onClose }) {
     address: userInfo?.address || "",
     birth: userInfo?.birth || "",
     photo_url:
-      userInfo?.photo_url ||
+      userInfo?.photo_url || 
+      // user.imageUrl||
       "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
   });
 
@@ -88,12 +90,31 @@ function ProfileModal({ isOpen, onClose }) {
         console.error("No se encontró el token en las cookies");
         return;
       }
-
+  
       if (!userInfo || !userInfo.id) {
         console.error("El usuario o el ID del usuario no está definido.");
         return;
       }
-
+  
+      // Compara formData con userInfo para verificar si hay cambios
+      const hasChanges = Object.keys(formData).some(
+        (key) => formData[key] !== userInfo[key]
+      );
+  
+      if (!hasChanges) {
+        // Si no hay cambios, muestra el SweetAlert
+        Swal.fire({
+          icon: "warning",
+          title: "There are no changes.",
+          text: "An additional modification is required to update the profile successfully.",
+          confirmButtonColor: '#fcd34d',
+          customClass: {
+            confirmButton: 'custom-confirm-button'
+          }
+        });
+        return; // Evita continuar con el envío
+      }
+  
       const requestData = {
         userId: userInfo.id,
         full_name: formData.full_name,
@@ -105,11 +126,11 @@ function ProfileModal({ isOpen, onClose }) {
         birth: formData.birth,
         address: formData.address,
       };
-
+  
       if (selectedFile) {
         requestData.photo = selectedFile;
       }
-
+  
       const response = await requestCreateProfile(
         token,
         userInfo.id,
@@ -118,19 +139,24 @@ function ProfileModal({ isOpen, onClose }) {
       console.log("Perfil creado:", response);
       dispatch(setUserInfo(userInfo));
       dispatch(fetchUserInfo());
-
+  
       Swal.fire({
         icon: "success",
         title: "Profile updated",
         text: "Profile updated successfully.",
+        confirmButtonColor: '#fcd34d',
+        customClass: {
+          confirmButton: 'custom-confirm-button'
+        }
       });
       setUpdatedUserInfo(response);
-
+  
       onClose();
     } catch (error) {
       console.error("Error al crear perfil:", error);
     }
   };
+  
 
   const handleChange = (field) => (event) => {
     setFormData((prevData) => ({
