@@ -1,9 +1,14 @@
 import axios from "axios";
 import { FOODS, FILTER_FOODS, ORDER_FOODS } from "./types";
+import { API_URL } from "../../../utils/global";
+
+const baseURL = API_URL;
+
+
    
 export const allFoods = () => async (dispatch) => {
  try {
-    const response = await axios.get('https://backend-hotelesmeralda.onrender.com/api/dishes');
+    const response = await axios.get(`${baseURL}api/dishes`);
     console.log('Alimentos obtenidos:', response.data.dishes) 
     dispatch({
       type: FOODS,
