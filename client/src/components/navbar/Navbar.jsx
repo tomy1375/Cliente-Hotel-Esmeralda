@@ -10,6 +10,7 @@ import dise from "../../assets/dise.png";
 import Cookies from "js-cookie";
 import "./Navbar.scss";
 import {jwtDecode} from "jwt-decode"; 
+import ModalChat from "../../components/chat/ModalChat"
 
 function Navbar() {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
@@ -23,6 +24,8 @@ function Navbar() {
   const [userInfo, setUserInfo] = useState(null);
   const [showOffersDescription, setShowOffersDescription] = useState(false);
   const [showServicesDescription, setShowServicesDescription] = useState(false);
+  const [showModalChat, setShowModalChat] = useState(false);
+
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -100,6 +103,16 @@ function Navbar() {
       setIsLoading(false);
       navigate("/");
     }
+  };
+ 
+  const handleOpenModalChat = () => {
+    setIsOpenProfileMenu(false);
+    setShowModalChat(true);
+  };
+  
+
+  const handleCloseModalChat = () => {
+    setShowModalChat(false); 
   };
 
   const navigate = useNavigate();
@@ -260,13 +273,26 @@ function Navbar() {
                           <li>
                             <button
                               className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
-                              onClick={handleSignOut}
-                            >
+                              onClick={handleSignOut}>
                               Sign Out
+                            </button>
+                          </li>
+                          <li>
+                            <button 
+                             className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+                              onClick={handleOpenModalChat}>
+                              Open Chat
                             </button>
                           </li>
                         </ul>
                       </div>
+                    )}
+                      {showModalChat && (
+                      <ModalChat 
+                      handleClose={() => setShowModalChat(false)}
+                      show={showModalChat}
+                      chatUserId={userInfo} // Quiero pasar directamente el userId a la modal
+                      />
                     )}
                   </div>
                 ) : (

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -25,14 +25,25 @@ import { setUserInfo } from "./redux/users/actions/usersActions";
 import Cookies from "js-cookie";
 import EmailConfirmation from "./views/ConfirmationEmail";
 import ServicesView from "./views/ServicesView";
+import ReviewsView from "./views/ReviewsView";
+import ClientChat from './components/chat/ClientChat';
+import AdministradorChat from './components/chat/AdministradorChat';
+import BookNotify from './components/notifications/BookNotify';
+import AdministradorNotify from './components/notifications/AdministradorNotify'
+import { io } from 'socket.io-client';
 
-
-function MainLayout() {
-  // const token = Cookies.get("token");
+function MainLayout({ socket, setSocket }) {
   const location = useLocation();
   const dispatch = useDispatch();
 
-   
+  useEffect(() => {
+
+    const SOCKET_IO_SERVER_URL = 'http://localhost:8000'; // Dirección del servidor de Socket.IO
+    const newSocket = io(SOCKET_IO_SERVER_URL); // ajusta la URL según la configuración del servidor
+    setSocket(newSocket);
+
+    return () => newSocket.close(); // cierra la conexión cuando el componente se desmonta
+  }, []);
 
   useEffect(() => {
     const removeModalIndicator = () => {
@@ -85,6 +96,11 @@ function MainLayout() {
         <Route path="/gallery" element={<GalleryView/>}/>
         <Route path="/offers" element={<OffersView/>}/>
         <Route path="/services" element={<ServicesView/>}/>
+        <Route path="/reviews" element={<ReviewsView socket={socket} />} />
+        <Route path="/clientChat/:id" element={<ClientChat socket={socket} />} />
+        <Route path="/administradorChat" element={<AdministradorChat socket={socket} />} />
+        <Route path="/bookNotify" element={<BookNotify socket={socket} />} />
+        <Route path="/administradorNotify" element={<AdministradorNotify socket={socket} />} />
         <Route path="/profile" element={<ProfileView/>}/>
         <Route
           path="/termsAndConditions"
@@ -105,9 +121,11 @@ function MainLayout() {
 }
 
 function App() {
+
+  const [socket, setSocket] = useState(null);
   return (
     <Router>
-      <MainLayout />
+      <MainLayout socket={socket} setSocket={setSocket} />
     </Router>
   );
 }

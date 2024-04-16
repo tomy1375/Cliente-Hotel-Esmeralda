@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Offers from '../components/especialOffers/Offers';
+import Offers from '../components/specialOffers/Offers';
 
 
 const OffersView = () => {
