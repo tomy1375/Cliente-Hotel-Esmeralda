@@ -150,7 +150,7 @@ function LoginPage() {
 
                   <p
                     onClick={handleCreateAccountClick}
-                    className="cursor-pointer self-center m-0 mt-7 text-2xl font-extrabold tracking-tight text-stone-400 hover:text-amber-400 transition-colors"
+                    className="btn cursor-pointer self-center m-0 mt-7 text-2xl font-extrabold tracking-tight text-stone-400 hover:text-amber-400 transition-colors"
                   >
                     Create Account
                   </p>

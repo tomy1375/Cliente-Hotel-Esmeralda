@@ -13,6 +13,9 @@ import loginUser from "../../services/users/requestLogin";
 import { getUserInfo } from "../../services/users/userInfo";
 import Swal from 'sweetalert2';
 
+import "./Register.css"
+
+
 function SignUpForm({ onSubmit }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -203,6 +206,7 @@ function SignUpForm({ onSubmit }) {
               className="shrink-0 w-6 h-6 bg-white rounded-lg border border-solid border-neutral-200 ml-6"
             />
           </div>
+          
           <label
             htmlFor="terms"
             className="flex-auto text-base leading-6 text-justify text-white"
@@ -212,7 +216,7 @@ function SignUpForm({ onSubmit }) {
         </div>
         <button
           type="submit"
-          className="justify-center items-center px-24   py-4 mt-10 ml  text-2xl font-extrabold text-white whitespace-nowrap bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full ml-52"
+          className="btna justify-center items-center px-24   py-4 mt-12 ml  text-2xl font-extrabold text-white whitespace-nowrap bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full ml-56"
         >
           Register
         </button>
