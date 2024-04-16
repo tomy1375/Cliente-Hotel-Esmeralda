@@ -65,6 +65,10 @@ function LoginPage() {
     }
    };
    
+   const handleForgotPasswordClick = () => {
+    navigate("/forgotpassword");
+  };
+
   return (
     <div className="flex flex-col self-stretch my-auto  max-md:max-w-full">
       <div className="bg-v h-screen">
@@ -131,12 +135,15 @@ function LoginPage() {
                     <label htmlFor="rememberMe" className="flex-auto my-auto">
                       Remember me
                     </label>
-                  </div>
                 </div>
+                  </div>
+                  <button onClick={handleForgotPasswordClick} htmlFor="rememberMe" className="flex-auto my-auto ml-96 hover:text-amber-400 transition-colors">
+                  Forgot password?
+                    </button>
                 <div className="flex flex-col items-center ">
                   <button
                     type="submit"
-                    className="justify-center m-4 px-6 py-3 mt-8 font-bold text-v bg-amber-300  hover:bg-amber-400 rounded-2xl shadow-lg max-md:px-5 transition-colors"
+                    className="justify-center m-4 px-6 py-3 mt-6 font-bold text-v bg-amber-300  hover:bg-amber-400 rounded-2xl shadow-lg max-md:px-5 transition-colors"
                   >
                     Login Now
                   </button>

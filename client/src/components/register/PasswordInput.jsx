@@ -20,12 +20,15 @@ function PasswordInput({ label, id, value, onChange }) {
       </label>
       <div className="flex gap-3 mt-5">
         {/* Ícono de los ojos que al hacer clic cambia la visibilidad del password */}
+        <div>
+          
         <img
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/561c92496a6bc73d29f322c42048ab8d888bad1de7c90d5f02a294dafb2ecab4?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
           alt=""
           className="shrink-0 aspect-square w-[17px]"
          
         />
+        </div>
         {/* Input que cambia su tipo basado en el estado isPasswordVisible */}
         <input
           type={isPasswordVisible ? "text" : "password"}
@@ -38,7 +41,7 @@ function PasswordInput({ label, id, value, onChange }) {
       <img
           src={isPasswordVisible ? eyeIconOpen : eyeIconClosed}
           alt=""
-          className="shrink-0 aspect-square w-[17px] cursor-pointer"
+          className="shrink-0 aspect-square w-[20px] cursor-pointer ml-56"
           onClick={togglePasswordVisibility}
         />
       </div>

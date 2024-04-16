@@ -29,6 +29,9 @@ import BookingView from "./views/BookingView";
 import BookingPartTwoView from "./views/BookingPartTwoView";
 import BookingPartThreeView from "./views/BookingPartThreeView";
 import BookingPartFourView from "./views/BookingPartFourView";
+import ForgotPassword from "./views/ForgotPasswordView";
+import ForgotPasswordView from "./views/ForgotPasswordView";
+import ForgotPasswordRecoveryView from "./views/ForgotPasswordRecoveryView";
 
 
 function MainLayout() {
@@ -89,6 +92,9 @@ function MainLayout() {
         <Route path="/bookingTwo" element={<BookingPartTwoView/>}/>
         <Route path="/bookingThree" element={<BookingPartThreeView/>}/>
         <Route path="/bookingFour" element={<BookingPartFourView/>}/>
+        <Route path="/forgotpassword" element={<ForgotPasswordView/>}/>
+        <Route path="/forgotPasswordRecovery" element={<ForgotPasswordRecoveryView/>}/>
+
         <Route
           path="/termsAndConditions"
           element={<TermsAndConditionsView />}
