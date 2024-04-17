@@ -4,7 +4,6 @@ import { API_URL } from "../../../utils/global";
 
 const baseURL = API_URL;
 
-
    
 export const allFoods = () => async (dispatch) => {
  try {

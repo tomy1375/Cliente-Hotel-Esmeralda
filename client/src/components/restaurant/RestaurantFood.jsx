@@ -96,7 +96,7 @@ function Food({ currentPage, setCurrentPage }) {
                    className="grow w-full aspect-[0.89] max-md:mt-10 max-md:max-w-full shadow-lg"
                  />
                </div>
-               <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
+               <div className="flex flex-col ml-5 w-9/12 max-md:ml-0 max-md:w-full">
                  <div className="flex flex-col self-stretch pr-10 pb-2.5 my-auto font-extrabold text-neutral-600 max-md:mt-10 max-md:max-w-full">
                    <h2 className="text-left text-6xl tracking-tighter text-gray-800 leading-[70.4px] max-md:text-4xl">
                      {food.name}
@@ -125,7 +125,7 @@ function Food({ currentPage, setCurrentPage }) {
         )}
         <div className="flex justify-between mt-4">
           <button
-            className="px-4 py-2 bg-blue-950 text-white rounded-md hover:bg-black"
+            className="px-4 py-2 bg-v text-white rounded-md hover:bg-gray-800 transition-colors"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
@@ -135,7 +135,7 @@ function Food({ currentPage, setCurrentPage }) {
             {getCurrentPageNumber()}
           </button>
           <button
-            className="px-4 py-2 bg-blue-950 text-white rounded-md hover:bg-black"
+            className="px-4 py-2 bg-v text-white rounded-md hover:bg-gray-800 transition-colors"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={!filteredFoods || endIndex >= filteredFoods.length}
           >

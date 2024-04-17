@@ -40,7 +40,7 @@ function CardRoom({ room }) {
                     <div className="mr-64 flex flex-col w-9/12 max-md:ml-0 max-md:w-full"></div>
                   </div>
                 </div>
-                <div className=" ml-24 text-base font-semibold text-white max-md:mt-10 max-md:ml-2.5">
+                <div className=" ml-14 text-base font-semibold text-white max-md:mt-10 max-md:ml-2.5">
                   Sleeps {room.max_capacity} | King: {double_bed} | Single:{single_bed}
                 </div>
               </div>

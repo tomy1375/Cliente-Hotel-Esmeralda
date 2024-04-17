@@ -14,6 +14,7 @@ function ProfileModal({ isOpen, onClose }) {
   const [countries, setCountries] = useState([]);
   const userInfo = useSelector((state) => state.users.userInfo);
   const [updatedUserInfo, setUpdatedUserInfo] = useState(null);
+  
 
   const dispatch = useDispatch();
   const [showImageInput, setShowImageInput] = useState(false);
@@ -33,12 +34,13 @@ function ProfileModal({ isOpen, onClose }) {
     address: userInfo?.address || "",
     birth: userInfo?.birth || "",
     photo_url:
-      userInfo?.photo_url ||
+      userInfo?.photo_url || 
+      // user.imageUrl||
       "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
   });
 
   useEffect(() => {
-    console.log("Nuevos datos de userInfo:", userInfo);
+    ;
   }, [userInfo]);
 
   useEffect(() => {
@@ -75,7 +77,7 @@ function ProfileModal({ isOpen, onClose }) {
 
   useEffect(() => {
     if (userInfo !== null) {
-      console.log(userInfo);
+      // console.log(userInfo);
       setIsEmailVerified(userInfo.emailVerified);
       setFormData(userInfo);
     }
@@ -109,7 +111,7 @@ function ProfileModal({ isOpen, onClose }) {
       if (selectedFile) {
         requestData.photo = selectedFile;
       }
-
+      console.log(requestData)
       const response = await requestCreateProfile(
         token,
         userInfo.id,
@@ -123,6 +125,10 @@ function ProfileModal({ isOpen, onClose }) {
         icon: "success",
         title: "Profile updated",
         text: "Profile updated successfully.",
+        confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
       });
       setUpdatedUserInfo(response);
 

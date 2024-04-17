@@ -11,6 +11,10 @@ import registerUser from "../../services/users/requestRegister";
 import Cookies from "js-cookie";
 import loginUser from "../../services/users/requestLogin";
 import { getUserInfo } from "../../services/users/userInfo";
+import Swal from 'sweetalert2';
+
+import "./Register.css"
+
 
 function SignUpForm({ onSubmit }) {
   const [email, setEmail] = useState("");
@@ -20,23 +24,118 @@ function SignUpForm({ onSubmit }) {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (password !== confirmPassword) {
-        return;
-      }
-      if (!acceptTerms) {
-        return;
-      }
-      const userData = await registerUser(username, email, password);
-      onSubmit(userData); // Invoca la función onSubmit con los datos del usuario
-      await handleLoginAndRedirect(username, password);
-    } catch (error) {
-      console.error("Error al registrar el usuario:", error);
+   
+    // Verifica si el campo de correo electrónico está vacío
+    if (!email) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must enter a valid email address.',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
     }
-  };
+   
+    // Verifica si el campo de nombre de usuario está vacío
+    if (!username) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must enter a valid username.',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    // Verifica si ambas contraseñas están vacías
+    if (!password && !confirmPassword) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must enter a password.',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    // Verifica si las contraseñas no coinciden
+    if (password !== confirmPassword) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'The passwords must match.',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    // Verifica si los términos y condiciones no están aceptados
+    if (!acceptTerms) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must accept the terms and conditions to proceed with registration.',
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+       return; // Evita continuar con el proceso de registro
+    }
+   
+    // Si todas las validaciones pasan, procede con el registro del usuario
+    try {
+       const userData = await registerUser(username, email, password);
+       onSubmit(userData); // Invoca la función onSubmit con los datos del usuario
+   
+       // Muestra un SweetAlert de éxito después del registro exitoso
+       Swal.fire({
+         icon: 'success',
+         title: 'Registro exitoso',
+         text: `The user ${username} has been successfully registered. Please confirm your email.`,
+         confirmButtonColor: '#fcd34d',
+         customClass: {
+           confirmButton: 'custom-confirm-button'
+         }
+       });
+   
+       await handleLoginAndRedirect(username, password);
+    } catch (error) {
+       if (error.response && error.response.status === 409) {
+         Swal.fire({
+           icon: 'error',
+           title: 'Oops...',
+           text: 'This email has already been registered. Please use another email.',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
+         });
+       } else {
+         console.error("Error al registrar el usuario:", error);
+       }
+    }
+   };
+   
+   
+  
+   
 
   const handleLoginAndRedirect = async (usernameOrEmail, password) => {
     try {
@@ -107,6 +206,7 @@ function SignUpForm({ onSubmit }) {
               className="shrink-0 w-6 h-6 bg-white rounded-lg border border-solid border-neutral-200 ml-6"
             />
           </div>
+          
           <label
             htmlFor="terms"
             className="flex-auto text-base leading-6 text-justify text-white"
@@ -116,7 +216,7 @@ function SignUpForm({ onSubmit }) {
         </div>
         <button
           type="submit"
-          className="justify-center items-center px-24   py-4 mt-10 ml  text-2xl font-extrabold text-white whitespace-nowrap bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full ml-52"
+          className="btna justify-center items-center px-24   py-4 mt-12 ml  text-2xl font-extrabold text-white whitespace-nowrap bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg max-md:px-5 max-md:max-w-full ml-56"
         >
           Register
         </button>

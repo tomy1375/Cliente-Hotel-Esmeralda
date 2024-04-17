@@ -13,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import { fetchUserInfo, logout } from "../../redux/users/actions/usersActions";
 import { useDispatch } from "react-redux";
 //userinfo
+import "../Button/Button.css"
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -152,7 +153,7 @@ function Navbar() {
           <NavLink
             exact="true"
             to="/"
-            className={`text-white hover:text-d  transition-colors${
+            className={`btn text-white hover:text-d  transition-colors${
               location.pathname === "/" ? "active text-d" : ""
             }`}
           >
@@ -160,7 +161,7 @@ function Navbar() {
           </NavLink>
           <NavLink
             to="/rooms"
-            className={`text-white hover:text-d ${
+            className={`btn text-white hover:text-d ${
               location.pathname === "/rooms"
                 ? "active text-d color transition-colors"
                 : ""
@@ -170,7 +171,7 @@ function Navbar() {
           </NavLink>
           <NavLink
             to="/services"
-            className={`text-white hover:text-d ${
+            className={`btn text-white hover:text-d ${
               location.pathname === "/services" ? "active text-d" : ""
             }`}
           >
@@ -178,7 +179,7 @@ function Navbar() {
           </NavLink>
           <NavLink
             to="/restaurant"
-            className={`text-white hover:text-d ${
+            className={`btn text-white hover:text-d ${
               location.pathname === "/restaurant" ? "active text-d" : ""
             }`}
           >
@@ -186,7 +187,7 @@ function Navbar() {
           </NavLink>
           <NavLink
             to="/offers"
-            className={`text-white hover:text-d transition-colors${
+            className={`btn text-white hover:text-d transition-colors${
               location.pathname === "/offers" ? "active text-d" : ""
             }`}
           >
@@ -239,19 +240,27 @@ function Navbar() {
                       className="flex items-center space-x-2"
                       onClick={toggleProfileMenu}
                     >
-                      {user?.imageUrl ? (
-                        <img
-                          alt="Profile"
-                          className="h-8 w-8 rounded-full"
-                          src={user.imageUrl}
-                        />
-                      ) : (
-                        <img
-                          alt="Profile"
-                          className="h-8 w-8 rounded-full"
-                          src={userInfo?.photo_url}
-                        />
-                      )}
+                    {user?.imageUrl ? (
+                          <img
+                              alt="Profile"
+                              className="h-8 w-8 rounded-full"
+                              src={user.imageUrl}
+                          />
+                          ) : (
+                          userInfo?.photo_url ? (
+                              <img
+                                alt="Profile"
+                                className="h-8 w-8 rounded-full"
+                                src={userInfo.photo_url}
+                              />
+                          ) : (
+                              <img
+                                alt="Default Profile"
+                                className="h-8 w-8 rounded-full"
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                              />
+                          )
+                          )}
 
                       {user?.firstName ? (
                         <h1 className="ml-2 text-lg">Hi,{user.firstName}</h1>

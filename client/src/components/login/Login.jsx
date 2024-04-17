@@ -8,6 +8,7 @@ import BackToHomeButton from "./BackToHomeButton";
 import { SignIn } from "@clerk/clerk-react";
 import { login } from "../../redux/users/actions/usersActions";
 import { getUserInfo } from "../../services/users/userInfo";
+import Swal from 'sweetalert2';
 
 
 function LoginPage() {
@@ -23,25 +24,51 @@ function LoginPage() {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-  
+   
     try {
-      const token = await loginUser(usernameOrEmail, password);
-      Cookies.set("token", token, { 
-        expiresIn: '24h'
+       const token = await loginUser(usernameOrEmail, password);
+       Cookies.set("token", token, { 
+         expiresIn: '24h'
        });
-      
-      let userInfo = null;
-      if (token) {
-        userInfo = await getUserInfo(); 
-      }
-  
-      dispatch(login(userInfo));
-  
-      navigate('/');
-    } catch (error){ 
-      console.error('Error al iniciar sesión:', error);
+   
+       let userInfo = null;
+       if (token) {
+         userInfo = await getUserInfo(); 
+       }
+   
+       dispatch(login(userInfo));
+   
+       navigate('/');
+    } catch (error) {
+       console.error('Error al iniciar sesión:', error);
+       if (error.response && error.response.status === 401) {
+         Swal.fire({
+           icon: 'error',
+           title: 'Login error',
+           text: 'The username/email or password is incorrect. Please try again.',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
+         });
+       } else {
+         Swal.fire({
+           icon: 'error',
+           title: 'Error',
+           text: 'Please ensure all fields are filled in to proceed with the login.',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
+         });
+       }
     }
+   };
+   
+   const handleForgotPasswordClick = () => {
+    navigate("/forgotpassword");
   };
+
   return (
     <div className="flex flex-col self-stretch my-auto  max-md:max-w-full">
       <div className="bg-v h-screen">
@@ -108,19 +135,22 @@ function LoginPage() {
                     <label htmlFor="rememberMe" className="flex-auto my-auto">
                       Remember me
                     </label>
-                  </div>
                 </div>
+                  </div>
+                  <button onClick={handleForgotPasswordClick} htmlFor="rememberMe" className="flex-auto my-auto ml-96 hover:text-amber-400 transition-colors">
+                  Forgot password?
+                    </button>
                 <div className="flex flex-col items-center ">
                   <button
                     type="submit"
-                    className="justify-center m-4 px-6 py-3 mt-8 font-bold text-v bg-amber-300  hover:bg-amber-400 rounded-2xl shadow-lg max-md:px-5 transition-colors"
+                    className="justify-center m-4 px-6 py-3 mt-6 font-bold text-v bg-amber-300  hover:bg-amber-400 rounded-2xl shadow-lg max-md:px-5 transition-colors"
                   >
                     Login Now
                   </button>
 
                   <p
                     onClick={handleCreateAccountClick}
-                    className="cursor-pointer self-center m-0 mt-7 text-2xl font-extrabold tracking-tight text-stone-400 hover:text-amber-400 transition-colors"
+                    className="btn cursor-pointer self-center m-0 mt-7 text-2xl font-extrabold tracking-tight text-stone-400 hover:text-amber-400 transition-colors"
                   >
                     Create Account
                   </p>

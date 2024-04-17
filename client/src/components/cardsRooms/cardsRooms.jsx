@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CardRoom from '../cardRooms/cardRoom';
 import { API_URL } from '../../utils/global';
+import Loading from '../general/Loading';
 
 const baseURL = API_URL;
 
@@ -30,7 +31,9 @@ const CardsRooms = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className='mt-9'>
+      <Loading/>
+    </div>;
   }
 
   if (error) {
