@@ -60,7 +60,7 @@ const Services = () => {
                 </Link>
 
                 <span  className="w-1/4 mx-4">
-                  <button className="text-xl py-4 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full">
+                  <button className="text-xl py-4 font-bold text-white bg-v hover:bg-green-950 transition-colors rounded-2xl shadow-lg w-full">
                   $ {service.price}
                   </button>
                 </span>
