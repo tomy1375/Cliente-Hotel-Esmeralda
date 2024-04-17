@@ -19,6 +19,7 @@ const MenuPage = ({ setCurrentPage }) => {
 
  const handlePriceOrder = (orderType) => {
     dispatch(orderFoods({ type: "price", order: orderType }));
+    setCurrentPage(1);
  };
 
  const handleAllDishesClick = () => {
