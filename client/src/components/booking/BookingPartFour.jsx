@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Services from "../roomServices/Services";
-import ServicesBooking from "./ServicesBooking";
+
+
 import Pay from "./Pay";
 
 function DateOfStay() {
@@ -210,13 +210,8 @@ function BookingPartFour() {
       <div className="shrink-0 mt-10 max-w-full h-px border border-solid bg-zinc-200 border-zinc-200 max-md:mr-2.5" />
       <div className="mt-8 max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-          {/* <SpaAndBeauty />
-          <SpaAndBeautyDetails /> */}
-          {/* <ServicesBooking/> */}
           <Pay/>
           <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
-            {/* <YourStay />
-             */}
           </div>
         </div>
       </div>

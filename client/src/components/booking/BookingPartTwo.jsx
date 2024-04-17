@@ -26,6 +26,42 @@ function DateOfStay() {
     </div>
   );
 }
+function Accommodations() {
+  return (
+    <div className="flex gap-2 p-6 whitespace-nowrap rounded-sm">
+      <div className=" flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center text-white bg-amber-300 rounded-[50px]">
+        2
+      </div>
+      <div className="text-xl font-extrabold tracking-normal leading-7 text-zinc-800">
+        ACCOMMODATIONS
+      </div>
+    </div>
+  );
+}
+function EnhanceYourStay() {
+  return (
+    <div className="flex gap-2 self-stretch p-6 whitespace-nowrap rounded-sm px-44">
+      <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center bg-zinc-200 rounded-[50px]">
+        3
+      </div>
+      <div className="text-xl font-extrabold tracking-normal leading-7">
+        ENHANCE YOUR STAY
+      </div>
+    </div>
+  );
+}
+function Total() {
+  return (
+    <div className="flex gap-2 self-stretch p-6 whitespace-nowrap rounded-sm px-14">
+      <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center bg-zinc-200 rounded-[50px]">
+        4
+      </div>
+      <div className="text-xl font-extrabold tracking-normal leading-7 mr-9">
+        PAY
+      </div>
+    </div>
+  );
+}
 
 const Results = ({ onRoomSelect, selectedRooms }) => {
   const location = useLocation();
@@ -143,47 +179,11 @@ const Results = ({ onRoomSelect, selectedRooms }) => {
   );
 };
 
-function Accommodations() {
-  return (
-    <div className="flex gap-2 p-6 whitespace-nowrap rounded-sm">
-      <div className=" flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center text-white bg-amber-300 rounded-[50px]">
-        2
-      </div>
-      <div className="text-xl font-extrabold tracking-normal leading-7 text-zinc-800">
-        ACCOMMODATIONS
-      </div>
-    </div>
-  );
-}
 
-function EnhanceYourStay() {
-  return (
-    <div className="flex gap-2 self-stretch p-6 whitespace-nowrap rounded-sm px-44">
-      <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center bg-zinc-200 rounded-[50px]">
-        3
-      </div>
-      <div className="text-xl font-extrabold tracking-normal leading-7">
-        ENHANCE YOUR STAY
-      </div>
-    </div>
-  );
-}
-
-function Total({ total }) {
-  return (
-    <div className="flex gap-2 self-stretch p-6 whitespace-nowrap rounded-sm px-14">
-      <div className="flex justify-center items-center px-4 py-2 w-7 h-7 text-sm font-bold leading-5 text-center bg-zinc-200 rounded-[50px]">
-        4
-      </div>
-      <div className="text-xl font-extrabold tracking-normal leading-7 mr-9">
-        PAY
-      </div>
-    </div>
-  );
-}
 
 function BookingPartTwo() {
   const [availableRooms, setAvailableRooms] = React.useState([]);
+  const [carsAvailables, setCarsAvailables] = React.useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -275,21 +275,22 @@ function BookingPartTwo() {
         },
       });
     } else {
+      
       const queryParams = new URLSearchParams({
-        checkInDate: checkInDate,
-        checkOutDate: checkOutDate,
-        selectedGuests: selectedGuests,
-        selectedChildren: selectedChildren,
+        from: from,
+        to: to,
+        adults: capacity - children, 
+        children: children,
         total: total,
         selectedRoomsDetails: selectedRoomsDetails,
       }).toString();
 
       navigate(`/bookingThree?${queryParams}`, {
         state: {
-          checkInDate: checkInDate,
-          checkOutDate: checkOutDate,
-          selectedGuests: selectedGuests,
-          selectedChildren: selectedChildren,
+          checkInDate: from,
+          checkOutDate: to,
+          selectedGuests: capacity - children,
+          selectedChildren: children,
           total: total,
           selectedRoomsDetails: selectedRoomsDetails,
         },
