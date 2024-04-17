@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useClerk } from "@clerk/clerk-react";
+import { FaComment } from 'react-icons/fa';
 import LogoImage from "../../assets/logo.svg";
 import lobby from "../../assets/lobby.svg";
 import lobby1 from "../../assets/rooms.svg";
@@ -10,7 +11,6 @@ import dise from "../../assets/dise.png";
 import Cookies from "js-cookie";
 import "./Navbar.scss";
 import {jwtDecode} from "jwt-decode"; 
-import ModalChat from "../../components/chat/ModalChat"
 
 function Navbar() {
   const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
@@ -24,7 +24,6 @@ function Navbar() {
   const [userInfo, setUserInfo] = useState(null);
   const [showOffersDescription, setShowOffersDescription] = useState(false);
   const [showServicesDescription, setShowServicesDescription] = useState(false);
-  const [showModalChat, setShowModalChat] = useState(false);
 
 
   useEffect(() => {
@@ -103,13 +102,7 @@ function Navbar() {
       setIsLoading(false);
       navigate("/");
     }
-  };
- 
-  const handleOpenModalChat = () => {
-    setIsOpenProfileMenu(false);
-    setShowModalChat(true);
-  };
-  
+  };  
 
   const handleCloseModalChat = () => {
     setShowModalChat(false); 
@@ -119,6 +112,14 @@ function Navbar() {
 
   const goToProfile = () => {
     navigate("/profile");
+  };
+
+  const goToChat = () => {
+    if(user){
+    navigate(`/clientChat/${user.firstName} ${user.lastName}`);
+    }else if(userInfo){
+    navigate(`/clientChat/${userInfo.userName}`);
+    }
   };
 
   return (
@@ -253,6 +254,10 @@ function Navbar() {
                           clipRule="evenodd"
                         />
                       </svg>
+                      <div className="flex items-center cursor-pointer" onClick={goToChat}>
+              <FaComment className="text-yellow-500 text-4xl" />
+              <span className="text-white"></span>
+            </div>
                     </button>
                     {isOpenProfileMenu && (
                       <div className="absolute top-28 right-3 bg-white border border-gray-300 rounded shadow-md">
@@ -278,21 +283,9 @@ function Navbar() {
                             </button>
                           </li>
                           <li>
-                            <button 
-                             className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
-                              onClick={handleOpenModalChat}>
-                              Open Chat
-                            </button>
                           </li>
                         </ul>
                       </div>
-                    )}
-                      {showModalChat && (
-                      <ModalChat 
-                      handleClose={() => setShowModalChat(false)}
-                      show={showModalChat}
-                      chatUserId={userInfo} // Quiero pasar directamente el userId a la modal
-                      />
                     )}
                   </div>
                 ) : (

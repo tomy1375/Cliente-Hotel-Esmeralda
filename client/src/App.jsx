@@ -39,10 +39,10 @@ function MainLayout({ socket, setSocket }) {
   useEffect(() => {
 
     const SOCKET_IO_SERVER_URL = 'http://localhost:8000'; // Dirección del servidor de Socket.IO
-    const newSocket = io(SOCKET_IO_SERVER_URL); // ajusta la URL según la configuración del servidor
+    const newSocket = io(SOCKET_IO_SERVER_URL); 
     setSocket(newSocket);
 
-    return () => newSocket.close(); // cierra la conexión cuando el componente se desmonta
+    return () => newSocket.close(); 
   }, []);
 
   useEffect(() => {

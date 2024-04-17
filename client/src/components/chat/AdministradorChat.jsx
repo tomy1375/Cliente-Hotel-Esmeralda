@@ -140,7 +140,7 @@ const AdministradorChat = ({ socket }) => {
   
   return (
     <div className="max-w-md mx-auto p-4 bg-gray-100 rounded shadow">
-    <h1 className="text-2xl font-bold mb-4 text-center">Administrator Chat Room</h1>
+    <h1 className="text-2xl font-bold mb-4 text-center">Administrator Chat Rooms</h1>
       <div>
         <h2 className="text-lg font-bold mb-2">Client Chat Rooms</h2>
         <ul>
