@@ -12,8 +12,9 @@ import "./Navbar.scss";
 import { jwtDecode } from "jwt-decode";
 import { fetchUserInfo, logout } from "../../redux/users/actions/usersActions";
 import { useDispatch } from "react-redux";
-//userinfo
+import MovilMenu from "./MovilMenu";
 import "../Button/Button.css"
+
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -141,7 +142,11 @@ function Navbar() {
   };
 
   return (
-    <div className="nav-container">
+    <>
+    <MovilMenu location={location} />
+
+    <div className="hidden lg:block">
+      
       <nav className="bg-v p-2">
         <div className="max-w-full px-6 mx-auto flex flex-wrap justify-around items-center lg:max-w-8xl">
           <img
@@ -314,19 +319,19 @@ function Navbar() {
                   <>
                     <NavLink
                       to="/register"
-                      className={`text-white w-full sm:w-40 border-2 border-yellow-500 -900 px-4 py-3 rounded-lg tracking-wider btn ${
+                      className={`text-white w-full text-center sm:w-40 border-2 border-yellow-500 -900 px-4 py-3 rounded-lg tracking-wider btn ${
                         location.pathname === "/register" ? "active" : ""
                       }`}
                     >
-                      <div className="ml-5">REGISTER</div>
+                      REGISTER
                     </NavLink>
                     <NavLink
                       to="/login"
-                      className={`text-white w-full sm:w-40 bg-yellow-500 -300 border-2 border-yellow-500  hover:bg-yellow-600 hover:border-yellow-600  -900 px-4 py-3 rounded-lg tracking-wider btn ${
+                      className={`text-white items-center text-center w-full sm:w-40 bg-yellow-500 -300 border-2 border-yellow-500  hover:bg-yellow-600 hover:border-yellow-600  -900 px-4 py-3 rounded-lg tracking-wider  ${
                         location.pathname === "/login" ? "active" : ""
                       }`}
                     >
-                      <div className=" ml-10 ">LOGIN</div>
+                      LOGIN
                     </NavLink>
                   </>
                 )}
@@ -382,6 +387,7 @@ function Navbar() {
         </div>
       )}
     </div>
+    </>
   );
 }
 
