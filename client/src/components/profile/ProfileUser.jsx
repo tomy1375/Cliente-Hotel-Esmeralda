@@ -10,6 +10,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { MdHotel, MdOutlinePayments } from "react-icons/md";
 import { fetchUserInfo } from "../../redux/users/actions/usersActions";
 import { useDispatch } from "react-redux";
+import ModalSecurity from "./ModalSecurity";
 
 const SectionHeader = ({ title, description }) => (
   <div className="flex flex-col text-black max-md:mt-10">
@@ -23,6 +24,8 @@ const SectionHeader = ({ title, description }) => (
 function ProfileUser() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenReservation, setIsModalOpenReservation] = useState(false);
+  const [isSecurityModalOpen, setIsSecurityModalOpen] = useState(false);
+
   const { user } = useUser();
   const userInfo = useSelector((state) => state.users.userInfo);
   const dispatch = useDispatch();
@@ -123,10 +126,11 @@ function ProfileUser() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <div className="px-8 py-6 rounded-2xl border border-solid border-stone-500 max-md:px-5 flex items-center">
-                    <RiLockPasswordFill
-                      className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
-                      onClick={() => setIsModalOpen(true)}
-                    />
+                  <RiLockPasswordFill
+ className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
+ onClick={() => setIsSecurityModalOpen(true)}
+/>
+
                     <div className="flex flex-col w-full max-md:w-2/3 ml-5 max-md:ml-0">
                       <SectionHeader
                         title="Security"
@@ -179,6 +183,13 @@ function ProfileUser() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+      {isSecurityModalOpen && (
+ <ModalSecurity
+    isOpen={isSecurityModalOpen}
+    onClose={() => setIsSecurityModalOpen(false)}
+ />
+)}
+
     </>
   );
 }
