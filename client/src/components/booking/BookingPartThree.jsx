@@ -68,7 +68,7 @@ function Total() {
 
 function YourStay() {
   const location = useLocation();
-  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total: initialTotal, selectedRoomsDetails  } = location.state || {};
+  const { checkInDate, checkOutDate, selectedGuests, selectedChildren, selectedRoomsDetails  } = location.state || {};
   console.log("Location state:", location.state); 
   return (
     <div className="flex overflow-hidden relative flex-col grow px-6 py-5 border border-solid aspect-[0.58]  bg-zinc-200 border-neutral-800 fill-zinc-100 rounded-md 00 stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-7">
@@ -158,7 +158,7 @@ function EnhanceStayDetails() {
 
 function TotalPrice() {
   const location = useLocation();
-  const { checkInDate, checkOutDate, selectedGuests, selectedChildren,total, selectedRoomsDetails } = location.state || {};
+  const { total,  } = location.state || {};
   return (
     <div className="flex relative gap-5 justify-between mt-20 font-extrabold leading-[140%] max-md:mt-10 max-md:mr-2 max-md:ml-2">
       <div className="justify-center px-10 py-0.5 text-xl tracking-normal text-center whitespace-nowrap bg-amber-300 rounded-md text-zinc-100 max-md:px-5">TOTAL</div>

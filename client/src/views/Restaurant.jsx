@@ -18,7 +18,7 @@ const Restaurant = () => {
       <Food currentPage={currentPage} setCurrentPage={setCurrentPage} />
       </div>
    </div>
-   <div className='m-10'>
+   <div className='m-10 w-full'>
       <ReservationForm/>
    </div>
    </div>

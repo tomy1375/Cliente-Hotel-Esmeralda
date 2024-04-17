@@ -51,7 +51,7 @@ function ProfileUser() {
   }, [isModalOpen, isModalOpenReservation]);
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
   }, [user]);
 
   // const profilePhoto = 

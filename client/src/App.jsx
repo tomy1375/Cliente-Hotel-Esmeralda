@@ -32,6 +32,8 @@ import BookingPartFourView from "./views/BookingPartFourView";
 import ForgotPassword from "./views/ForgotPasswordView";
 import ForgotPasswordView from "./views/ForgotPasswordView";
 import ForgotPasswordRecoveryView from "./views/ForgotPasswordRecoveryView";
+import BookingFailView from "./views/BookingFailView";
+import PasswordRecoveryView from "./views/PasswordRecoveryView";
 
 
 function MainLayout() {
@@ -91,9 +93,11 @@ function MainLayout() {
         <Route path="/booking" element={<BookingView/>}/>
         <Route path="/bookingTwo" element={<BookingPartTwoView/>}/>
         <Route path="/bookingThree" element={<BookingPartThreeView/>}/>
-        <Route path="/bookingFour" element={<BookingPartFourView/>}/>
+        <Route path="/bookingSuccess" element={<BookingPartFourView/>}/>
         <Route path="/forgotpassword" element={<ForgotPasswordView/>}/>
         <Route path="/forgotPasswordRecovery" element={<ForgotPasswordRecoveryView/>}/>
+        <Route path="/BookingFail" element={<BookingFailView/>}/>
+        <Route path="/passwordRecovery" element={<PasswordRecoveryView/>}/>
 
         <Route
           path="/termsAndConditions"

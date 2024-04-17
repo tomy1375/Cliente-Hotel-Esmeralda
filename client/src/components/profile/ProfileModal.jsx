@@ -40,7 +40,7 @@ function ProfileModal({ isOpen, onClose }) {
   });
 
   useEffect(() => {
-    console.log("Nuevos datos de userInfo:", userInfo);
+    ;
   }, [userInfo]);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ function ProfileModal({ isOpen, onClose }) {
 
   useEffect(() => {
     if (userInfo !== null) {
-      console.log(userInfo);
+      // console.log(userInfo);
       setIsEmailVerified(userInfo.emailVerified);
       setFormData(userInfo);
     }
@@ -111,7 +111,7 @@ function ProfileModal({ isOpen, onClose }) {
       if (selectedFile) {
         requestData.photo = selectedFile;
       }
-
+      console.log(requestData)
       const response = await requestCreateProfile(
         token,
         userInfo.id,
