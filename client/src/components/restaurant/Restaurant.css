@@ -1,5 +1,5 @@
 .btnd {
-    font-size: 27px;
+    font-size: 25px;
     background: transparent;
     border: none;
     padding: 0.3em ;
@@ -48,3 +48,7 @@
     color: aliceblue;
    }
    
+   .btnd-active {
+    margin-top: 10px; /* Ajusta este valor según sea necesario */
+    /* Otros estilos para el botón activo */
+   }

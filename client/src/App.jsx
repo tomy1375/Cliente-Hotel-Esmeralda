@@ -36,6 +36,7 @@ import BookingFailView from "./views/BookingFailView";
 import PasswordRecoveryView from "./views/PasswordRecoveryView";
 
 
+
 function MainLayout() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -98,6 +99,8 @@ function MainLayout() {
         <Route path="/forgotPasswordRecovery" element={<ForgotPasswordRecoveryView/>}/>
         <Route path="/BookingFail" element={<BookingFailView/>}/>
         <Route path="/passwordRecovery" element={<PasswordRecoveryView/>}/>
+       
+        
 
         <Route
           path="/termsAndConditions"

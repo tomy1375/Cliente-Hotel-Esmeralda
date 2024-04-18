@@ -111,7 +111,7 @@ const Results = ({ onRoomSelect, selectedRooms }) => {
     <div className="min-h-screen py-8">
       <h1 className="text-center font-extrabold text-5xl underline decoration-v ">
         Rooms</h1>
-      <div className="max-w-4xl mx-auto px-4 mt-2">
+      <div className="max-w-4xl mx-auto mt-2">
         <h2 className="text-3xl font-semibold text-gray-800 mb-4"></h2>
         {availableRooms.length === 0 ? (
           <div className="text-lg text-gray-600">
@@ -130,15 +130,15 @@ const Results = ({ onRoomSelect, selectedRooms }) => {
                       <div className=" ">
                         <div className="flex  max-md:flex-col max-md:gap-0 lg:h-[66%]">
                           <div className="flex flex-col  max-md:ml-0 max-w-md ">
-                            <div className="mt-5 ml-24 text-2xl font-extrabold text-center text-white lg:h-[66%] ">
-                              {room.room_type.name}
-                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="mt-12 ml-24 text-base font-semibold text-white max-md:mt-10 max-md:ml-2.5 lg:h-[66%]">
+                      <div className="mt-3 ml-28 text-base font-semibold text-white max-md:mt-10 max-md:ml-2.5 lg:h-[66%]">
                         Sleeps {room.max_capacity} | 2 King
                       </div>
+                            <div className="mt-4 ml-24 text-2xl font-extrabold text-center text-white lg:h-[66%] ">
+                              {room.room_type.name}
+                            </div>
                     </div>
                     <div className="mt-5 mb-8 text- font-medium text-white ">
                       {room.description}
@@ -147,7 +147,7 @@ const Results = ({ onRoomSelect, selectedRooms }) => {
                       PRICE FOR NIGHT ${room.price_per_night}
                     </h4>
                     <button
-                      className="justify-center items-center px-16 py-4  text-base font-extrabold tracking-normal leading-6 text-white rounded-2xl border border-violet-100 border-solid hover:bg-slate-950 transition-colors max-md:px-5 max-md:max-w-full"
+                      className="justify-center items-center px-16 py-4  text-base font-extrabold tracking-normal leading-6 text-white rounded-2xl border border-violet-100 border-solid hover:bg-green-950 transition-colors max-md:px-5 max-md:max-w-full"
                       onClick={() => handleRoomClickModal(room)}
                     >
                       SEE MORE
