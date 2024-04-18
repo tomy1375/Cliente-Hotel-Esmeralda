@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -40,6 +40,26 @@ import PasswordRecoveryView from "./views/PasswordRecoveryView";
 function MainLayout() {
   const location = useLocation();
   const dispatch = useDispatch();
+
+import ReviewsView from "./views/ReviewsView";
+import ClientChat from './components/chat/ClientChat';
+import AdministradorChat from './components/chat/AdministradorChat';
+import BookNotify from './components/notifications/BookNotify';
+import AdministradorNotify from './components/notifications/AdministradorNotify'
+import { io } from 'socket.io-client';
+
+function MainLayout({ socket, setSocket }) {
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    const SOCKET_IO_SERVER_URL = 'http://localhost:8000'; // Dirección del servidor de Socket.IO
+    const newSocket = io(SOCKET_IO_SERVER_URL); 
+    setSocket(newSocket);
+
+    return () => newSocket.close(); 
+  }, []);
 
   useEffect(() => {
     const removeModalIndicator = () => {
@@ -90,6 +110,11 @@ function MainLayout() {
         <Route path="/gallery" element={<GalleryView/>}/>
         <Route path="/offers" element={<OffersView/>}/>
         <Route path="/services" element={<ServicesView/>}/>
+        <Route path="/reviews" element={<ReviewsView socket={socket} />} />
+        <Route path="/clientChat/:id" element={<ClientChat socket={socket} />} />
+        <Route path="/administradorChat" element={<AdministradorChat socket={socket} />} />
+        <Route path="/bookNotify" element={<BookNotify socket={socket} />} />
+        <Route path="/administradorNotify" element={<AdministradorNotify socket={socket} />} />
         <Route path="/profile" element={<ProfileView/>}/>
         <Route path="/booking" element={<BookingView/>}/>
         <Route path="/bookingTwo" element={<BookingPartTwoView/>}/>
@@ -125,9 +150,11 @@ function MainLayout() {
 }
 
 function App() {
+
+  const [socket, setSocket] = useState(null);
   return (
     <Router>
-      <MainLayout />
+      <MainLayout socket={socket} setSocket={setSocket} />
     </Router>
   );
 }
