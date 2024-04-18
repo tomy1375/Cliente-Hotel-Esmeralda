@@ -1,51 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
-import HomeView from "./views/HomeView";
-import Navbar from "./components/navbar/Navbar";
-import LandingView from "./views/LandingView";
-import DetailView from "./views/DetailView";
-import Rooms from "./views/RoomsView";
-import Restaurant from "./views/Restaurant";
-import LoginView from "./views/LoginView";
-import TermsAndConditionsView from "./views/TermsAndConditions";
-import ResultsView from "./views/ResultView";
-import RegisterView from "./views/RegisterView";
-import Footer from "./components/footer/Footer";
-import GalleryView from "./views/GalleryView";
-import ProfileView from "./views/ProfileView";
-import OffersView from "./views/OffersView";
-import { getUserInfo } from "./services/users/userInfo";
-import { useDispatch } from "react-redux";
-import { setUserInfo } from "./redux/users/actions/usersActions";
-import Cookies from "js-cookie";
-import EmailConfirmation from "./views/ConfirmationEmail";
-import ServicesView from "./views/ServicesView";
-import BookingView from "./views/BookingView";
-import BookingPartTwoView from "./views/BookingPartTwoView";
-import BookingPartThreeView from "./views/BookingPartThreeView";
-import BookingPartFourView from "./views/BookingPartFourView";
-import ForgotPassword from "./views/ForgotPasswordView";
-import ForgotPasswordView from "./views/ForgotPasswordView";
-import ForgotPasswordRecoveryView from "./views/ForgotPasswordRecoveryView";
-import BookingFailView from "./views/BookingFailView";
-import PasswordRecoveryView from "./views/PasswordRecoveryView";
-
-
-
-function MainLayout() {
-  const location = useLocation();
-  const dispatch = useDispatch();
-
-import ReviewsView from "./views/ReviewsView";
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import HomeView from './views/HomeView';
+import Navbar from './components/navbar/Navbar';
+import LandingView from './views/LandingView';
+import DetailView from './views/DetailView';
+import Rooms from './views/RoomsView';
+import Restaurant from './views/Restaurant';
+import LoginView from './views/LoginView';
+import TermsAndConditionsView from './views/TermsAndConditions';
+import ResultsView from './views/ResultView';
+import RegisterView from './views/RegisterView';
+import Footer from './components/footer/Footer';
+import GalleryView from './views/GalleryView';
+import ProfileView from './views/ProfileView';
+import OffersView from './views/OffersView';
+import { getUserInfo } from './services/users/userInfo';
+import { useDispatch } from 'react-redux';
+import { setUserInfo } from './redux/users/actions/usersActions';
+import Cookies from 'js-cookie';
+import EmailConfirmation from './views/ConfirmationEmail';
+import ServicesView from './views/ServicesView';
+import BookingView from './views/BookingView';
+import BookingPartTwoView from './views/BookingPartTwoView';
+import BookingPartThreeView from './views/BookingPartThreeView';
+import BookingPartFourView from './views/BookingPartFourView';
+import ForgotPassword from './views/ForgotPasswordView';
+import ForgotPasswordView from './views/ForgotPasswordView';
+import ForgotPasswordRecoveryView from './views/ForgotPasswordRecoveryView';
+import BookingFailView from './views/BookingFailView';
+import PasswordRecoveryView from './views/PasswordRecoveryView';
+import ReviewsView from './views/ReviewsView';
 import ClientChat from './components/chat/ClientChat';
 import AdministradorChat from './components/chat/AdministradorChat';
 import BookNotify from './components/notifications/BookNotify';
-import AdministradorNotify from './components/notifications/AdministradorNotify'
+import AdministradorNotify from './components/notifications/AdministradorNotify';
 import { io } from 'socket.io-client';
 
 function MainLayout({ socket, setSocket }) {
@@ -53,7 +41,6 @@ function MainLayout({ socket, setSocket }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-
     const SOCKET_IO_SERVER_URL = 'http://localhost:8000'; // Dirección del servidor de Socket.IO
     const newSocket = io(SOCKET_IO_SERVER_URL); 
     setSocket(newSocket);
@@ -70,6 +57,7 @@ function MainLayout({ socket, setSocket }) {
       window.removeEventListener("beforeunload", removeModalIndicator);
     };
   }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -90,7 +78,7 @@ function MainLayout({ socket, setSocket }) {
       }
     };
     fetchData();
-  });
+  }, []);
 
   return (
     <>
@@ -147,10 +135,11 @@ function MainLayout({ socket, setSocket }) {
       )}
     </>
   );
+
 }
 
-function App() {
 
+function App() {
   const [socket, setSocket] = useState(null);
   return (
     <Router>
