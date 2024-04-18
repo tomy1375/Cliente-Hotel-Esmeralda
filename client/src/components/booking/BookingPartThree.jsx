@@ -101,7 +101,7 @@ function BookingPartThree() {
     total,
     selectedRoomsDetails,
   } = location.state || {};
-
+  console.log(location.state);
   const [cars, setCars] = useState([]);
   const [selectedCars, setSelectedCars] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);

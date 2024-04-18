@@ -278,7 +278,7 @@ function BookingPartTwo() {
        });
     } else {
        
-       const roomsDetails = selectedRoomsDetails.map(({ name, price_per_night }) => ({ name, price_per_night }));
+       const roomsDetails = selectedRoomsDetails.map(({ name, price_per_night ,  numberOfNights }) => ({ name, price_per_night ,  numberOfNights}));
    
       
        const roomsDetailsString = JSON.stringify(roomsDetails);
