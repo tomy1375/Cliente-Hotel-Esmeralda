@@ -109,7 +109,9 @@ const Results = ({ onRoomSelect, selectedRooms }) => {
 
   return (
     <div className="min-h-screen py-8">
-      <div className="max-w-4xl mx-auto px-4">
+      <h1 className="text-center font-extrabold text-5xl underline decoration-v ">
+        Rooms</h1>
+      <div className="max-w-4xl mx-auto mt-2">
         <h2 className="text-3xl font-semibold text-gray-800 mb-4"></h2>
         {availableRooms.length === 0 ? (
           <div className="text-lg text-gray-600">
@@ -128,15 +130,15 @@ const Results = ({ onRoomSelect, selectedRooms }) => {
                       <div className=" ">
                         <div className="flex  max-md:flex-col max-md:gap-0 lg:h-[66%]">
                           <div className="flex flex-col  max-md:ml-0 max-w-md ">
-                            <div className="mt-5 ml-24 text-2xl font-extrabold text-center text-white lg:h-[66%] ">
-                              {room.room_type.name}
-                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="mt-12 ml-24 text-base font-semibold text-white max-md:mt-10 max-md:ml-2.5 lg:h-[66%]">
+                      <div className="mt-3 ml-28 text-base font-semibold text-white max-md:mt-10 max-md:ml-2.5 lg:h-[66%]">
                         Sleeps {room.max_capacity} | 2 King
                       </div>
+                            <div className="mt-4 ml-24 text-2xl font-extrabold text-center text-white lg:h-[66%] ">
+                              {room.room_type.name}
+                            </div>
                     </div>
                     <div className="mt-5 mb-8 text- font-medium text-white ">
                       {room.description}
@@ -145,7 +147,7 @@ const Results = ({ onRoomSelect, selectedRooms }) => {
                       PRICE FOR NIGHT ${room.price_per_night}
                     </h4>
                     <button
-                      className="justify-center items-center px-16 py-4  text-base font-extrabold tracking-normal leading-6 text-white rounded-2xl border border-violet-100 border-solid hover:bg-slate-950 transition-colors max-md:px-5 max-md:max-w-full"
+                      className="justify-center items-center px-16 py-4  text-base font-extrabold tracking-normal leading-6 text-white rounded-2xl border border-violet-100 border-solid hover:bg-green-950 transition-colors max-md:px-5 max-md:max-w-full"
                       onClick={() => handleRoomClickModal(room)}
                     >
                       SEE MORE
@@ -265,38 +267,46 @@ function BookingPartTwo() {
 
   const handleClickThree = () => {
     if (selectedRooms.length === 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "Warning",
-        text: "Please select at least one room to proceed with your reservation. Thank you for your cooperation.",
-        confirmButtonColor: "#fcd34d",
-        customClass: {
-          confirmButton: "custom-confirm-button",
-        },
-      });
+       Swal.fire({
+         icon: "warning",
+         title: "Warning",
+         text: "Please select at least one room to proceed with your reservation. Thank you for your cooperation.",
+         confirmButtonColor: "#fcd34d",
+         customClass: {
+           confirmButton: "custom-confirm-button",
+         },
+       });
     } else {
+       
+       const roomsDetails = selectedRoomsDetails.map(({ name, price_per_night }) => ({ name, price_per_night }));
+   
       
-      const queryParams = new URLSearchParams({
-        from: from,
-        to: to,
-        adults: capacity - children, 
-        children: children,
-        total: total,
-        selectedRoomsDetails: selectedRoomsDetails,
-      }).toString();
-
-      navigate(`/bookingThree?${queryParams}`, {
-        state: {
-          checkInDate: from,
-          checkOutDate: to,
-          selectedGuests: capacity - children,
-          selectedChildren: children,
-          total: total,
-          selectedRoomsDetails: selectedRoomsDetails,
-        },
-      });
+       const roomsDetailsString = JSON.stringify(roomsDetails);
+   
+       const queryParams = new URLSearchParams({
+         from: from,
+         to: to,
+         adults: capacity - children, 
+         children: children,
+         total: total,
+         selectedRoomsDetails: roomsDetailsString, 
+       }).toString();
+   
+       console.log(roomsDetails);
+   
+       navigate(`/bookingThree?${queryParams}`, {
+         state: {
+           checkInDate: from,
+           checkOutDate: to,
+           selectedGuests: capacity - children,
+           selectedChildren: children,
+           total: total,
+           selectedRoomsDetails: roomsDetails, // Enviar el arreglo de objetos como parte del estado
+         },
+       });
     }
-  };
+   };
+   
 
   const handleClick = () => {
     const queryParams = new URLSearchParams({
@@ -411,7 +421,7 @@ function BookingPartTwo() {
               />
             </div>
           </div>
-          <div className="flex flex-col mr-14 w-[30%] max-md:ml-0 max-md:w-full  ">
+          <div className="flex flex-col mr-14 w-[30%] max-md:ml-0 max-md:w-full mt-24 ">
             <div className="flex overflow-hidden relative flex-col px-7 pt-5 pb-9 border border-solid aspect-[0.86] bg-gray-200 rounded-xl border-neutral-800 fill-slate-500 leading-[140%] stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-4">
               <div className="flex relative gap-2.5 text-xl tracking-normal text-neutral-800">
                 <div className="flex flex-col flex-1 font-bold ml-6 mt-2">
@@ -465,22 +475,22 @@ function BookingPartTwo() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex gap-5 justify-between pr-5 mt-8 text-xl font-extrabold tracking-normal leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:max-w-full">
-        <button
-          className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5 mt-7"
-          onClick={handleClick}
-        >
-          RETURN
-        </button>
         <button
           className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mt-7 hover:bg-amber-400 transition-colors"
           onClick={handleClickThree}
         >
           Continue
         </button>
+        <button
+          className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5 mt-3"
+          onClick={handleClick}
+        >
+          RETURN
+        </button>
+          </div>
+        </div>
+      </div>
+      <div className="flex gap-5 justify-between pr-5 mt-8 text-xl font-extrabold tracking-normal leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:max-w-full">
       </div>
     </div>
   );

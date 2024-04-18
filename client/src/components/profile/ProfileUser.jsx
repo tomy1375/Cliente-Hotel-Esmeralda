@@ -41,17 +41,17 @@ function ProfileUser() {
     dispatch(fetchUserInfo()); 
   }, [dispatch]);
 
-  useEffect(() => {
-    if (isModalOpen || isModalOpenReservation) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+  // useEffect(() => {
+  //   if (isModalOpen || isModalOpenReservation) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "auto";
+  //   }
 
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isModalOpen, isModalOpenReservation]);
+  //   return () => {
+  //     document.body.style.overflow = "auto";
+  //   };
+  // }, [isModalOpen, isModalOpenReservation]);
 
   useEffect(() => {
     // console.log(user);
@@ -85,12 +85,7 @@ function ProfileUser() {
                 </div>
                 <div className="shrink-0 mt-7 ml-4 h-px border border-solid bg-white bg-opacity-10 border-white border-opacity-10 w-[199px] max-md:ml-2.5" />
                 <div className="flex gap-5 mt-10 whitespace-nowrap ml">
-                  {/* <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/4f7771e3595549aa31d10e6a1f228d2d51fc2a8088472a7bd56bd4ea28227bab?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&"
-                    alt=""
-                    className="shrink-0 aspect-[0.84] w-[27px]"
-                  /> */}
+                
                   <div className="flex-auto my-auto">{displayEmail}</div>
                 </div>
                 <div className="shrink-0 mt-8 ml-4 h-px border border-solid bg-white bg-opacity-10 border-white border-opacity-10 w-[199px] max-md:ml-2.5" />
@@ -155,10 +150,17 @@ function ProfileUser() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <div className="px-8 py-6 rounded-2xl border border-solid border-stone-500 max-md:px-5 flex items-center">
-                    <MdHotel
-                      className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
-                      onClick={() => setIsModalOpenReservation(true)}
-                    />
+                  <MdHotel
+                        className="text-d p-4 bg-v w-20 h-20 rounded-full cursor-pointer hover:bg-v-dark transition-all duration-300 max-md:w-10 max-md:h-10 max-md:p-3 max-md:ml-2.5 max-md:mt-10 max-md:mb-5"
+                        onClick={() => {
+                            if (isModalOpenReservation) {
+                              setIsModalOpenReservation(false);
+                            } else {
+                              setIsModalOpenReservation(true);
+                            }
+                        }}
+                        />
+
                     <div className="flex flex-col w-full max-md:w-2/3 ml-5 max-md:ml-0">
                       <SectionHeader
                         title="Reservation"
@@ -172,12 +174,9 @@ function ProfileUser() {
           </div>
         </div>
 
-        <ModalReservation
-          isOpen={isModalOpenReservation}
-          onClose={() => setIsModalOpenReservation(false)}
-        >
-          <ReservationModal />
-        </ModalReservation>
+        
+        
+        
       </div>
       <ProfileModal
         isOpen={isModalOpen}
@@ -189,6 +188,10 @@ function ProfileUser() {
     onClose={() => setIsSecurityModalOpen(false)}
  />
 
+          <ReservationModal
+          isOpen={isModalOpenReservation}
+          onClose={() => setIsModalOpenReservation(false)}
+           />
 
     </>
   );
