@@ -162,7 +162,12 @@ function BookingPartThree() {
       });
     }
   };
-  
+
+  const handleRemoveCar = (carId) => {
+    const updatedCars = selectedCars.filter((car) => car.id !== carId);
+    setSelectedCars(updatedCars);
+    calculateTotalPrice();
+  };
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -183,7 +188,7 @@ function BookingPartThree() {
         price_per_day: car.price_per_day,
         total_days: totalDays,
       }));
-  
+
       const paymentData = {
         userId: userInfo.id,
         services: {
@@ -193,9 +198,9 @@ function BookingPartThree() {
         },
         totalPrice,
       };
-  
+
       console.log(paymentData); // Para depuración
-  
+
       // Llamar a la función de pago y pasar los datos de pago
       const response = await payment(paymentData);
       console.log(response); // Para ver la respuesta del pago
@@ -204,7 +209,6 @@ function BookingPartThree() {
       console.error("Error handling payment:", error);
     }
   };
-  
 
   return (
     <div className="flex flex-col px-44 pt-14 pb-12 bg-white rounded-md border-2 border-solid border-zinc-200 max-md:px-5">
@@ -220,6 +224,9 @@ function BookingPartThree() {
       </div>
       <div className="shrink-0 mt-10 max-w-full h-px border border-solid bg-zinc-200 border-zinc-200 max-md:mr-2.5" />
       <div className="mt-8 max-md:max-w-full">
+      <h1 className="text-center font-extrabold text-5xl underline decoration-v mb-6 mr-44">Services</h1>
+
+
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <div className="container mx-auto mt-4 mb-4 space-y-8">
             {cars.map((car, index) => (
@@ -276,7 +283,8 @@ function BookingPartThree() {
             ))}
           </div>
           <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
-            <div className="flex overflow-hidden relative flex-col grow px-6 py-5 border border-solid aspect-[0.58]  bg-zinc-200 border-neutral-800 fill-zinc-100 rounded-md 00 stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-7">
+      <div className="flex gap-5 j leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:mt-10 ">
+            <div className="flex overflow-hidden  flex-col grow px-6 py-5 border border-solid aspect-[0.58]  bg-zinc-200 border-neutral-800 fill-zinc-100 rounded-md 00 stroke-[0.5px] stroke-neutral-800 max-md:px-5 max-md:mt-7">
               <div className="flex relative gap-2.5 text-xl tracking-normal leading-7 text-neutral-800">
                 <div className="flex flex-col flex-1 font-bold">
                   <div className="flex flex-col pl-2.5 font-extrabold">
@@ -320,10 +328,16 @@ function BookingPartThree() {
                         key={index}
                         className="flex gap-2.5 mt-10 text-black whitespace-nowrap"
                       >
-                        <div className="font-extrabold">{car.brands}</div>
+                        <div className="font-extrabold ">{car.brands}</div>
                         <div className="flex flex-col">
-                          <div className="font-medium">
+                          <div className="flex font-medium">
                             ${car.price_per_day} x {totalDays} days
+                          <img
+                            onClick={() => handleRemoveCar(car.id)}
+                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
+                            alt="Remove icon"
+                            className="flex shrink-0 self-start aspect-[0.89] w-[25px] cursor-pointer ml-5"
+                          />
                           </div>
                         </div>
                       </div>
@@ -341,21 +355,20 @@ function BookingPartThree() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="flex gap-5 justify-between pr-2.5 mt-64 text-xl font-extrabold tracking-normal leading-7 uppercase whitespace-nowrap max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
         <button
-          className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5"
+          onClick={handlePayment}
+          className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 hover:bg-amber-400 transition-colors mt-6"
+        >
+          PAY
+        </button>
+        <button
+          className="justify-center px-8 py-4 rounded-md border border-solid border-neutral-800 text-neutral-800 max-md:px-5 mt-3"
           onClick={handleClickTwo}
         >
           RETURN
         </button>
-        <button
-          onClick={handlePayment}
-          className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 hover:bg-amber-400 transition-colors"
-        >
-          PAY
-        </button>
+        </div>
+      </div>
       </div>
     </div>
   );
