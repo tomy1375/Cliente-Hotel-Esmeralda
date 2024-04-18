@@ -13,27 +13,36 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
   const [mensaje, setMensaje] = useState('');
   const [mensajesCliente, setMensajesCliente] = useState(JSON.parse(localStorage.getItem('mensajesCliente')) || []);
   const clientId = userInfo?.username ?? user?.firstName ?? "incognito";
-
+  const [welcomeSent, setWelcomeSent] = useState(false);
 
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
   const [contadorMensajes, setContadorMensajes] = useState(0);  // Nuevo estado para contar los mensajes
 
   useEffect(() => {
-    console.log("Efecto activado", { showChat, socket });
-    if (showChat && socket) {
-      console.log("Uniendo al chat con clientId:", clientId);
-      socket.emit('joinClientChat', clientId);
+    let timer;
+  
+    if (showChat && !welcomeSent) {
+      console.log("Uniendo al chat");
       const mensajeBienvenida = "Buenos días, ¿en qué podemos ayudarlo? La atención al cliente en vivo es de 11am a 16pm.";
       recibirMensajeServidor(mensajeBienvenida, true);
+      setWelcomeSent(true);  // Establecer la bandera a true después de enviar el mensaje
+  
+      // Establecer un temporizador para restablecer welcomeSent después de 2 minutos
+      timer = setTimeout(() => {
+        setWelcomeSent(false);
+      }, 120000); // 120000 ms = 2 minutos
     }
+  
     return () => {
-      if (socket) {
+      if (showChat) {
         console.log("Desconectando del chat");
-        socket.off('mensaje_cliente');
       }
+      clearTimeout(timer);  // Limpiar el temporizador cuando el componente se desmonta o showChat cambia
     };
-  }, [showChat, socket, clientId]); // Dependencias del efecto
+  }, [showChat]);
+  
+  
   
   useEffect(() => {
     if (isModalOpen) {
