@@ -147,13 +147,7 @@ function Navbar() {
     navigate("/profile");
   };
 
-  const goToChat = () => {
-    if(user){
-    navigate(`/clientChat/${user.firstName} ${user.lastName}`);
-    }else if(userInfo){
-    navigate(`/clientChat/${userInfo.userName}`);
-    }
-  };
+ 
 
   return (
     <>
@@ -300,10 +294,7 @@ function Navbar() {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <div className="flex items-center cursor-pointer" onClick={goToChat}>
-              <FaComment className="text-yellow-500 text-4xl" />
-              <span className="text-white"></span>
-            </div>
+               
                     </button>
                     {isOpenProfileMenu && (
                       <div className="absolute top-28 right-3 bg-white border border-gray-300 rounded shadow-md">
