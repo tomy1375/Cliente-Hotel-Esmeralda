@@ -35,11 +35,17 @@ import AdministradorChat from './components/chat/AdministradorChat';
 import BookNotify from './components/notifications/BookNotify';
 import AdministradorNotify from './components/notifications/AdministradorNotify';
 import { io } from 'socket.io-client';
+import Error404 from './components/error404/Error';
+
+import { Navigate } from 'react-router-dom';
 
 function MainLayout({ socket, setSocket }) {
   const location = useLocation();
   const dispatch = useDispatch();
+  const isErrorPage = location.pathname === '/error404';
 
+  const showNavbarAndFooter = !isErrorPage && location.pathname !== "/login" && location.pathname !== "/register"
+ 
   useEffect(() => {
     const SOCKET_IO_SERVER_URL = 'http://localhost:8000'; // Dirección del servidor de Socket.IO
     const newSocket = io(SOCKET_IO_SERVER_URL); 
@@ -79,12 +85,46 @@ function MainLayout({ socket, setSocket }) {
     };
     fetchData();
   }, []);
+  
+  const [showModal, setShowModal] = useState(true);
+  const [showChat, setShowChat] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);  // Estado para controlar la visibilidad del spinner
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSpinner(true);  // Mostrar el spinner después de 5 segundos
+    }, 5000);  // 5000 ms = 5 segundos
+
+    return () => clearTimeout(timer);  // Limpiar el temporizador
+  }, []);
+
+  const toggleChat = () => {
+    setShowChat(!showChat);  // Esto togglea el estado de showChat
+  };
+
+
+
+
 
   return (
     <>
-      {location.pathname !== "/login" && location.pathname !== "/register" && (
-        <Navbar />
+    
+    {showNavbarAndFooter && <Navbar />}    {showSpinner && (
+        <div className="spinner" onClick={toggleChat} style={{ cursor: 'pointer', position: 'fixed', right: '20px', bottom: '20px' }}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       )}
+      {showChat && (
+        <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
+          <ClientChat showChat={showChat} />
+        </div>
+      )}
+      
       <Routes>
         <Route path="/" element={<HomeView />} />
         <Route path="/landing" element={<LandingView />} />
@@ -112,6 +152,9 @@ function MainLayout({ socket, setSocket }) {
         <Route path="/forgotPasswordRecovery" element={<ForgotPasswordRecoveryView/>}/>
         <Route path="/BookingFail" element={<BookingFailView/>}/>
         <Route path="/passwordRecovery" element={<PasswordRecoveryView/>}/>
+        <Route path="/error404" element={<Error404 />} />
+        <Route path="*" element={<Navigate to="/error404" replace />} />
+        
        
         
 
@@ -130,9 +173,7 @@ function MainLayout({ socket, setSocket }) {
           element={<EmailConfirmation />}
         />
       </Routes>
-      {location.pathname !== "/login" && location.pathname !== "/register" && (
-        <Footer />
-      )}
+      {showNavbarAndFooter && <Footer />}
     </>
   );
 

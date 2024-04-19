@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useClerk } from '@clerk/clerk-react';
 
+
 import "../Button/idea.css"
 import "./ClientChat.css";  
 import { useSelector } from 'react-redux';

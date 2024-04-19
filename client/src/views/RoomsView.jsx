@@ -5,20 +5,7 @@ import '../components/home/Home.css'; // Asegúrate de que el CSS para el spinne
 import ClientChat from '../components/chat/ClientChat';
 
 const Rooms = () => {
-  const [showChat, setShowChat] = useState(false);
-  const [showSpinner, setShowSpinner] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSpinner(true); // Mostrar el spinner después de 5 segundos
-    }, 5000); // 5000 ms = 5 segundos
-
-    return () => clearTimeout(timer); // Limpiar el temporizador
-  }, []);
-
-  const toggleChat = () => {
-    setShowChat(!showChat); // Esto togglea el estado de showChat
-  };
 
   return (
     <div>
@@ -36,23 +23,6 @@ const Rooms = () => {
       </div>
 
       <CardsRooms />
-
-      {showSpinner && (
-        <div className="spinner" onClick={toggleChat} style={{ cursor: 'pointer', position: 'fixed', right: '20px', bottom: '20px' }}>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      )}
-
-      {showChat && (
-        <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50">
-          <ClientChat showChat={showChat} />
-        </div>
-      )}
 
     </div>
   );
