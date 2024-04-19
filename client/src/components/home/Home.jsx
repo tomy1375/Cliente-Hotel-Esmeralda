@@ -41,7 +41,7 @@ function Home() {
         </div>
       )}
       {showChat && (
-        <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50">
+        <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
           <ClientChat showChat={showChat} />
         </div>
       )}

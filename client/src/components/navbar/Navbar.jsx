@@ -248,9 +248,9 @@ function Navbar() {
             ) : (
               <>
                 {user || isCustomAuthenticated ? (
-                  <div className="font-bold text-white flex items-center justify-center">
+                  <div className="font-bold text-white flex items-center justify-center "  onMouseLeave={() => setIsOpenProfileMenu(false)}>
                     <button
-                      className="flex items-center space-x-2"
+                      className="flex items-center space-x-2 mt"
                       onClick={toggleProfileMenu}
                     >
                     {user?.imageUrl ? (
@@ -297,7 +297,7 @@ function Navbar() {
                
                     </button>
                     {isOpenProfileMenu && (
-                      <div className="absolute top-28 right-3 bg-white border border-gray-300 rounded shadow-md">
+                      <div className="absolute top-24 right-3 bg-white border border-gray-300 rounded shadow-md mr-4">
                         <ul className="py-2">
                           <li>
                             <button

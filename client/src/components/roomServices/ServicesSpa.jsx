@@ -23,7 +23,7 @@ const Services = () => {
       {services.map((service, index) => (
         <div
           className={`flex flex-wrap justify-center items-center ${
-            index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+            index % 2 === 0 ? "lg:flex-row-reverse" : "lg:flex-row"
           }`}
           key={index}
         >

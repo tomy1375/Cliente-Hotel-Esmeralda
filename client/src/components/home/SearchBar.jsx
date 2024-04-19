@@ -6,6 +6,8 @@ import "../home/SearchBar.scss";
 import { TbCalendar } from "react-icons/tb";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2';
+import { useSelector } from "react-redux";
+import { useClerk } from "@clerk/clerk-react";
 
 const SearchBar = () => {
  const [checkInDate, setCheckInDate] = useState(null);
@@ -17,6 +19,10 @@ const SearchBar = () => {
 
  const navigate = useNavigate();
  const location = useLocation();
+
+ const { user } = useClerk();
+ const userInfo = useSelector((state) => state.users.userInfo);
+ const clientId = userInfo?.username ?? user?.firstName ?? "notcount";
 
  useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -45,79 +51,94 @@ const SearchBar = () => {
  };
 
  const handleSearch = async () => {
-  try {
-    if (!checkInDate || !checkOutDate) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Oops...',
-        text: 'You must select both the check-in and check-out dates.',
-        confirmButtonColor: '#fcd34d', 
-        customClass: {
-          confirmButton: 'custom-confirm-button' 
-        }
-      });
-      return;
-    }
-
-    const capacity = numberOfAdults + numberOfChildren;
-    const formattedCheckInDate = formatDate(checkInDate);
-    const formattedCheckOutDate = formatDate(checkOutDate);
-
-    const searchData = {
-      from: formattedCheckInDate,
-      to: formattedCheckOutDate,
-      capacity,
-    };
-
-    const response = await axios.get(
-      "http://localhost:4000/api/rooms/available",
-      {
-        params: searchData, 
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    setAvailableRooms(response.data.rooms);
-
-    if (response.data.rooms.length === 0) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
-      });
-    } else {
-      const queryParams = new URLSearchParams({
-        from: formattedCheckInDate,
-        to: formattedCheckOutDate,
-        adults: numberOfAdults,
-        children: numberOfChildren,
-      }).toString();
-
-      // Navega a la nueva URL con los parámetros de búsqueda
-      navigate(`/bookingTwo?${queryParams}`, { state: { 
-        checkInDate: formattedCheckInDate, 
-        checkOutDate: formattedCheckOutDate, 
-        selectedGuests: numberOfAdults, 
-        selectedChildren: numberOfChildren, 
-        availableRooms: response.data.rooms 
-      }});
-    }
-  } catch (error) {
-    console.error("Error al enviar la solicitud de disponibilidad:", error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'Sorry, there are no rooms available for the selected dates and number of guests.',
-      confirmButtonColor: '#fcd34d', 
-      customClass: {
-        confirmButton: 'custom-confirm-button' 
-      }
-    });
+  // Verifica si el usuario está registrado
+  if (clientId === "notcount") {
+     // Muestra un SweetAlert2 de advertencia
+     Swal.fire({
+       icon: 'warning',
+       title: 'Log in to continue',
+       text: 'You must log in to book a room.',
+       confirmButtonColor: '#fcd34d', 
+       customClass: {
+         confirmButton: 'custom-confirm-button' 
+       }
+     });
+     return; // Detiene la ejecución de la función
   }
-};
-
+ 
+  try {
+     if (!checkInDate || !checkOutDate) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'Oops...',
+         text: 'You must select both the check-in and check-out dates.',
+         confirmButtonColor: '#fcd34d', 
+         customClass: {
+           confirmButton: 'custom-confirm-button' 
+         }
+       });
+       return;
+     }
+ 
+     const capacity = numberOfAdults + numberOfChildren;
+     const formattedCheckInDate = formatDate(checkInDate);
+     const formattedCheckOutDate = formatDate(checkOutDate);
+ 
+     const searchData = {
+       from: formattedCheckInDate,
+       to: formattedCheckOutDate,
+       capacity,
+     };
+ 
+     const response = await axios.get(
+       "http://localhost:4000/api/rooms/available",
+       {
+         params: searchData, 
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
+ 
+     setAvailableRooms(response.data.rooms);
+ 
+     if (response.data.rooms.length === 0) {
+       Swal.fire({
+         icon: 'error',
+         title: 'Oops...',
+         text: 'No hay habitaciones disponibles con esta cantidad o fecha que busca',
+       });
+     } else {
+       const queryParams = new URLSearchParams({
+         from: formattedCheckInDate,
+         to: formattedCheckOutDate,
+         adults: numberOfAdults,
+         children: numberOfChildren,
+       }).toString();
+ 
+       // Navega a la nueva URL con los parámetros de búsqueda
+       navigate(`/bookingTwo?${queryParams}`, { state: { 
+         checkInDate: formattedCheckInDate, 
+         checkOutDate: formattedCheckOutDate, 
+         selectedGuests: numberOfAdults, 
+         selectedChildren: numberOfChildren, 
+         availableRooms: response.data.rooms 
+       }});
+     }
+  } catch (error) {
+     console.error("Error al enviar la solicitud de disponibilidad:", error);
+     Swal.fire({
+       icon: 'error',
+       title: 'Error',
+       text: 'Sorry, there are no rooms available for the selected dates and number of guests.',
+       confirmButtonColor: '#fcd34d', 
+       customClass: {
+         confirmButton: 'custom-confirm-button' 
+       }
+     });
+  }
+ };
+ 
 
  
 

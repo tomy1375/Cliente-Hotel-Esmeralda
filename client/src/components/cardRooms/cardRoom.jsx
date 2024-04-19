@@ -3,18 +3,37 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DetailModalRoom from "../detail/DetailModalRoom";
 import Modal from "../modal/modal";
+import { useClerk } from "@clerk/clerk-react";
+import { useSelector } from "react-redux";
+import Swal from 'sweetalert2';
 
 function CardRoom({ room }) {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useClerk();
+  const userInfo = useSelector((state) => state.users.userInfo);
+  const clientId = userInfo?.username ?? user?.firstName ?? "notcount";
 
   const single_bed = room.room_detail.single_bed ? room.room_detail.single_bed : 0;
   const double_bed = room.room_detail.double_bed ? room.room_detail.double_bed : 0;
 
   const handleClick = () => {
+    if (clientId === "notcount") {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Log in to continuer',
+        text: 'You must log in to book a room.',
+        confirmButtonText: 'ok', // Personaliza el texto del botón de confirmación
+        confirmButtonColor: '#fcd34d', 
+       customClass: {
+         confirmButton: 'custom-confirm-button' 
+       }
+      });
+      return; // Detiene la ejecución de la función
+    }
     navigate("/booking");
-  };
+ };
 
   return (
     <>

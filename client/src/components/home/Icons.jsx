@@ -7,9 +7,20 @@ import {
   faWifi,
 } from "@fortawesome/free-solid-svg-icons";
 import Collage from "../../assets/collage.png";
+import { useNavigate } from "react-router-dom";
 //home
 
 const IconRow = () => {
+  let navigate = useNavigate();
+  const handleCarClick = () => {
+    // Navega a la página del restaurante y automáticamente desplázate a la sección del formulario de reserva
+    navigate('/services#car');
+  };
+
+  const handleSpaClick = () => {
+    // Navega a la página del restaurante y automáticamente desplázate a la sección del formulario de reserva
+    navigate('/services#spa');
+  };
   return (
     <>
       <div className="flex flex-col items-center m-2">
@@ -25,19 +36,25 @@ const IconRow = () => {
             </span>
           </div>
           <div className="flex items-center space-x-2">
+            <button onClick={handleCarClick} className="">
+
             <FontAwesomeIcon
               icon={faCar}
               className={`w-5 h-5 bg-gray-100 p-3 text-yellow-500 ${"sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-12 lg:h-12"} rounded-full`}
             />
+            </button >
             <span className="text-l">
               Car <br /> Rental
             </span>
           </div>
           <div className="flex items-center space-x-2">
+            <button onClick={handleSpaClick}>
+
             <FontAwesomeIcon
               icon={faHotTub}
               className={`w-5 h-5 bg-gray-100 p-3 text-yellow-500 ${"sm:w-12 sm:h-12 md:w-12 md:h-12 lg:w-12 lg:h-12"} rounded-full`}
             />
+            </button>
             <span className="text-l">
               Resort <br /> & Spa
             </span>
@@ -103,17 +120,14 @@ const IconRow = () => {
         </div>
 
         <div className="flex-col lg:flex-shrink-0 ml-8 hidden lg:block">
-          <img src={Collage} alt="Collage" className="w-full h-full" />
+          <img src={Collage} alt="Collage" className="w-full h-full " />
         </div>
       </div>
       <div className="flex flex-col items-center justify-center m-14">
         <h2 className="text-2xl font-bold mb-4 text-gray-500">OUR HOTEL</h2>
         <h2 className="text-2xl font-bold mb-4 text-d">A WORLD OF OPTIONS</h2>
         <p className="text-lg text-center max-w-prose mx-auto">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rerum ad
-          aliquam excepturi. Sed at placeat sequi ratione nisi! Maiores ex
-          laborum ipsum est, perspiciatis dignissimos debitis ducimus ab
-          consequuntur fugit?
+          We are thrilled to have you here, and our entire team is committed to ensuring your stay is nothing short of extraordinary. Our resort is designed to pamper you with the utmost luxury, offering a unique blend of serene surroundings and exquisite amenities. 🏖️
         </p>
       </div>
 

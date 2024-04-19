@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useClerk } from '@clerk/clerk-react';
 
-
+import "../Button/idea.css"
 import "./ClientChat.css";  
 import { useSelector } from 'react-redux';
 
@@ -20,29 +20,20 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
   const [contadorMensajes, setContadorMensajes] = useState(0);  // Nuevo estado para contar los mensajes
 
   useEffect(() => {
-    let timer;
-  
     if (showChat && !welcomeSent) {
       console.log("Uniendo al chat");
       const mensajeBienvenida = "Buenos días, ¿en qué podemos ayudarlo? La atención al cliente en vivo es de 11am a 16pm.";
       recibirMensajeServidor(mensajeBienvenida, true);
-      setWelcomeSent(true);  // Establecer la bandera a true después de enviar el mensaje
-  
-      // Establecer un temporizador para restablecer welcomeSent después de 2 minutos
-      timer = setTimeout(() => {
-        setWelcomeSent(false);
-      }, 120000); // 120000 ms = 2 minutos
+      setWelcomeSent(true);  
     }
-  
+    
     return () => {
       if (showChat) {
         console.log("Desconectando del chat");
+        setWelcomeSent(false);  // Esto restablecerá welcomeSent cuando el chat se cierre
       }
-      clearTimeout(timer);  // Limpiar el temporizador cuando el componente se desmonta o showChat cambia
     };
   }, [showChat]);
-  
-  
   
   useEffect(() => {
     if (isModalOpen) {
@@ -57,7 +48,7 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
 
   const recibirMensajeServidor = (mensajeTexto, esAutomatico = false) => {
     if (!esAutomatico) {
-      // Mostrar indicador de "escribiendo..."
+     
       const mensajeTemporal = {
         tipo: 'administrador',
         clienteId: id,
@@ -66,13 +57,13 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
       setMensajesCliente(prev => [...prev, mensajeTemporal]);
       scrollToBottom();
 
-      // Reemplazar "escribiendo..." con el mensaje real después de 1.5 segundos
+    
       setTimeout(() => {
-        setMensajesCliente(prev => prev.slice(0, -1)); // Eliminar el mensaje temporal
+        setMensajesCliente(prev => prev.slice(0, -1)); 
         agregarMensajeReal(mensajeTexto);
       }, 1500);
     } else {
-      // Agregar directamente el mensaje de bienvenida
+    
       agregarMensajeReal(mensajeTexto);
     }
   };
@@ -116,7 +107,7 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
 
   return (
     <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-xl shadow">
-      <h1 className="text-2xl font-bold mb-4 text-center">Client: {clientId}</h1>
+      <h1 className="RegistrationForm-title bg text-2xl font-bold mb-4 text-center ml-24">Client: {clientId}</h1>
       <div ref={chatContainerRef} className="client-chat-messages rounded-xl">
         {mensajesCliente.map((m, index) => (
           <div key={index} className={`mensaje-container ${m.tipo === 'cliente' ? 'client-container' : 'admin-container'}`}>

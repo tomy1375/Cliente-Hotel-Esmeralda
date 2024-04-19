@@ -84,17 +84,28 @@
   .client-chat-submit:hover {
     background-color: #243320;
   }
+
+  /* .RegistrationForm-title::before, .RegistrationForm-title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: px;
+    background-color: #fcd34d;
+    margin-left: 4px;
+  } */
   
-  @keyframes pulse {
+  
+  @keyframes RegistrationForm-pulse {
     from {
       transform: scale(0.9);
       opacity: 1;
     }
+  
     to {
-      transform: scale(1.1);
-      opacity: 0.9;
+      transform: scale(1.8);
+      opacity: 0;
     }
   }
-  
-
   
