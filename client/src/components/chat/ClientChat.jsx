@@ -23,7 +23,7 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
   useEffect(() => {
     if (showChat && !welcomeSent) {
       console.log("Uniendo al chat");
-      const mensajeBienvenida = "Buenos días, ¿en qué podemos ayudarlo? La atención al cliente en vivo es de 11am a 16pm.";
+      const mensajeBienvenida = "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
       recibirMensajeServidor(mensajeBienvenida, true);
       setWelcomeSent(true);  
     }
