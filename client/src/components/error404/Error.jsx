@@ -2,18 +2,17 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
 function Dot({ className }) {
- return <div className={`shrink-0 bg-black rounded-full ${className}`} />;
+  return <div className={`shrink-0 bg-black rounded-full ${className}`} />;
 }
-
 
 function Error404() {
   const navigate = useNavigate();
   const GoHome = () => {
     navigate("/");
   };
- return (
-    <main className="flex flex-col justify-center items-center min-h-screen px-14 py-14 bg-v max-md:px-5">
-      <div className="flex flex-col justify-center w-full bg-orange-50 rounded-3xl max-md:max-w-full">
+  return (
+    <main className="flex flex-col justify-center items-center h-screen w-screen overflow-hidden px-14 py-14 bg-v max-md:px-5">
+      <div className="flex flex-col justify-center items-center w-full h-full bg-orange-50 rounded-3xl max-md:max-w-full max-md:h-full">
         <section className="flex overflow-hidden relative flex-col justify-center items-center px-16 py-20 w-full max-md:px-5 max-md:max-w-full">
           <img
             loading="lazy"
@@ -33,19 +32,22 @@ function Error404() {
                   404
                 </h1>
                 <div className="flex flex-col font-extrabold max-md:max-w-full">
-                 <h2 className="self-center text-6xl tracking-tighter text-black leading-[89.6px] max-md:max-w-full max-md:text-4xl">
+                  <h2 className="self-center text-6xl tracking-tighter text-black leading-[89.6px] max-md:max-w-full max-md:text-4xl">
                     Page Not Found
-                 </h2>
-                 <div className="flex flex-col mt-3.5 text-center max-md:max-w-full">
+                  </h2>
+                  <div className="flex flex-col mt-3.5 text-center max-md:max-w-full">
                     <p className="text-3xl tracking-tight leading-10 text-black max-md:max-w-full">
                       we're sorry. the page you requested could no be found
                       <br />
                       Please go back to the home page
                     </p>
-                    <button onClick={GoHome} className="text-xl py-4 px-3 mt-6 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full">
-                   GO HOME
-                  </button>
-                 </div>
+                    <button
+                      onClick={GoHome}
+                      className="text-xl py-4 px-3 mt-6 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full"
+                    >
+                      GO HOME
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -53,7 +55,7 @@ function Error404() {
         </section>
       </div>
     </main>
- );
+  );
 }
 
 export default Error404;
