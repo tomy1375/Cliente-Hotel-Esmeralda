@@ -53,7 +53,7 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
       const mensajeTemporal = {
         tipo: 'administrador',
         clienteId: id,
-        mensaje: { mensaje: "escribiendo...", tiempo: new Date() }
+        mensaje: { mensaje: "writing..", tiempo: new Date() }
       };
       setMensajesCliente(prev => [...prev, mensajeTemporal]);
       scrollToBottom();
@@ -96,7 +96,7 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
 
       // Simular respuesta del servidor
       setTimeout(() => {
-        const respuesta = contadorMensajes + 1 === 3 ? "ya cálmate wey" : "Enseguida lo atendemos.";
+        const respuesta = contadorMensajes + 1 === 3 ? "calm down, dude" : "We will attend to it right away.";
         recibirMensajeServidor(respuesta);
       }, 1500);
     }

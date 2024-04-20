@@ -28,7 +28,7 @@ function Navbar() {
   const location = useLocation();
   const userInfo = useSelector((state) => state.users.userInfo);
   const [token, setToken] = useState(null);
-  
+
   
 
   const [showOffersDescription, setShowOffersDescription] = useState(false);

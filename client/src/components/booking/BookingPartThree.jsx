@@ -5,6 +5,7 @@ import requestCarAvailable from "../../services/cars/requestCarAvailable";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import payment from "../../services/pay/payment";
+import { useClerk } from "@clerk/clerk-react";
 
 
 function DateOfStay() {
@@ -90,8 +91,11 @@ function Total() {
 }
 
 function BookingPartThree() {
-  const userInfo = useSelector((state) => state.users.userInfo);
+  const { user } = useClerk();
+  const userIn = useSelector((state) => state.users.userInfo);
   const navigate = useNavigate();
+  const userInfo = userIn ?? user ?? "incognito";
+
   const location = useLocation();
   const {
     checkInDate,
