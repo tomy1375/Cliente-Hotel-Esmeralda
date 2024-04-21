@@ -114,7 +114,7 @@ useEffect(() => {
     setShowChat(!showChat); // Togglea el estado de showChat
     setShowSpinner(true); 
     if (!showChat) {
-      //  setShowSpinner(false); // Oculta el cuadrado giratorio
+       setShowSpinner(false); // Oculta el cuadrado giratorio
        setShowChatButton(true); // Muestra el botón "Chat en vivo"
     }
    };
@@ -131,14 +131,14 @@ useEffect(() => {
     
     {showNavbarAndFooter && <Navbar />}
       {showChatButton && (
-      <button onClick={toggleChatButton} className="cursor-pointer mr-28 fixed right-0 bottom-0 h-[150px]">
+      <button onClick={toggleChatButton} className="cursor-pointer mr-36 mb-3 fixed right-0 bottom-0 h-[50px] px-6 bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg ">
       Chat en vivo
      </button>
      
        
       )}
       {showSpinner && !showChatButton && (
-        <div className="spinner" onClick={toggleChat} style={{ cursor: 'pointer', position: 'fixed', right: '100px', bottom: '20px', }}>
+        <div className="spinner" onClick={toggleChat} style={{ cursor: 'pointer', position: 'fixed', right: '150px', bottom: '20px', }}>
           <div></div>
           <div></div>
           <div></div>
