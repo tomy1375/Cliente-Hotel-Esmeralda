@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import payment from "../../services/pay/payment";
 import requestCreateRoomReservations from "../../services/reservations/requestCreateRoomReservations";
 import requestSpaAvailable from "../../services/spa/requestSpaAvailable";
+import { id } from "date-fns/locale";
 
 function DateOfStay() {
   return (
@@ -118,18 +119,19 @@ function BookingPartThree() {
   const capacity = parseInt(adults) + parseInt(children);
   const passenger = parseInt(adults) + parseInt(children);
   const room_id = queryParams.get("room_id");
+  
 
   // Calcular el total de días
   const startDate = new Date(from);
   const endDate = new Date(to);
   const oneDay = 24 * 60 * 60 * 1000;
-  const totalDays = Math.round(Math.abs((endDate - startDate) / oneDay));
+  let totalDays = Math.round(Math.abs((endDate - startDate) / oneDay));
 
   const RoomData = {
     room_id: room_id,
     check_in_date: startDate,
     check_out_date: to,
-    user_id: userInfo.id,
+    user_id: userInfo?.id,
   };
 
   const calculateTotalPrice = () => {
@@ -146,6 +148,7 @@ function BookingPartThree() {
     setTotalPrice(totalPrice);
   };
 
+
   const handleClickTwo = () => {
     navigate(-1);
   };
@@ -156,7 +159,7 @@ function BookingPartThree() {
 
   const handleCarClick = (car) => {
     const isCarSelected = selectedCars.find(
-      (selectedCar) => selectedCar.id === car.id
+      (selectedCar) => selectedCar?.id === car?.id
     );
     if (isCarSelected) {
       Swal.fire({
@@ -183,7 +186,7 @@ function BookingPartThree() {
 
   const handleSpaClick = (spa) => {
     const isSpaSelected = selectedSpa.find(
-      (selectedSpa) => selectedSpa.id === spa.id
+      (selectedSpa) => selectedSpa?.id === spa?.id
     );
     if (isSpaSelected) {
       Swal.fire({
@@ -215,7 +218,7 @@ function BookingPartThree() {
   };
 
   const handleRemoveSpa = (spaId) => {
-    const updatedSpa = selectedSpa.filter((spa) => spa.id !== spaId);
+    const updatedSpa = selectedSpa.filter((spa) => spa?.id !== spaId);
     setSelectedSpa(updatedSpa);
     calculateTotalPrice();
   };
@@ -246,43 +249,51 @@ function BookingPartThree() {
 
   const handlePayment = async () => {
     try {
-      const roomPricePerNight = Number(selectedRoomsDetails[0]?.price_per_night ?? 0);
-  
       if (!selectedRoomsDetails[0]) {
         alert("Room details are missing. Please check your selections and try again.");
         return; // Exit the function if room details are missing
       }
+  
+      const roomPricePerNight = Number(selectedRoomsDetails[0]?.price_per_night ?? 0);
+      
+  
+      // Calculate the room price for the total number of days and convert to cents
+      
   
       // Prepare the basic payment data with only room details initially
       const paymentData = {
         userId: userInfo?.id,
         services: {
           room: {
-            name: selectedRoomsDetails[0].name,
-            price_per_night: roomPricePerNight,
+            id: room_id,
+            name: `${selectedRoomsDetails[0].name} - ${totalDays} nights`,
+            price: roomPricePerNight * totalDays,
+            check_in_date: checkInDate,
+            check_out_date: checkOutDate, 
           },
         },
-        totalPrice: roomPricePerNight * totalDays,
+        totalPrice: roomPricePerNight,
       };
-  
-      // Optionally add car rental to the payment data if it is selected
+      console.log("paymentData", paymentData);
+      
       if (selectedCars[0] && selectedCars[0].price_per_day) {
         const carPricePerDay = Number(selectedCars[0].price_per_day);
         paymentData.services.car = {
+          id: selectedCars[0].id,
           name: selectedCars[0].brands,
           price_per_day: carPricePerDay,
         };
-        paymentData.totalPrice += carPricePerDay; // Adjust total price
+        paymentData.totalPrice += carPricePerDay * totalDays;
       }
   
-      // Optionally add spa service to the payment data if it is selected
       if (selectedSpa[0] && selectedSpa[0].price) {
         const spaPrice = Number(selectedSpa[0].price);
         paymentData.services.spa = {
+          id: selectedSpa[0].id,
           name: selectedSpa[0].name,
           price: spaPrice,
         };
-        paymentData.totalPrice += spaPrice; // Adjust total price
+        paymentData.totalPrice += spaPrice; 
       }
   
       // Attempt to make a payment
@@ -325,14 +336,14 @@ function BookingPartThree() {
                 className={`flex flex-wrap justify-center items-center ${
                   index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
                 }`}
-                key={spa.id}
+                key={spa?.id}
               >
                 <div className="w-full lg:w-1/2 p-4">
                   <div className="car-image-container h-96 overflow-hidden">
                     {spa.photos && spa.photos.length > 0 ? (
                       <img
-                        src={spa.photos[0]}
-                        alt={spa.name}
+                        src={spa?.photos[0]}
+                        alt={spa?.name}
                         className="w-full h-full object-cover"
                       />
                     ) : (
