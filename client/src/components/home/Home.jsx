@@ -6,6 +6,7 @@ import About from "./About.jsx";
 import ClientChat from "../chat/ClientChat.jsx";
 import { WebChatContainer } from '@ibm-watson/assistant-web-chat-react';
 import "./Home.css";
+// import { WebChatCustomElement } from '@ibm-watson/assistant-web-chat-react';
 
 function Home() {
   const [showModal, setShowModal] = useState(true);

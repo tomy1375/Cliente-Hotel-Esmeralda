@@ -27,18 +27,18 @@ const ClientChat = ({ socket, isModalOpen, showChat }) => {
  }
 }, [socket, clientId]);
 
-useEffect(() => {
- if (showChat && !welcomeSent) {
-    const mensajeBienvenida = "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
-    recibirMensajeServidor(mensajeBienvenida, true);
-    setWelcomeSent(true);  
- }
- return () => {
-    if (showChat) {
-      setWelcomeSent(false);
-    }
- };
-}, [showChat, socket]);
+// useEffect(() => {
+//  if (showChat && !welcomeSent) {
+//     const mensajeBienvenida = "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
+//     recibirMensajeServidor(mensajeBienvenida, true);
+//     setWelcomeSent(true);  
+//  }
+//  return () => {
+//     if (showChat) {
+//       setWelcomeSent(false);
+//     }
+//  };
+// }, [showChat, socket]);
 
 useEffect(() => {
  if (isModalOpen) {
