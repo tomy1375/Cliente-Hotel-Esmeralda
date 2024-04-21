@@ -1,4 +1,6 @@
+import { useClerk } from "@clerk/clerk-react";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 function PaymentDetail({ label, value }) {
   return (
@@ -12,16 +14,18 @@ function PaymentDetail({ label, value }) {
 function Pay() {
 
     const navigate = useNavigate()
+    const { user } = useClerk();
+  const userIn = useSelector((state) => state.users.userInfo);
+ 
 
   const paymentDetails = [
     { label: "Location Number", value: "000085752257" },
-    { label: "Description",},
+    { label: "Description", },
     { label: "TypeRoom", value: "Standard Room" },
     { label: "Payment Time", value: "25-02-2023, 13:22:16" },
     { label: "Payment Method", value: "Bank Transfer" },
-    { label: "Sender Name", value: "Tomas Ramos" },
-  ];
-
+    { label: "Sender Name", value: user.firstName??userIn.username??"incognito" }, // Use userInfo.username here
+];
   const amountDetails = [
     { label: "Amount", value: "IDR 1,000,000" },
    

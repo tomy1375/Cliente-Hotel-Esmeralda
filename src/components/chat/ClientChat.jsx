@@ -1,41 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import { useClerk } from '@clerk/clerk-react';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
+import { useClerk } from "@clerk/clerk-react";
 
+import "../Button/idea.css";
+import "./ClientChat.css";
+import { useSelector } from "react-redux";
 
-import "../Button/idea.css"
-import "./ClientChat.css";  
-import { useSelector } from 'react-redux';
-
-const ClientChat = ({ socket, isModalOpen , showChat}) => {
+const ClientChat = ({ socket, isModalOpen, showChat }) => {
   const { user } = useClerk();
   const userInfo = useSelector((state) => state.users.userInfo);
   const { id } = useParams();
-  const [mensaje, setMensaje] = useState('');
-  const [mensajesCliente, setMensajesCliente] = useState(JSON.parse(localStorage.getItem('mensajesCliente')) || []);
+  const [mensaje, setMensaje] = useState("");
+  const [mensajesCliente, setMensajesCliente] = useState(
+    JSON.parse(localStorage.getItem("mensajesCliente")) || []
+  );
   const clientId = userInfo?.username ?? user?.firstName ?? "incognito";
   const [welcomeSent, setWelcomeSent] = useState(false);
 
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
-  const [contadorMensajes, setContadorMensajes] = useState(0);  // Nuevo estado para contar los mensajes
+  const [contadorMensajes, setContadorMensajes] = useState(0); // Nuevo estado para contar los mensajes
 
   useEffect(() => {
     if (showChat && !welcomeSent) {
       console.log("Uniendo al chat");
-      const mensajeBienvenida = "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
+      const mensajeBienvenida =
+        "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
       recibirMensajeServidor(mensajeBienvenida, true);
-      setWelcomeSent(true);  
+      setWelcomeSent(true);
     }
-    
+
     return () => {
       if (showChat) {
         console.log("Desconectando del chat");
-        setWelcomeSent(false);  
+        setWelcomeSent(false);
       }
     };
   }, [showChat]);
-  
+
   useEffect(() => {
     if (isModalOpen) {
       inputRef.current.focus();
@@ -44,72 +46,66 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
 
   const refrescarMensajes = () => {
     setMensajesCliente([]);
-    localStorage.setItem('mensajesCliente', JSON.stringify([]));
+    localStorage.setItem("mensajesCliente", JSON.stringify([]));
   };
 
   const recibirMensajeServidor = (mensajeTexto, esAutomatico = false) => {
     if (!esAutomatico) {
-     
       const mensajeTemporal = {
-        tipo: 'administrador',
+        tipo: "administrador",
         clienteId: id,
-        mensaje: { mensaje: "escribiendo...", tiempo: new Date() }
+        mensaje: { mensaje: "escribiendo...", tiempo: new Date() },
       };
-      setMensajesCliente(prev => [...prev, mensajeTemporal]);
+      setMensajesCliente((prev) => [...prev, mensajeTemporal]);
       scrollToBottom();
 
-    
       setTimeout(() => {
-        setMensajesCliente(prev => prev.slice(0, -1)); 
+        setMensajesCliente((prev) => prev.slice(0, -1));
         agregarMensajeReal(mensajeTexto);
       }, 1500);
     } else {
-    
       agregarMensajeReal(mensajeTexto);
     }
   };
 
   const agregarMensajeReal = (mensajeTexto) => {
     const mensajeReal = {
-      tipo: 'administrador',
+      tipo: "administrador",
       clienteId: id,
-      mensaje: { mensaje: mensajeTexto, tiempo: new Date() }
+      mensaje: { mensaje: mensajeTexto, tiempo: new Date() },
     };
-    setMensajesCliente(prev => [...prev, mensajeReal]);
+    setMensajesCliente((prev) => [...prev, mensajeReal]);
     scrollToBottom();
   };
 
   const enviarMensaje = (event) => {
     event.preventDefault();
-    if (mensaje.trim() !== '') {
+    if (mensaje.trim() !== "") {
       // Crear el objeto mensaje con la hora actual
       const mensajeConTiempo = {
-        tipo: 'cliente',
+        tipo: "cliente",
         clienteId: id,
-        mensaje: { mensaje, tiempo: new Date() }
+        mensaje: { mensaje, tiempo: new Date() },
       };
-  
+
       // Agregar el mensaje al estado para actualizar la interfaz de usuario
-      setMensajesCliente(prev => [...prev, mensajeConTiempo]);
-  
+      setMensajesCliente((prev) => [...prev, mensajeConTiempo]);
+
       // Limpiar el campo de entrada de mensaje
-      setMensaje('');
-  
+      setMensaje("");
+
       // Desplazarse a la parte inferior del chat
       scrollToBottom();
-  
+
       // Verificar si el socket está definido y conectado antes de enviar el mensaje
       if (socket && socket.connected) {
         // Enviar el mensaje al servidor utilizando el socket
-        socket.emit('enviar_mensaje', mensajeConTiempo);
+        socket.emit("enviar_mensaje", mensajeConTiempo);
       } else {
         console.error("Socket no está conectado.");
       }
     }
   };
-  
-  
-  
 
   const scrollToBottom = () => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -117,15 +113,32 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
 
   return (
     <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-xl shadow">
-      <h1 className="RegistrationForm-title bg text-2xl font-bold mb-4 text-center ml-24">Client: {clientId}</h1>
+      <h1 className="RegistrationForm-title bg text-2xl font-bold mb-4 text-center ml-24">
+        Client: {clientId}
+      </h1>
       <div ref={chatContainerRef} className="client-chat-messages rounded-xl">
         {mensajesCliente.map((m, index) => (
-          <div key={index} className={`mensaje-container ${m.tipo === 'cliente' ? 'client-container' : 'admin-container'}`}>
-            <div className={`mensaje ${m.tipo === 'cliente' ? 'client' : 'admin'}`}>
+          <div
+            key={index}
+            className={`mensaje-container ${
+              m.tipo === "cliente" ? "client-container" : "admin-container"
+            }`}
+          >
+            <div
+              className={`mensaje ${m.tipo === "cliente" ? "client" : "admin"}`}
+            >
               {m.mensaje.mensaje}
             </div>
-            <div className={`timestamp ${m.tipo === 'cliente' ? 'timestamp-client' : 'timestamp-admin'}`}>
-              {new Date(m.mensaje.tiempo).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+            <div
+              className={`timestamp ${
+                m.tipo === "cliente" ? "timestamp-client" : "timestamp-admin"
+              }`}
+            >
+              {new Date(m.mensaje.tiempo).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })}
             </div>
           </div>
         ))}
@@ -140,18 +153,23 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
           value={mensaje}
           onChange={(e) => setMensaje(e.target.value)}
         />
-        <button type="submit" className="client-chat-submit ">Send</button>
+        <button type="submit" className="client-chat-submit ">
+          Send
+        </button>
       </form>
       <div className="mt-4 flex justify-center">
-        <button onClick={refrescarMensajes} className="w-40 bg-amber-300 hover:bg-amber-400 transition-colors text-white font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline">REFRESH CHAT</button>
+        <button
+          onClick={refrescarMensajes}
+          className="w-40 bg-amber-300 hover:bg-amber-400 transition-colors text-white font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
+        >
+          REFRESH CHAT
+        </button>
       </div>
     </div>
   );
 };
 
 export default ClientChat;
-
-
 
 // import React, { useState, useEffect, useRef } from 'react';
 // import { useParams } from 'react-router-dom';
@@ -168,7 +186,7 @@ export default ClientChat;
 //       localStorage.setItem('mensajesCliente', JSON.stringify(mensajesCliente));
 
 //       const inputRef = useRef(null);
-      
+
 //       useEffect(() => {
 //         inputRef.current.focus();
 //       }, []);
@@ -188,7 +206,7 @@ export default ClientChat;
 //     setMensajesCliente(prevMensajesCliente => [...prevMensajesCliente, { tipo: 'administrador', clienteId: id, mensaje }]);
 //     scrollToBottom();
 //   };
-    
+
 //   const enviarMensaje = (event) => {
 //     event.preventDefault();
 //     if (socket && mensaje.trim() !== '') {
@@ -199,10 +217,10 @@ export default ClientChat;
 //       scrollToBottom();
 //     }
 //   };
-  
+
 //   const refrescarMensajes = () => {
 //     setMensajesCliente([]);
-//     localStorage.setItem('mensajesCliente', JSON.stringify([])); 
+//     localStorage.setItem('mensajesCliente', JSON.stringify([]));
 //   };
 
 //   const scrollToBottom = () => {

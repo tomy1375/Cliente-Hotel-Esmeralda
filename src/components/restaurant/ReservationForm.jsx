@@ -1,103 +1,112 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
-import { pdf, BlobProvider } from '@react-pdf/renderer';
-
-import "./Restaurant.css"
-import ReservationPDF from "./ReservationTablePdf";
+import "./Restaurant.css";
+import { useSelector } from "react-redux";
+import { API_URL } from "../../utils/global";
+import { useClerk } from "@clerk/clerk-react";
 
 const tables = [
   {
-     timing: "12:00",
-     date: "2024-04-16",
-     capacity: 2,
+    reservation_time: "12:00",
+    reservation_day: "2024-04-16",
+    number_of_diners: 2,
   },
   {
-     timing: "12:00",
-     date: "2024-04-17",
-     capacity: 4,
+    reservation_time: "12:00",
+    reservation_day: "2024-04-17",
+    number_of_diners: 4,
   },
- ];
- 
+];
 
 function ReservationForm() {
- const [formState, setFormState] = useState({
+  const baseURL = API_URL;
+  const { user } = useClerk();
+  const userInfo = useSelector((state) => state.users.userInfo);
+  const clientId = userInfo?.id ?? user?.id ?? "incognito";
+ 
+  const [formState, setFormState] = useState({
+    user_id: "", 
     name: "",
     email: "",
-    timing: "",
-    date: "",
-    capacity: "",
- });
+    reservation_time: "",
+    reservation_day: "",
+    number_of_diners: "",
+  });
 
- const handleInputChange = (event) => {
+  useEffect(() => {
+    if (clientId) {
+      setFormState((prevState) => ({
+        ...prevState,
+        user_id: clientId,
+      }));
+    }
+  }, [clientId]);
+
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
- };
+  };
 
- 
- const handleSubmit = (event) => {
-  event.preventDefault();
-  const selectedTable = tables.find(
-     (table) =>
-       table.timing === formState.timing &&
-       table.date === formState.date &&
-       table.capacity === parseInt(formState.capacity, 10)
-  );
- 
-  if (selectedTable) {
-     Swal.fire({
-       title: 'Success!',
-       text: `The table has been reserved for ${formState.date} at ${formState.timing}, under the name of ${formState.name}, with a capacity for ${formState.capacity}.`,
-       icon: 'success',
-       confirmButtonText: 'Ok',
-       confirmButtonColor: '#fcd34d',
-       customClass: {
-         confirmButton: 'custom-confirm-button1'
-       }
-     }).then(() => {
-       // Genera el PDF
-       const reservation = {
-         name: formState.name,
-         email: formState.email,
-         timing: formState.timing,
-         date: formState.date,
-         capacity: formState.capacity,
-       };
- 
-       const doc = <ReservationPDF reservation={reservation} />;
-       pdf(doc).toBlob().then(blob => {
-         // Descarga el PDF
-         const url = URL.createObjectURL(blob);
-         const link = document.createElement('a');
-         link.href = url;
-         link.setAttribute('download', 'reservation.pdf');
-         document.body.appendChild(link);
-         link.click();
-         link.parentNode.removeChild(link);
-       });
-     });
-  } else {
-     Swal.fire({
-       title: 'Error',
-       text: 'No tables are available for those dates.',
-       icon: 'error',
-       confirmButtonText: 'Ok',
-       confirmButtonColor: '#fcd34d',
-       customClass: {
-         confirmButton: 'custom-confirm-button'
-       }
-     });
-  }
- };
- 
- 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const selectedTable = tables.find(
+      (table) =>
+        table.reservation_time === formState.reservation_time &&
+        table.reservation_day === formState.reservation_day &&
+        table.number_of_diners === parseInt(formState.number_of_diners, 10)
+    );
 
+    if (selectedTable) {
+      Swal.fire({
+        title: 'Success!',
+        text: `The table has been reserved for ${formState.reservation_day} at ${formState.reservation_time}, under the user_id of ${clientId}, with a number of diners for ${formState.number_of_diners}.`,
+        icon: 'success',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#fcd34d',
+        customClass: {
+          confirmButton: 'custom-confirm-button1'
+        }
+      }).then(() => {
+        const reservationCopy = { ...formState };
+        delete reservationCopy.name;
+        delete reservationCopy.email;
 
- return (
+        // console.log('Reservation Copy:', reservationCopy);
+
+        fetch(`${baseURL}api/reservations/restaurant`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5NGYzNmU4LTQ2ZTgtNGU4Mi1hYjI1LTQyYmQxY2M0N2Q4MyIsInVzZXJuYW1lIjoiYXJlc3ZtMTMiLCJlbWFpbCI6ImFsZm9uc292ZW5nb2VjaGVhQGdtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTcxMzU3MjE2OSwiZXhwIjoxNzEzNjU4NTY5fQ.yE944Hw1hVAb6Ds6gX8_qB2lX71rxBVZnkNO9XndgGQ`, 
+          },
+          body: JSON.stringify(reservationCopy),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => console.error('Error:', error));
+      });
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'No tables are available for those dates.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        confirmButtonColor: '#fcd34d',
+        customClass: {
+          confirmButton: 'custom-confirm-button'
+        }
+      });
+    }
+  };
+
+  return (
     <section className="flex justify-center items-center px-16 py-20 bg-v max-md:px-5">
-      <div className="flex flex-col items-center px-20 py-16 w-full border border-solid border-zinc-500 mx-auto  max-md:px-5 max-md:max-w-full">
+      <div className="flex flex-col items-center px-20 py-16 w-full border border-solid border-zinc-500 mx-auto max-md:px-5 max-md:max-w-full">
         <h2 className="mt-6 ml-20 text-lg tracking-normal leading-7 text-center text-white">
           Reservation
         </h2>
@@ -105,12 +114,9 @@ function ReservationForm() {
         <h1 className="mt-5 ml-24 text-6xl font-extrabold tracking-tighter text-center text-white leading-[70.4px] max-md:text-4xl">
           Book your table now
         </h1>
-        <form className="flex flex-col gap-5 justify-center  mt-10  max-w-full w-[558px] max-md:flex-wrap max-md:mt-10 max-md:mr-2.5 mr" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-5 justify-center mt-10 max-w-full w-[558px] max-md:flex-wrap max-md:mt-10 max-md:mr-2.5 mr" onSubmit={handleSubmit}>
           <div className="flex gap-5 w-full ml-14">
             <div className="flex-1 grow shrink-0 basis-0 w-fit">
-              <label htmlFor="nameInput" className="sr-only">
-                Name
-              </label>
               <input
                 type="text"
                 id="nameInput"
@@ -123,9 +129,6 @@ function ReservationForm() {
               />
             </div>
             <div className="flex-1 grow shrink-0 basis-0 w-fit">
-              <label htmlFor="emailInput" className="sr-only">
-                Email
-              </label>
               <input
                 type="email"
                 id="emailInput"
@@ -140,53 +143,42 @@ function ReservationForm() {
           </div>
           <div className="flex gap-5 w-full ml-14">
             <div className="flex-1">
-              <label htmlFor="timingInput" className="sr-only">
-                Timing
-              </label>
               <input
                 type="text"
-                id="timingInput"
-                name="timing"
-                placeholder="Timing"
-                aria-label="Timing"
+                id="reservationTimeInput"
+                name="reservation_time"
+                placeholder="Reservation Time"
+                aria-label="Reservation Time"
                 className="w-full px-5 py-7 text-lg tracking-normal leading-7 text-white bg-transparent border border-solid border-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
-                value={formState.timing}
+                value={formState.reservation_time}
                 onChange={handleInputChange}
               />
             </div>
             <div className="flex-1">
-              <label htmlFor="dateInput" className="sr-only">
-                Date
-              </label>
               <input
                 type="date"
-                id="dateInput"
-                name="date"
-                placeholder="Date"
-                aria-label="Date"
+                id="reservationDayInput"
+                name="reservation_day"
+                aria-label="Reservation Day"
                 className="w-full px-5 py-7 text-lg tracking-normal leading-7 text-white bg-transparent border border-solid border-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
-                value={formState.date}
+                value={formState.reservation_day}
                 onChange={handleInputChange}
               />
             </div>
             <div className="flex-1 grow shrink-0 basis-0 w-fit">
-              <label htmlFor="capacityInputId" className="sr-only">
-                Capacity
-              </label>
               <input
                 type="number"
-                id="capacityInputId"
-                name="capacity"
-                placeholder="Capacity"
-                aria-label="Capacity"
+                id="numberOfDinersInput"
+                name="number_of_diners"
+                placeholder="Number of Diners"
+                aria-label="Number of Diners"
                 className="w-full px-6 py-7 text-lg tracking-normal leading-7 text-white bg-transparent border border-solid border-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-400"
-                value={formState.capacity}
+                value={formState.number_of_diners}
                 onChange={handleInputChange}
-                min="1" // Establece el valor mínimo permitido
-                 max="6" 
+                min="1"
+                max="6"
               />
             </div>
-            
           </div>
           <button
             type="submit"
@@ -197,7 +189,7 @@ function ReservationForm() {
         </form>
       </div>
     </section>
- );
+  );
 }
 
 export default ReservationForm;
