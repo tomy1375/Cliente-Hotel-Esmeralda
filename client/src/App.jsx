@@ -15,7 +15,7 @@ import GalleryView from './views/GalleryView';
 import ProfileView from './views/ProfileView';
 import OffersView from './views/OffersView';
 import { getUserInfo } from './services/users/userInfo';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserInfo } from './redux/users/actions/usersActions';
 import Cookies from 'js-cookie';
 import EmailConfirmation from './views/ConfirmationEmail';
@@ -38,10 +38,22 @@ import { io } from 'socket.io-client';
 import Error404 from './components/error404/Error';
 
 import { Navigate } from 'react-router-dom';
+import { useClerk } from '@clerk/clerk-react';
 
 function MainLayout({ socket, setSocket }) {
   const location = useLocation();
   const dispatch = useDispatch();
+ // En MainLayout, calcula clientId basado en la información del usuario:
+const { user } = useClerk();
+const userInfo = useSelector(state => state.users.userInfo);
+const clientId = userInfo?.username ?? user?.firstName ?? "incognito";
+
+useEffect(() => {
+  // Puedes hacer algo aquí cada vez que clientId cambia si es necesario
+  console.log("Client ID has changed:", clientId);
+}, [clientId]);
+
+
   const isErrorPage = location.pathname === '/error404';
 
   const showNavbarAndFooter = !isErrorPage && location.pathname !== "/login" && location.pathname !== "/register"
@@ -99,18 +111,34 @@ function MainLayout({ socket, setSocket }) {
   }, []);
 
   const toggleChat = () => {
-    setShowChat(!showChat);  // Esto togglea el estado de showChat
-  };
+    setShowChat(!showChat); // Togglea el estado de showChat
+    setShowSpinner(true); 
+    if (!showChat) {
+      //  setShowSpinner(false); // Oculta el cuadrado giratorio
+       setShowChatButton(true); // Muestra el botón "Chat en vivo"
+    }
+   };
+  const [showChatButton, setShowChatButton] = useState(true);
 
 
-
-  const clientId = "tomas";
-
+  const toggleChatButton = () => {
+    setShowChatButton(false); // Oculta el botón "Chat en vivo"
+    setShowSpinner(true); // Muestra el cuadrado giratorio
+    toggleChat(); // Abre el chat automáticamente
+   };
   return (
     <>
     
-    {showNavbarAndFooter && <Navbar />}    {showSpinner && (
-        <div className="spinner" onClick={toggleChat} style={{ cursor: 'pointer', position: 'fixed', right: '20px', bottom: '20px' }}>
+    {showNavbarAndFooter && <Navbar />}
+      {showChatButton && (
+      <button onClick={toggleChatButton} className="cursor-pointer mr-28 fixed right-0 bottom-0 h-[150px]">
+      Chat en vivo
+     </button>
+     
+       
+      )}
+      {showSpinner && !showChatButton && (
+        <div className="spinner" onClick={toggleChat} style={{ cursor: 'pointer', position: 'fixed', right: '100px', bottom: '20px', }}>
           <div></div>
           <div></div>
           <div></div>
@@ -121,9 +149,7 @@ function MainLayout({ socket, setSocket }) {
       )}
       {showChat && (
         <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
-         <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
-    <ClientChat showChat={showChat} clientId={clientId} />
- </div>
+          <ClientChat showChat={showChat} clientId={clientId} socket={socket}/>
         </div>
       )}
       
@@ -141,7 +167,7 @@ function MainLayout({ socket, setSocket }) {
         <Route path="/offers" element={<OffersView/>}/>
         <Route path="/services" element={<ServicesView/>}/>
         <Route path="/reviews" element={<ReviewsView socket={socket} />} />
-        <Route path="/clientChat/:id" element={<ClientChat socket={socket} />} />
+        <Route path="/clientChat/" element={<ClientChat socket={socket} />} />
         <Route path="/administradorChat" element={<AdministradorChat socket={socket} />} />
         <Route path="/bookNotify" element={<BookNotify socket={socket} />} />
         <Route path="/administradorNotify" element={<AdministradorNotify socket={socket} />} />

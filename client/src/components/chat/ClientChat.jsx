@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useClerk } from '@clerk/clerk-react';
 import { useSelector } from 'react-redux';
 import "./ClientChat.css";  
+import '../Button/idea.css'
 
 const ClientChat = ({ socket, isModalOpen, showChat }) => {
  const { user } = useClerk();
@@ -16,108 +17,105 @@ const ClientChat = ({ socket, isModalOpen, showChat }) => {
  const inputRef = useRef(null);
 
  useEffect(() => {
-    if (socket) {
-      // Unirse al chat cuando el componente se monta
-      socket.emit('joinClientChat', clientId);
-
-      // Escuchar mensajes del servidor
-      socket.on('mensaje_cliente', recibirMensajeServidor);
-
-      return () => {
-        // Salir del chat cuando el componente se desmonta
-        socket.emit('leaveClientChat', clientId);
-
-        // Limpiar los listeners
-        socket.off('mensaje_cliente', recibirMensajeServidor);
-      };
-    }
- }, [socket, clientId]);
-
- useEffect(() => {
-    if (showChat && !welcomeSent) {
-      console.log("Uniendo al chat");
-      const mensajeBienvenida = "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
-      recibirMensajeServidor(mensajeBienvenida, true);
-      setWelcomeSent(true);  
-    }
-    
+ if (socket && clientId) {
+    socket.emit('joinClientChat', clientId);
+    socket.on('mensaje_cliente', recibirMensajeServidor);
     return () => {
-      if (showChat) {
-        console.log("Desconectando del chat");
-        setWelcomeSent(false); // Esto restablecerá welcomeSent cuando el chat se cierre
-      }
+      socket.emit('leaveClientChat', clientId);
+      socket.off('mensaje_cliente', recibirMensajeServidor);
     };
- }, [showChat, socket]);
+ }
+}, [socket, clientId]);
 
- useEffect(() => {
-    if (isModalOpen) {
-      // Cuando el modal se abre, establecemos el clientId como el id del cliente
-      setId(clientId);
+useEffect(() => {
+ if (showChat && !welcomeSent) {
+    const mensajeBienvenida = "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
+    recibirMensajeServidor(mensajeBienvenida, true);
+    setWelcomeSent(true);  
+ }
+ return () => {
+    if (showChat) {
+      setWelcomeSent(false);
     }
- }, [isModalOpen, clientId]);
+ };
+}, [showChat, socket]);
 
- const recibirMensajeServidor = (mensaje) => {
-    setMensajesCliente(prevMensajesCliente => [...prevMensajesCliente, { tipo: 'administrador', clienteId: id, mensaje }]);
+useEffect(() => {
+ if (isModalOpen) {
+    setId(clientId);
+ }
+}, [isModalOpen, clientId]);
+
+const recibirMensajeServidor = (mensaje) => {
+ setMensajesCliente(prevMensajesCliente => [...prevMensajesCliente, { tipo: 'administrador', clienteId: id, mensaje }]);
+ scrollToBottom();
+};
+
+const enviarMensaje = (event) => {
+ event.preventDefault();
+ if (mensaje.trim() !== '') {
+    const clienteMensaje = { tipo: 'cliente', clienteId: id, mensaje: { mensaje } };
+    setMensajesCliente((prevMensajesCliente) => [...prevMensajesCliente, clienteMensaje]);
+    if (socket) {
+      socket.emit('cliente_mensaje', {clienteId: clientId, mensaje: mensaje});
+    }
+    setMensaje('');
     scrollToBottom();
- };
+ }
+};
 
- const enviarMensaje = (event) => {
-    event.preventDefault();
-    if (mensaje.trim() !== '') {
-      const clienteMensaje = { tipo: 'cliente', clienteId: id, mensaje: { mensaje } };
-      setMensajesCliente((prevMensajesCliente) => [...prevMensajesCliente, clienteMensaje]);
-      if (socket) {
-        socket.emit('cliente_mensaje', {clienteId: clientId, mensaje: mensaje});
-      }
-      setMensaje('');
-      scrollToBottom();
-    }
- };
+const refrescarMensajes = () => {
+ setMensajesCliente([]);
+ localStorage.setItem('mensajesCliente', JSON.stringify([]));
+};
 
- const refrescarMensajes = () => {
-    setMensajesCliente([]);
-    localStorage.setItem('mensajesCliente', JSON.stringify([]));
- };
+const scrollToBottom = () => {
+ chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+};
 
- const scrollToBottom = () => {
-    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
- };
+// Función para formatear la fecha desde un timestamp
+function formatDateFromTimestamp(timestamp) {
+ const date = new Date(timestamp);
+ return date.toLocaleString();
+}
 
- return (
-    <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-xl shadow">
-      <h1 className="RegistrationForm-title bg text-2xl font-bold mb-4 text-center ml-24">Client: {clientId}</h1>
-      <div ref={chatContainerRef} className="client-chat-messages rounded-xl">
-        {mensajesCliente.map((m, index) => (
-          <div key={index} className={`mensaje-container ${m.tipo === 'cliente' ? 'client-container' : 'admin-container'}`}>
-            <div className={`mensaje ${m.tipo === 'cliente' ? 'client' : 'admin'}`}>
-              {m.mensaje.mensaje}
-            </div>
-            <div className={`timestamp ${m.tipo === 'cliente' ? 'timestamp-client' : 'timestamp-admin'}`}>
-              {new Date(m.mensaje.tiempo).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
-            </div>
+return (
+ <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-xl shadow">
+    <h1 className="RegistrationForm-title bg text-2xl font-bold mb-4 text-center ml-24">Client: {clientId}</h1>
+    <div ref={chatContainerRef} className="client-chat-messages rounded-xl">
+      {mensajesCliente.map((m, index) => (
+        <div key={index} className={`mensaje-container ${m.tipo === 'cliente' ? 'client-container' : 'admin-container'}`}>
+          <div className={`mensaje ${m.tipo === 'cliente' ? 'client' : 'admin'}`}>
+            {m.mensaje.mensaje}
           </div>
-        ))}
-      </div>
-      <form onSubmit={enviarMensaje} className="client-chat-form rounded-xl">
-        <input
-          ref={inputRef}
-          required
-          placeholder="Type your message here..."
-          type="text"
-          className="client-chat-input focus:outline-none focus:ring-1 focus:ring-v rounded-lg"
-          value={mensaje}
-          onChange={(e) => setMensaje(e.target.value)}
-        />
-        <button type="submit" className="client-chat-submit ">Send</button>
-      </form>
-      <div className="mt-4 flex justify-center">
-        <button onClick={refrescarMensajes} className="w-40 bg-amber-300 hover:bg-amber-400 transition-colors text-white font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline">REFRESH CHAT</button>
-      </div>
+          <div className={`timestamp ${m.tipo === 'cliente' ? 'timestamp-client' : 'timestamp-admin'}`}>
+            {formatDateFromTimestamp(m.mensaje.tiempo)}
+          </div>
+        </div>
+      ))}
     </div>
- );
+    <form onSubmit={enviarMensaje} className="client-chat-form rounded-xl">
+      <input
+        ref={inputRef}
+        required
+        placeholder="Type your message here..."
+        type="text"
+        className="client-chat-input focus:outline-none focus:ring-1 focus:ring-v rounded-lg"
+        value={mensaje}
+        onChange={(e) => setMensaje(e.target.value)}
+      />
+      <button type="submit" className="client-chat-submit ">Send</button>
+    </form>
+    <div className="mt-4 flex justify-center">
+      <button onClick={refrescarMensajes} className="w-40 bg-amber-300 hover:bg-amber-400 transition-colors text-white font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline">REFRESH CHAT</button>
+    </div>
+ </div>
+);
 };
 
 export default ClientChat;
+
+
 
 
 
