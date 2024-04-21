@@ -1,26 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import { useClerk } from '@clerk/clerk-react';
-
-
-import "../Button/idea.css"
-import "./ClientChat.css";  
 import { useSelector } from 'react-redux';
+import "./ClientChat.css";  
 
-const ClientChat = ({ socket, isModalOpen , showChat}) => {
-  const { user } = useClerk();
-  const userInfo = useSelector((state) => state.users.userInfo);
-  const { id } = useParams();
-  const [mensaje, setMensaje] = useState('');
-  const [mensajesCliente, setMensajesCliente] = useState(JSON.parse(localStorage.getItem('mensajesCliente')) || []);
-  const clientId = userInfo?.username ?? user?.firstName ?? "incognito";
-  const [welcomeSent, setWelcomeSent] = useState(false);
+const ClientChat = ({ socket, isModalOpen, showChat }) => {
+ const { user } = useClerk();
+ const userInfo = useSelector((state) => state.users.userInfo);
+ const [id, setId] = useState('');
+ const [mensaje, setMensaje] = useState('');
+ const [mensajesCliente, setMensajesCliente] = useState(JSON.parse(localStorage.getItem('mensajesCliente')) || []);
+ const clientId = userInfo?.username ?? user?.firstName ?? "incognito";
+ const [welcomeSent, setWelcomeSent] = useState(false);
 
-  const chatContainerRef = useRef(null);
-  const inputRef = useRef(null);
-  const [contadorMensajes, setContadorMensajes] = useState(0);  // Nuevo estado para contar los mensajes
+ const chatContainerRef = useRef(null);
+ const inputRef = useRef(null);
 
-  useEffect(() => {
+ useEffect(() => {
+    if (socket) {
+      // Unirse al chat cuando el componente se monta
+      socket.emit('joinClientChat', clientId);
+
+      // Escuchar mensajes del servidor
+      socket.on('mensaje_cliente', recibirMensajeServidor);
+
+      return () => {
+        // Salir del chat cuando el componente se desmonta
+        socket.emit('leaveClientChat', clientId);
+
+        // Limpiar los listeners
+        socket.off('mensaje_cliente', recibirMensajeServidor);
+      };
+    }
+ }, [socket, clientId]);
+
+ useEffect(() => {
     if (showChat && !welcomeSent) {
       console.log("Uniendo al chat");
       const mensajeBienvenida = "Good morning, how can we assist you? Live customer service is available from 11am to 4pm.";
@@ -31,82 +44,46 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
     return () => {
       if (showChat) {
         console.log("Desconectando del chat");
-        setWelcomeSent(false);  // Esto restablecerá welcomeSent cuando el chat se cierre
+        setWelcomeSent(false); // Esto restablecerá welcomeSent cuando el chat se cierre
       }
     };
-  }, [showChat]);
-  
-  useEffect(() => {
+ }, [showChat, socket]);
+
+ useEffect(() => {
     if (isModalOpen) {
-      inputRef.current.focus();
+      // Cuando el modal se abre, establecemos el clientId como el id del cliente
+      setId(clientId);
     }
-  }, [isModalOpen]);
+ }, [isModalOpen, clientId]);
 
-  const refrescarMensajes = () => {
-    setMensajesCliente([]);
-    localStorage.setItem('mensajesCliente', JSON.stringify([]));
-  };
-
-  const recibirMensajeServidor = (mensajeTexto, esAutomatico = false) => {
-    if (!esAutomatico) {
-     
-      const mensajeTemporal = {
-        tipo: 'administrador',
-        clienteId: id,
-        mensaje: { mensaje: "writing..", tiempo: new Date() }
-      };
-      setMensajesCliente(prev => [...prev, mensajeTemporal]);
-      scrollToBottom();
-
-    
-      setTimeout(() => {
-        setMensajesCliente(prev => prev.slice(0, -1)); 
-        agregarMensajeReal(mensajeTexto);
-      }, 1500);
-    } else {
-    
-      agregarMensajeReal(mensajeTexto);
-    }
-  };
-
-  const agregarMensajeReal = (mensajeTexto) => {
-    const mensajeReal = {
-      tipo: 'administrador',
-      clienteId: id,
-      mensaje: { mensaje: mensajeTexto, tiempo: new Date() }
-    };
-    setMensajesCliente(prev => [...prev, mensajeReal]);
+ const recibirMensajeServidor = (mensaje) => {
+    setMensajesCliente(prevMensajesCliente => [...prevMensajesCliente, { tipo: 'administrador', clienteId: id, mensaje }]);
     scrollToBottom();
-  };
+ };
 
-  const enviarMensaje = (event) => {
+ const enviarMensaje = (event) => {
     event.preventDefault();
     if (mensaje.trim() !== '') {
-      const mensajeConTiempo = {
-        tipo: 'cliente',
-        clienteId: id,
-        mensaje: { mensaje, tiempo: new Date() }
-      };
-      setMensajesCliente(prev => [...prev, mensajeConTiempo]);
+      const clienteMensaje = { tipo: 'cliente', clienteId: id, mensaje: { mensaje } };
+      setMensajesCliente((prevMensajesCliente) => [...prevMensajesCliente, clienteMensaje]);
+      if (socket) {
+        socket.emit('cliente_mensaje', {clienteId: clientId, mensaje: mensaje});
+      }
       setMensaje('');
       scrollToBottom();
-
-      // Incrementar el contador de mensajes
-      setContadorMensajes(prev => prev + 1);
-
-      // Simular respuesta del servidor
-      setTimeout(() => {
-        const respuesta = contadorMensajes + 1 === 3 ? "calm down, dude" : "We will attend to it right away.";
-        recibirMensajeServidor(respuesta);
-      }, 1500);
     }
-  };
+ };
 
-  const scrollToBottom = () => {
+ const refrescarMensajes = () => {
+    setMensajesCliente([]);
+    localStorage.setItem('mensajesCliente', JSON.stringify([]));
+ };
+
+ const scrollToBottom = () => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-  };
+ };
 
-  return (
+ return (
     <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-xl shadow">
       <h1 className="RegistrationForm-title bg text-2xl font-bold mb-4 text-center ml-24">Client: {clientId}</h1>
       <div ref={chatContainerRef} className="client-chat-messages rounded-xl">
@@ -137,7 +114,7 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
         <button onClick={refrescarMensajes} className="w-40 bg-amber-300 hover:bg-amber-400 transition-colors text-white font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline">REFRESH CHAT</button>
       </div>
     </div>
-  );
+ );
 };
 
 export default ClientChat;

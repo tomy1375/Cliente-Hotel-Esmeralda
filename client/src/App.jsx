@@ -86,7 +86,7 @@ function MainLayout({ socket, setSocket }) {
     fetchData();
   }, []);
   
-  const [showModal, setShowModal] = useState(true);
+  
   const [showChat, setShowChat] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);  // Estado para controlar la visibilidad del spinner
 
@@ -104,7 +104,7 @@ function MainLayout({ socket, setSocket }) {
 
 
 
-
+  const clientId = "tomas";
 
   return (
     <>
@@ -121,7 +121,9 @@ function MainLayout({ socket, setSocket }) {
       )}
       {showChat && (
         <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
-          <ClientChat showChat={showChat} />
+         <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
+    <ClientChat showChat={showChat} clientId={clientId} />
+ </div>
         </div>
       )}
       
