@@ -39,6 +39,7 @@ import Error404 from './components/error404/Error';
 
 import { Navigate } from 'react-router-dom';
 import { useClerk } from '@clerk/clerk-react';
+import { WebChatContainer } from '@ibm-watson/assistant-web-chat-react';
 
 function MainLayout({ socket, setSocket }) {
   const location = useLocation();
@@ -126,10 +127,19 @@ useEffect(() => {
     setShowSpinner(true); // Muestra el cuadrado giratorio
     toggleChat(); // Abre el chat automáticamente
    };
+
+   const webChatOptions = {
+    integrationID: "ce1515f8-1344-49b7-a501-5d44d7f84f56",
+    region: "us-south",
+    serviceInstanceID: "d3191470-5377-421f-9c8e-d24297a6ffab",
+    // Aquí puedes agregar otras opciones de configuración
+  };
+
   return (
     <>
     
     {showNavbarAndFooter && <Navbar />}
+    <WebChatContainer config={webChatOptions} />
       {showChatButton && (
       <button onClick={toggleChatButton} className="cursor-pointer mr-36 mb-3 fixed right-0 bottom-0 h-[50px] px-6 bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg ">
       Chat en vivo
