@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Abhaya Libre, Helvetica, sans-serif, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  color: #0c0707;
+}
+
+
+
+
+
+
+
+

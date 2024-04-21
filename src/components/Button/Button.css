@@ -1,0 +1,50 @@
+.btn {
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    padding: 0.3em ;
+    color: #ffffff;
+    text-transform: uppercase;
+    position: relative;
+    transition: 0.5s ease;
+    cursor: pointer;
+   }
+   
+   .btn::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: #ffc506;
+    transition: 0.5s ease;
+   }
+   
+   .btn:hover {
+    color: #fcd34d;
+    transition-delay: 0.5s;
+   }
+   
+   .btn:hover::before {
+    width: 100%;
+   }
+   
+   /* .btn::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0;
+    width: 100%;
+    background-color: #ffc506;
+    transition: 0.4s ease;
+    z-index: -1;
+   } */
+   
+   .btn:hover::after {
+    height: 100%;
+    transition-delay: 0.4s;
+    color: aliceblue;
+   }
+   

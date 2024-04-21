@@ -1,0 +1,110 @@
+.RegistrationForm-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+  }
+  
+  .RegistrationForm-title {
+    font-size: 28px;
+    color: rgb(41, 46, 43);
+    font-weight: 600;
+    letter-spacing: -1px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+  }
+  
+  .RegistrationForm-title::before, .RegistrationForm-title::after {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    left: 0px;
+    background-color: #1F2F1A;
+  }
+  
+  .RegistrationForm-title::before {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .RegistrationForm-title::after {
+    width: 18px;
+    height: 18px;
+    animation: RegistrationForm-pulse 1s linear infinite;
+  }
+  
+  .RegistrationForm-message, .RegistrationForm-signin {
+    color: rgba(88, 87, 87, 0.822);
+    font-size: 14px;
+  }
+  
+  .RegistrationForm-signin {
+    text-align: center;
+  }
+  
+  .RegistrationForm-signin a {
+    color: rgb(41, 80, 47);
+  }
+  
+  .RegistrationForm-signin a:hover {
+    text-decoration: underline;
+  }
+  
+  .RegistrationForm-flex {
+    display: flex;
+    width: 100%;
+    gap: 6px;
+  }
+  
+  .RegistrationForm-input {
+    width: 100%;
+    padding: 10px 10px 20px 10px;
+    outline: 0;
+    border: 1px solid rgba(206, 16, 16, 0.397);
+    border-radius: 10px;
+  }
+  
+  .RegistrationForm-input:focus + span, .RegistrationForm-input:valid + span {
+    top: 30px;
+    font-size: 0.7em;
+    font-weight: 600;
+  }
+  
+  .RegistrationForm-input:valid + span {
+    color: green;
+  }
+  
+  .RegistrationForm-submit {
+    border: none;
+    outline: none;
+    background-color: rgb(28, 33, 48);
+    padding: 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  .RegistrationForm-submit:hover {
+    background-color: rgb(204, 223, 206);
+  }
+  
+  @keyframes RegistrationForm-pulse {
+    from {
+      transform: scale(0.9);
+      opacity: 1;
+    }
+  
+    to {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+  
