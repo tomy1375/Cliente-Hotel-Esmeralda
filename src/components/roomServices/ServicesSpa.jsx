@@ -29,16 +29,16 @@ const Services = () => {
         >
           <div className="w-full lg:w-1/2 p-4">
             <div className="h-96 overflow-hidden">
-              <CarouselPhotos images={service.photos} altTexts={service.name} />
+              <CarouselPhotos images={service?.photos} altTexts={service?.name} />
             </div>
           </div>
           <div className="w-full lg:w-1/2 p-4 flex flex-col justify-center gap-4">
             <div>
               <h1 className="text-3xl lg:text-6xl text-center font-bold mt-0 mb-6">
-                {service.name}
+                {service?.name}
               </h1>
               <p className="text-lg lg:text-3xl leading-relaxed mb-4">
-                {service.description}
+                {service?.description}
               </p>
               <ul className="list-disc pl-6 mb-6">
                 {service.service_type.map((type, typeIndex) => (
@@ -61,7 +61,7 @@ const Services = () => {
 
                 <span  className="w-1/4 mx-4">
                   <button className="text-xl py-4 font-bold text-white bg-v hover:bg-green-950 transition-colors rounded-2xl shadow-lg w-full">
-                  $ {service.price}
+                  $ {service?.price}
                   </button>
                 </span>
               </div>

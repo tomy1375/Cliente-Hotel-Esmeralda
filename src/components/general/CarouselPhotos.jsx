@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import { FcNext, FcPrevious } from "react-icons/fc";
 
 const CarouselPhotos = ({ images, altTexts }) => {
+  // Ensure that images and altTexts are arrays; convert null to empty array
+  images = images || [];
+  altTexts = altTexts || [];
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  if (images.length === 0) {
+    return <div>No images available.</div>;
+  }
 
   const handlePrevClick = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -21,7 +29,7 @@ const CarouselPhotos = ({ images, altTexts }) => {
       <div className="h-96 overflow-hidden">
         <img
           src={images[currentImageIndex]}
-          alt={altTexts[currentImageIndex]}
+          alt={altTexts[currentImageIndex] || 'Image'}  
           className="w-full h-full object-cover"
         />
       </div>

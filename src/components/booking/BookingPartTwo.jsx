@@ -282,14 +282,15 @@ function BookingPartTwo() {
    
       
        const roomsDetailsString = JSON.stringify(roomsDetails);
-   
+       
        const queryParams = new URLSearchParams({
          from: from,
          to: to,
          adults: capacity - children, 
          children: children,
          total: total,
-         selectedRoomsDetails: roomsDetailsString, 
+         selectedRoomsDetails: roomsDetailsString,
+         room_id : selectedRooms.map(room => room.id),
        }).toString();
    
        console.log(roomsDetails);
@@ -301,7 +302,8 @@ function BookingPartTwo() {
            selectedGuests: capacity - children,
            selectedChildren: children,
            total: total,
-           selectedRoomsDetails: roomsDetails, // Enviar el arreglo de objetos como parte del estado
+           selectedRoomsDetails: roomsDetails,
+           room_id : selectedRooms.map(room => room.id),
          },
        });
     }

@@ -31,7 +31,7 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
     return () => {
       if (showChat) {
         console.log("Desconectando del chat");
-        setWelcomeSent(false);  // Esto restablecerá welcomeSent cuando el chat se cierre
+        setWelcomeSent(false);  
       }
     };
   }, [showChat]);
@@ -82,25 +82,34 @@ const ClientChat = ({ socket, isModalOpen , showChat}) => {
   const enviarMensaje = (event) => {
     event.preventDefault();
     if (mensaje.trim() !== '') {
+      // Crear el objeto mensaje con la hora actual
       const mensajeConTiempo = {
         tipo: 'cliente',
         clienteId: id,
         mensaje: { mensaje, tiempo: new Date() }
       };
+  
+      // Agregar el mensaje al estado para actualizar la interfaz de usuario
       setMensajesCliente(prev => [...prev, mensajeConTiempo]);
+  
+      // Limpiar el campo de entrada de mensaje
       setMensaje('');
+  
+      // Desplazarse a la parte inferior del chat
       scrollToBottom();
-
-      // Incrementar el contador de mensajes
-      setContadorMensajes(prev => prev + 1);
-
-      // Simular respuesta del servidor
-      setTimeout(() => {
-        const respuesta = contadorMensajes + 1 === 3 ? "ya cálmate wey" : "Enseguida lo atendemos.";
-        recibirMensajeServidor(respuesta);
-      }, 1500);
+  
+      // Verificar si el socket está definido y conectado antes de enviar el mensaje
+      if (socket && socket.connected) {
+        // Enviar el mensaje al servidor utilizando el socket
+        socket.emit('enviar_mensaje', mensajeConTiempo);
+      } else {
+        console.error("Socket no está conectado.");
+      }
     }
   };
+  
+  
+  
 
   const scrollToBottom = () => {
     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;

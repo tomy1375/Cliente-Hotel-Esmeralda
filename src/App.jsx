@@ -86,7 +86,6 @@ function MainLayout({ socket, setSocket }) {
     fetchData();
   }, []);
   
-  const [showModal, setShowModal] = useState(true);
   const [showChat, setShowChat] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);  // Estado para controlar la visibilidad del spinner
 
@@ -121,7 +120,7 @@ function MainLayout({ socket, setSocket }) {
       )}
       {showChat && (
         <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
-          <ClientChat showChat={showChat} />
+          <ClientChat showChat={showChat} socket={socket} />
         </div>
       )}
       
@@ -150,7 +149,7 @@ function MainLayout({ socket, setSocket }) {
         <Route path="/bookingSuccess" element={<BookingPartFourView/>}/>
         <Route path="/forgotpassword" element={<ForgotPasswordView/>}/>
         <Route path="/forgotPasswordRecovery" element={<ForgotPasswordRecoveryView/>}/>
-        <Route path="/BookingFail" element={<BookingFailView/>}/>
+        <Route path="/bookingFail" element={<BookingFailView/>}/>
         <Route path="/passwordRecovery" element={<PasswordRecoveryView/>}/>
         <Route path="/error404" element={<Error404 />} />
         <Route path="*" element={<Navigate to="/error404" replace />} />
