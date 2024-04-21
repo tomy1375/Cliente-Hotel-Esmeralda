@@ -1,4 +1,7 @@
 import axios from "axios";
+import { API_URL } from "../../utils/global";
+
+const baseUrl = API_URL
 
 const requestCreateProfile = async (token, userId, profileData,) => {
   const formData = new FormData();
@@ -8,7 +11,7 @@ const requestCreateProfile = async (token, userId, profileData,) => {
 
   try {
     const response = await axios.put(
-      `http://localhost:4000/auth/profile/${userId}`,
+      `${baseUrl}auth/profile/${userId}`,
       formData,
       {
         headers: {

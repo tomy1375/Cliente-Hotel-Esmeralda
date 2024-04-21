@@ -1,109 +1,160 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import requestAllUserReservations from "../../services/reservations/requestAllUserReservations";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import confirmReservation from "../../services/reservations/confirmReservation";
 
-const ReservationCard = ({ imageSrc, title, nights, checkIn, checkOut,price, status }) => (
+const ReservationCard = ({
+  imageSrc,
+  title,
+  nights,
+  checkIn,
+  checkOut,
+  price,
+  status,
+  reservationNumber,
+}) => {
+  const handleConfirmReservation = async () => {
+    try {
+      await confirmReservation(reservationNumber);
+    } catch (error) {
+      console.error("Error confirming reservation:", error);
+    }
+  };
+
+  return (
     <div className="flex gap-5 py-0.5 pr-7 pl-px mt-16 w-full bg-slate-300 rounded-2xl border border-solid border-neutral-200 max-md:flex-wrap max-md:pr-5 max-md:mt-10 max-md:max-w-full">
       <div className="flex-auto max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col max-md:gap-0">
           <div className="flex flex-col w-[70%] max-md:ml-0 max-md:w-full">
-            <img loading="lazy" src={imageSrc} alt={title} className="grow w-full rounded-2xl aspect-[1.56] max-md:mt-8" />
+            <img
+              loading="lazy"
+              src={imageSrc}
+              alt={title}
+              className="grow w-full rounded-2xl aspect-[1.56] max-md:mt-8"
+            />
           </div>
           <div className="flex flex-col ml-5 w-[44%] max-md:ml-0 max-md:w-full">
-            <div className="flex flex-col self-stretch my-auto text-lg tracking-normal leading-7 text-black max-md:mt-10">
-              <div>{title}</div>
+            <div className="flex flex-col mb-3 self-stretch my-auto text-lg tracking-normal leading-7 text-black max-md:mt-10">
+              <div>
+                <h1 className="text-4xl font-bold">{title}</h1>
+              </div>
+              <div>
+                <h1>Reservation Number:{reservationNumber}</h1>
+              </div>
               <div className="mt-5">{nights} NIGHTS</div>
-              <div className="mt-6">CHECK-IN : {checkIn} <br />CHECK-OUT: {checkOut}</div>
-              <div className="mt-5">Total price: ${price}</div>
+              <div className="mt-6">
+                CHECK-IN : {checkIn} <br />
+                CHECK-OUT: {checkOut}
+              </div>
+              <div className="mt-5">Price per night: ${price}</div>
+              {status === "pending" && (
+                <button
+                  onClick={handleConfirmReservation} // Agrega el manejador de evento onClick
+                  className="mt-5 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+                >
+                  CHECK IN
+                </button>
+              )}
+              {status === "pay" && (
+                <button className="mt-5 bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600">
+                  Cancelar
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
-      <div className="justify-center self-start px-2.5 py-2.5 mt-6 text-lg tracking-normal leading-7 whitespace-nowrap bg-v rounded-2xl text-white text-opacity-80">
-        {status}
+      <div
+        className={`justify-center self-start px-2.5 py-2.5 mt-6 text-lg tracking-normal leading-7 whitespace-nowrap rounded-2xl text-white text-opacity-80 ${
+          status === "pending"
+            ? "bg-red-500"
+            : status === "pay"
+            ? "bg-green-500"
+            : status === "confirmed"
+            ? "bg-blue-500" 
+            : "" 
+        }`}
+      >
+        {status.charAt(0).toUpperCase() + status.slice(1)}
       </div>
     </div>
   );
-  
-  const RestaurantReservationCard = ({ imageSrc, title, reserved }) => (
-    <div className="flex gap-5 py-0.5 pr-7 pl-px mt-16 w-full bg-slate-300 rounded-2xl border border-solid border-neutral-200 max-md:flex-wrap max-md:pr-5 max-md:mt-10 max-md:max-w-full">
-      <div className="flex-auto max-md:max-w-full">
-        <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-          <div className="flex flex-col w-[100%] max-md:ml-0 max-md:w-full">
-            <img loading="lazy" src={imageSrc} alt={title} className="grow w-full rounded-2xl aspect-[1.56] max-md:mt-8" />
-          </div>
-          <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
-            <div className="flex flex-col mt-5 text-lg tracking-normal leading-7 text-black max-md:mt-10">
-              <div>{title}</div>
-              <div className="mt-7">Reserved: {reserved}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col my-auto text-lg tracking-normal leading-7 whitespace-nowrap text-stone-900 text-opacity-80">
-        <div className="justify-center px-6 py-2.5 bg-v rounded-2xl max-md:px-5 text-white">Active</div>
-        <button>
-
-        <div className="justify-center px-10 py-2.5 mt-3.5 bg-d rounded-[52.49px] hover:bg-amber-400 max-md:px-5 transition-colors">Edit</div>
-        </button>
-        <button>
-
-        <div className="justify-center px-6 py-2.5 mt-3 bg-red-500 hover:bg-red-600 rounded-2xl max-md:px-5 transition-colors">Cancel</div>
-        </button>
-      </div>
-    </div>
-  );
-  
-  const reservations = [
-    {
-      imageSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/1cf8e801c8658a08453f1c20c20108e48b84f992e16aa011c35159b055925f8a?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&",
-      title: "Standar King",
-      nights: "3",
-      checkIn: "03/05/2024",
-      checkOut: "05/06/2024",
-      price: "120",
-      status: "Cancelled",
-    },
-    {
-      imageSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/a4e5727f1c51a0ad7e9e9fca7f024ac34ec264dd32fb761eff26da343bfe3abf?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&",
-      title: "Junior Suit",
-      nights: "3",
-      checkIn: "02/05/2024", 
-      checkOut: "05/05/2024",
-      price: "200",
-      status: "Active",
-    },
-  ];
-  
-  const restaurantReservations = [
-    {
-      imageSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/6d5e5a3cff282f0abbc35248c62cfbdeb956f50a9e66d4e689f5682b582698e5?apiKey=c9ddec6ddbc94b67bd3fdb2f72981df8&",
-      title: "Esmeralda Restaurant",
-      reserved: "04/06/2024 22 hs.",
-    },
-  ];
+};
 
 const ReservationModal = ({ isOpen, onClose }) => {
+  const userInfo = useSelector((state) => state.users.userInfo);
+  const userId = userInfo?.id;
+
+  const [reservations, setReservations] = useState([]);
+  console.log(reservations);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const response = await requestAllUserReservations(userId);
+        setReservations(response);
+      } catch (error) {
+        console.error("Error fetching reservations:", error);
+      }
+    };
+    fetchReservations();
+  }, [userId]);
 
   if (!isOpen) {
-    return null; // No renderiza nada si el modal no está abierto
- }
+    return null;
+  }
 
   return (
-    <div className=" flex items-center justify-center mr-80">
-
-    <div className="">
-            <div className="flex flex-col self-center items-center justify-center px-7 pt-8 pb-14 mt-1  mb-3 w-full rounded-2xl border border-solid shadow-sm bg-white max-w-[1000px] max-md:px-5 max-md:mt-10 max-md:max-w-full">
-          <h2 className="items-center justify-center text-6xl font-extrabold tracking-tighter text-black leading-[70.4px] max-md:max-w-full max-md:text-4xl">Reservations</h2>
-          {reservations.map((reservation, index) => (
-            <ReservationCard key={index} {...reservation} />
-          ))}
-          {restaurantReservations.map((reservation, index) => (
-            <RestaurantReservationCard key={index} {...reservation} />
-          ))}
+    <>
+      <div className=" flex flex-col items-center justify-center">
+        <div className="">
+          <div className="flex flex-col self-center items-center justify-center px-7 pt-8 pb-14 mt-1  mb-3 w-full rounded-2xl border border-solid shadow-sm bg-white max-w-[1000px] max-md:px-5 max-md:mt-10 max-md:max-w-full">
+            <div className="flex items-center justify-end w-full mb-4">
+              <button
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+            <h2 className="items-center justify-center text-6xl font-extrabold tracking-tighter text-black leading-[70.4px] max-md:max-w-full max-md:text-4xl">
+              Reservations
+            </h2>
+            {reservations &&
+              reservations.map((reservation, index) => (
+                <ReservationCard
+                  key={index}
+                  imageSrc={
+                    reservation.room?.photo_url ||
+                    "https://via.placeholder.com/150"
+                  }
+                  reservationNumber={reservation.reservation_number}
+                  title={reservation.room?.room_type.name || "No Description"}
+                  nights={(
+                    (new Date(reservation.check_out_date) -
+                      new Date(reservation.check_in_date)) /
+                    (1000 * 3600 * 24)
+                  ).toFixed(0)}
+                  checkIn={new Date(
+                    reservation.check_in_date
+                  ).toLocaleDateString()}
+                  checkOut={new Date(
+                    reservation.check_out_date
+                  ).toLocaleDateString()}
+                  price={parseFloat(reservation.room.price_per_night).toFixed(
+                    2
+                  )}
+                  status={reservation.status}
+                />
+              ))}
+          </div>
         </div>
-        <button onClick={onClose}>Cerrar</button>
-    </div>
-    </div>
-  )
-}
+      </div>
+    </>
+  );
+};
 
-export default ReservationModal
+export default ReservationModal;

@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { API_URL } from "../utils/global";
+
+const baseUrl =  API_URL;
+
 
 function EmailConfirmation() {
   const { verificationCode } = useParams();
@@ -14,7 +18,7 @@ function EmailConfirmation() {
     const confirmEmail = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/auth/confirm/${verificationCode}`,
+          `${baseUrl}auth/confirm/${verificationCode}`,
           {
             method: "GET",
             headers: {

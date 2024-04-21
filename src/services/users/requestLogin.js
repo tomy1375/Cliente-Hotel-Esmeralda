@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { API_URL } from '../../utils/global';
+
+const baseUrl = API_URL;
 
 export default async function loginUser(usernameOrEmail, password) {
   try {
-    const response = await axios.post('http://localhost:4000/auth/login', {
+    const response = await axios.post(`${baseUrl}auth/login`, {
       usernameOrEmail,
       password,
     });

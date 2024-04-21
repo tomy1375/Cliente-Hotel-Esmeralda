@@ -8,6 +8,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { useSelector } from "react-redux";
 import { useClerk } from "@clerk/clerk-react";
+import { API_URL } from "../../utils/global";
+
+const baseUrl =  API_URL;
+
 
 const SearchBar = () => {
  const [checkInDate, setCheckInDate] = useState(null);
@@ -91,7 +95,7 @@ const SearchBar = () => {
      };
  
      const response = await axios.get(
-       "http://localhost:4000/api/rooms/available",
+       `${baseUrl}api/rooms/available`,
        {
          params: searchData, 
          headers: {
@@ -151,7 +155,7 @@ const SearchBar = () => {
         room_id,
       };
       const response = await axios.post(
-        "http://localhost:4000/api/reservations",
+        `${baseUrl}api/reservations`,
         reservationData
       );
       setReservationStatus(response.data.message);

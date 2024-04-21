@@ -6,6 +6,10 @@ import Swal from "sweetalert2";
 import { useEffect } from "react";
 import axios from "axios";
 import Loading from "../general/Loading";
+import { API_URL } from "../../utils/global";
+
+const baseUrl =  API_URL;
+
 
 function DateOfStay() {
   const navigate = useNavigate();
@@ -216,7 +220,7 @@ function BookingPartTwo() {
       };
 
       const response = await axios.get(
-        "http://localhost:4000/api/rooms/available",
+        `${baseUrl}api/rooms/available`,
         {
           params: searchData,
           headers: {

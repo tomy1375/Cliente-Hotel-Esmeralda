@@ -184,7 +184,7 @@ function BookingPartFour() {
   const { checkInDate, checkOutDate, selectedGuests, selectedChildren } = location.state || {};
 
   const handleClickTwo = () => {
-    navigate('/bookingTwo', {
+    navigate('', {
         state: {
             checkInDate: checkInDate,
             checkOutDate: checkOutDate,

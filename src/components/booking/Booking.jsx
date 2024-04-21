@@ -5,6 +5,9 @@ import { faChild } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { API_URL } from "../../utils/global";
+
+const baseUrl =  API_URL;
 
 const GuestSelector = ({ onGuestsChange, onChildrenChange }) => {
   const [selectedGuests, setSelectedGuests] = React.useState(1);
@@ -161,7 +164,7 @@ const Booking = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:4000/api/rooms/available",
+        `${baseUrl}api/rooms/available`,
         {
           params: searchData,
           headers: {

@@ -39,6 +39,7 @@ import Error404 from './components/error404/Error';
 
 import { Navigate } from 'react-router-dom';
 
+
 function MainLayout({ socket, setSocket }) {
   const location = useLocation();
   const dispatch = useDispatch();

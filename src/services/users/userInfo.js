@@ -1,11 +1,17 @@
 import Cookies from "js-cookie";
 import axios from "axios";
+import { API_URL } from "../../utils/global";
+
+
+
+const baseUrl =  API_URL;
+
 
 export const getUserInfo = async () => {
   try {
     const token = Cookies.get("token");
     if (token) {
-      const response = await axios.get('http://localhost:4000/auth/userinfo', {
+      const response = await axios.get(`${baseUrl}auth/userinfo`, {
         headers: {
            'Authorization': `Bearer ${token}`
         }
