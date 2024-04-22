@@ -507,7 +507,7 @@ function BookingPartThree() {
                           <div className="font-extrabold ">{spa.name}</div>
                           <div className="flex flex-col">
                             <div className="flex font-medium">
-                              ${spa.price} x 1 Section
+                              ${spa.price} x 1 Session
                               <img
                                 onClick={() => handleRemoveSpa(spa.id)}
                                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
