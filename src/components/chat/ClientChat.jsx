@@ -12,11 +12,23 @@ const ClientChat = ({ socket, isModalOpen, showChat }) => {
   const [mensajesCliente, setMensajesCliente] = useState(
     JSON.parse(localStorage.getItem("mensajesCliente")) || []
   );
-  const clientId = userInfo?.username ?? user?.firstName ?? "incognito";
+  // const clientId = userInfo?.username ?? user?.firstName ?? `usuario${Date.now()}`;
   const [welcomeSent, setWelcomeSent] = useState(false);
 
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
+
+  const[clientId, setClientId] = useState(null)
+
+
+useEffect(()=>{
+  const userNameGuestId = localStorage.getItem('chatId') ?? Date.now().toString().substring(0, 7);
+
+  if(localStorage.getItem('chatId') === null){
+      localStorage.setItem('chatId',userNameGuestId)
+  }
+  setClientId(userInfo?.username ?? user?.firstName ?? userNameGuestId)
+},[userInfo, user])
 
   useEffect(() => {
     if (socket && clientId) {

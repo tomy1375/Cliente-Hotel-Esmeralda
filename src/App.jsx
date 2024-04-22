@@ -147,7 +147,7 @@ function MainLayout({ socket, setSocket }) {
       {showChatButton && (
         <button
           onClick={toggleChatButton}
-          className="cursor-pointer mr-36 mb-3 fixed right-0 bottom-0 h-[50px] px-6 bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg "
+          className="cursor-pointer mr-36 mb-5 fixed right-0 bottom-0 h-[50px] px-6 bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg "
         >
           Chat en vivo
         </button>
@@ -172,7 +172,7 @@ function MainLayout({ socket, setSocket }) {
         </div>
       )}
       {showChat && (
-        <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden z-50 mr-3">
+        <div className="fixed right-5 bottom-20 w-96 h-[690px] bg-white border border-gray-300 rounded-lg shadow-xl mb-3 overflow-hidden z-50 mr-3">
           <ClientChat showChat={showChat} clientId={clientId} socket={socket} />
         </div>
       )}
