@@ -67,7 +67,7 @@ function MainLayout({ socket, setSocket }) {
     location.pathname !== "/register";
 
   useEffect(() => {
-    const SOCKET_IO_SERVER_URL = "https://backend-hotelesmeralda.onrender.com"; // Dirección del servidor de Socket.IO
+    const SOCKET_IO_SERVER_URL = "https://backend-pf-web16pt.onrender.com"; // Dirección del servidor de Socket.IO
     const newSocket = io(SOCKET_IO_SERVER_URL);
     setSocket(newSocket);
 
