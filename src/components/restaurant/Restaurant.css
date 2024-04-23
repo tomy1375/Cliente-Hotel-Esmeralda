@@ -2,53 +2,45 @@
     font-size: 25px;
     background: transparent;
     border: none;
-    padding: 0.3em ;
+    padding: 0.3em;
     color: #ffffff;
     text-transform: uppercase;
     position: relative;
     transition: 0.5s ease;
     cursor: pointer;
-   }
-   
-   .btnd::before {
+    width: 100%; /* Asegúrate de que el botón tenga un ancho fijo */
+    height: 50px; /* Asegúrate de que el botón tenga un alto fijo */
+}
+
+.btnd::before {
     content: "";
     position: absolute;
     left: 0;
     bottom: 0;
     height: 2px;
-    width: 0;
+    width: 100%; /* Asegúrate de que el pseudo-elemento tenga un ancho fijo */
     background-color: #1F2F1A;
     transition: 0.5s ease;
-   }
-   
-   .btnd:hover {
+    transform: scaleX(0); /* Usa transform en lugar de cambiar el ancho */
+}
+
+.btnd:hover {
     color: #fcd34d;
     transition-delay: 0.5s;
-   }
-   
-   .btnd:hover::before {
-    width: 100%;
-   }
-   
-   /* .btnd::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 0;
-    width: 100%;
-    background-color: #ffc506;
-    transition: 0.4s ease;
-    z-index: -1;
-   } */
-   
-   .btnd:hover::after {
+}
+
+.btnd:hover::before {
+    transform: scaleX(1); /* Usa transform para cambiar el tamaño */
+}
+
+.btnd:hover::after {
     height: 100%;
     transition-delay: 0.4s;
     color: aliceblue;
-   }
-   
-   .btnd-active {
+    transform: scaleY(1); /* Usa transform para cambiar el tamaño */
+}
+
+.btnd-active {
     margin-top: 10px; /* Ajusta este valor según sea necesario */
     /* Otros estilos para el botón activo */
-   }
+}
