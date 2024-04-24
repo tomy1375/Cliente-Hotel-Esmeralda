@@ -72,7 +72,7 @@ function ReservationForm() {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5NGYzNmU4LTQ2ZTgtNGU4Mi1hYjI1LTQyYmQxY2M0N2Q4MyIsInVzZXJuYW1lIjoiYXJlc3ZtMTMiLCJlbWFpbCI6ImFsZm9uc292ZW5nb2VjaGVhQGdtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTcxMzkyODU3NCwiZXhwIjoxNzE0MDE0OTc0fQ.sBQtG_08qOU4PoAGDbtVaVt0zCe_9LW0ba-8x8_T0oc` // Asegúrate de reemplazar 'tuToken' con tu token real
+        'Authorization': `Bearer ${Token}`
       },
       body: JSON.stringify(reservationData), // Asegúrate de que el cuerpo de la solicitud sigue siendo una cadena JSON
    };
