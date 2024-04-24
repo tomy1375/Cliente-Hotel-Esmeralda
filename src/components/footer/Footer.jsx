@@ -1,27 +1,72 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../../assets/logo.svg";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate()
+  const location = useLocation(); 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant" // Opcional: para un desplazamiento suave
+    });
+ };
+
+ useEffect(() => {
+  scrollToTop();
+}, [location]); // Dependencia: la ubicación actual
+
+  const handleRoom = () => {
+    navigate("/rooms");
+  };
+  const handleHome = () => {
+    navigate("/");
+  };
+  const handleServices = () => {
+    navigate("/services");
+  };
+  const handleRestaurant = () => {
+    navigate("/restaurant");
+  };
+
+  const handleSpecialOffert = () => {
+    navigate("/offers");
+  };
   return (
     <nav className="bg-v text- py-4 mt-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center  text-white">
         <div className="flex flex-col items-center space-y-4">
           <h2>QUICK LINK</h2>
-          <a href="#" className="hover:text-d f">
+          <button onClick={handleHome}>
+
+          <a className="hover:text-d f">
             Home
           </a>
-          <a href="#" className="hover:text-d">
+          </button>
+          <button onClick={handleRoom}>
+
+          <a className="hover:text-d">
             Rooms
           </a>
+          </button>
+          <button onClick={handleServices}>
+
           <a href="#" className="hover:text-d">
             Services
           </a>
+          </button>
+          <button onClick={handleRestaurant}>
+
           <a href="#" className="hover:text-d">
             Restaurant
           </a>
+          </button>
+          <button onClick={handleSpecialOffert}>
+
           <a href="#" className="hover:text-d">
             Special Offers
           </a>
+          </button>
         </div>
 
         <div className="flex flex-col items-center space-y-4  text-white">
