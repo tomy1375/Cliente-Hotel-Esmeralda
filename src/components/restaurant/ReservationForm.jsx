@@ -4,6 +4,7 @@ import "./Restaurant.css";
 import { useSelector } from "react-redux";
 import { API_URL } from "../../utils/global";
 import { useClerk } from "@clerk/clerk-react";
+import Cookies from "js-cookie"; 
 
 const tables = [
   {
@@ -17,6 +18,16 @@ const tables = [
     number_of_diners: 4,
   },
 ];
+
+const [token, setToken] = useState(null); // Estado para almacenar el token
+
+useEffect(() => {
+   const token = Cookies.get("token");
+   if (token) {
+     setToken(token); // Establecer el token en el estado
+   }
+}, []);
+
 
 function ReservationForm() {
   const baseURL = API_URL;
@@ -72,7 +83,7 @@ function ReservationForm() {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${Token}`
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(reservationData), // Asegúrate de que el cuerpo de la solicitud sigue siendo una cadena JSON
    };
