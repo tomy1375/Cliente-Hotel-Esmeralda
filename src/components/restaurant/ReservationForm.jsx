@@ -35,12 +35,14 @@ function ReservationForm() {
 
   useEffect(() => {
     if (clientId) {
-      setFormState((prevState) => ({
-        ...prevState,
-        user_id: clientId,
-      }));
+       setFormState((prevState) => ({
+         ...prevState,
+         user_id: clientId,
+       }));
+      //  console.log('FormState after clientId update:', formState);
     }
-  }, [clientId]);
+   }, [clientId]);
+   
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -52,57 +54,69 @@ function ReservationForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const selectedTable = tables.find(
-      (table) =>
-        table.reservation_time === formState.reservation_time &&
-        table.reservation_day === formState.reservation_day &&
-        table.number_of_diners === parseInt(formState.number_of_diners, 10)
-    );
-
-    if (selectedTable) {
-      Swal.fire({
-        title: 'Success!',
-        text: `The table has been reserved for ${formState.reservation_day} at ${formState.reservation_time}, under the user_id of ${clientId}, with a number of diners for ${formState.number_of_diners}.`,
-        icon: 'success',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: '#fcd34d',
-        customClass: {
-          confirmButton: 'custom-confirm-button1'
-        }
-      }).then(() => {
-        const reservationCopy = { ...formState };
-        delete reservationCopy.name;
-        delete reservationCopy.email;
-
-        // console.log('Reservation Copy:', reservationCopy);
-
-        fetch(`${baseURL}api/reservations/restaurant`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5NGYzNmU4LTQ2ZTgtNGU4Mi1hYjI1LTQyYmQxY2M0N2Q4MyIsInVzZXJuYW1lIjoiYXJlc3ZtMTMiLCJlbWFpbCI6ImFsZm9uc292ZW5nb2VjaGVhQGdtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTcxMzU3MjE2OSwiZXhwIjoxNzEzNjU4NTY5fQ.yE944Hw1hVAb6Ds6gX8_qB2lX71rxBVZnkNO9XndgGQ`, 
-          },
-          body: JSON.stringify(reservationCopy),
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        })
-        .catch((error) => console.error('Error:', error));
-      });
-    } else {
-      Swal.fire({
-        title: 'Error',
-        text: 'No tables are available for those dates.',
-        icon: 'error',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: '#fcd34d',
-        customClass: {
-          confirmButton: 'custom-confirm-button'
-        }
-      });
-    }
-  };
+    console.log('FormState before sending1:', formState);
+   
+    // Preparar los datos a enviar
+    const reservationData = {
+       user_id: formState.user_id,
+       number_of_diners: formState.number_of_diners,
+       reservation_day: formState.reservation_day,
+       reservation_hour: formState.reservation_time,
+    };
+   
+    // Imprimir los datos que se van a enviar en formato de objeto JavaScript
+    console.log('Data to be sent:', reservationData);
+   
+    // Opciones de la solicitud POST
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5NGYzNmU4LTQ2ZTgtNGU4Mi1hYjI1LTQyYmQxY2M0N2Q4MyIsInVzZXJuYW1lIjoiYXJlc3ZtMTMiLCJlbWFpbCI6ImFsZm9uc292ZW5nb2VjaGVhQGdtYWlsLmNvbSIsInJvbGUiOiJjdXN0b21lciIsImlhdCI6MTcxMzkyODU3NCwiZXhwIjoxNzE0MDE0OTc0fQ.sBQtG_08qOU4PoAGDbtVaVt0zCe_9LW0ba-8x8_T0oc` // Asegúrate de reemplazar 'tuToken' con tu token real
+      },
+      body: JSON.stringify(reservationData), // Asegúrate de que el cuerpo de la solicitud sigue siendo una cadena JSON
+   };
+   
+    // Realizar la solicitud POST
+    fetch(`http://localhost:4000/api/reservations/restaurant`, requestOptions)
+       .then(response => {
+         if (!response.ok) {
+           throw new Error('Error en la solicitud: ' + response.status);
+         }
+         return response.json();
+       })
+       .then(data => {
+         console.log('Respuesta del servidor:', data);
+         // Mostrar alerta de éxito
+         Swal.fire({
+           title: 'Success!',
+           text: `La reservación ha sido realizada con éxito.`,
+           icon: 'success',
+           confirmButtonText: 'Ok',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button1'
+           }
+         });
+       })
+       .catch(error => {
+         console.error('Error:', error);
+         // Mostrar alerta de error
+         Swal.fire({
+           title: 'Error',
+           text: 'Hubo un problema al realizar la reservación.',
+           icon: 'error',
+           confirmButtonText: 'Ok',
+           confirmButtonColor: '#fcd34d',
+           customClass: {
+             confirmButton: 'custom-confirm-button'
+           }
+         });
+       });
+   };
+   
+   
+   
 
   return (
     <section className="flex justify-center items-center px-16 py-20 bg-v max-md:px-5">
@@ -181,7 +195,8 @@ function ReservationForm() {
             </div>
           </div>
           <button
-            type="submit"
+          onClick={handleSubmit}
+          
             className="self-start justify-center px-12 py-5 mt-9 ml-60 text-lg tracking-normal leading-7 text-center text-gray-800 bg-d hover:bg-amber-400 transition-colors rounded-2xl focus:outline-none focus:ring-2 focus:ring-amber-400 max-md:px-5"
           >
             Book a Table
