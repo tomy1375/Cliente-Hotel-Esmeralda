@@ -140,19 +140,21 @@ function MainLayout({ socket, setSocket }) {
     // Aquí puedes agregar otras opciones de configuración
   };
 
+  const isLoginOrRegister = location.pathname === "/login" || location.pathname === "/register";
+
   return (
     <>
-      {showNavbarAndFooter && <Navbar />}
-      <WebChatContainer config={webChatOptions} />
-      {showChatButton && (
+       {!isLoginOrRegister && showNavbarAndFooter && <Navbar />}
+      {!isLoginOrRegister && <WebChatContainer config={webChatOptions} />}
+      {!isLoginOrRegister && showChatButton && (
         <button
           onClick={toggleChatButton}
-          className="cursor-pointer mr-36 mb-5 fixed right-0 bottom-0 h-[50px] px-6 bg-amber-300  hover:bg-amber-400 transition-colors rounded-2xl shadow-lg "
+          className="cursor-pointer mr-36 mb-5 fixed right-0 bottom-0 h-[50px] px-6 bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg z-50"
         >
           Chat live
         </button>
       )}
-      {showSpinner && !showChatButton && (
+      {!isLoginOrRegister && showSpinner && !showChatButton && (
         <div
           className="spinner"
           onClick={toggleChat}
@@ -234,7 +236,7 @@ function MainLayout({ socket, setSocket }) {
           element={<EmailConfirmation />}
         />
       </Routes>
-      {showNavbarAndFooter && <Footer />}
+      {!isLoginOrRegister && showNavbarAndFooter && <Footer />}
     </>
   );
 }
