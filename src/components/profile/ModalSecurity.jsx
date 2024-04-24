@@ -4,13 +4,18 @@ import Swal from 'sweetalert2';
 import Password from "../../assets/Password2.png";
 import eyedark from "../../assets/EyeDark.png";
 import eyedarkopen from "../../assets/EyeDarkOpen.png";
+import axios from 'axios';
+import { API_URL } from '../../utils/global';
+import { useSelector } from "react-redux";
+
+const baseUrl = API_URL;
 
 function ModalSecurity({ isOpen, onClose }) {
  const navigate = useNavigate();
  const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
  const [isNewPasswordVisible, setIsNewPasswordVisible] = React.useState(false);
  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = React.useState(false);
-
+ const userInfo = useSelector((state) => state.users.userInfo);
  const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
  };
@@ -57,89 +62,139 @@ function ModalSecurity({ isOpen, onClose }) {
    }
  };
 
- const handleSubmit = (event) => {
+//  const handleSubmit = (event) => {
+//   event.preventDefault();
+
+//   const passwordInput = document.getElementById('PasswordInput').value;
+//   const newPasswordInput = document.getElementById('NewPasswordInput').value;
+//   const confirmNewPasswordInput = document.getElementById('ConfirmNewPasswordInput').value;
+
+const handleSubmit = async (event) => {
   event.preventDefault();
 
   const passwordInput = document.getElementById('PasswordInput').value;
   const newPasswordInput = document.getElementById('NewPasswordInput').value;
   const confirmNewPasswordInput = document.getElementById('ConfirmNewPasswordInput').value;
+  
+  const clientId = userInfo?.id ?? user?.id ?? "incognito";
+  
+  console.log('clientId:', clientId);
+  console.log('currentPassword:', passwordInput);
+  console.log('newPassword:', newPasswordInput);
 
-  fakeAuth.authenticate(passwordInput, (isAuthenticated) => {
-    if (isAuthenticated) {
-      // Verifica si los campos de nueva contraseña están vacíos
-      if (!newPasswordInput) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'You must enter the new password.',
-          confirmButtonText: 'Ok',
-          confirmButtonColor: '#fcd34d',
-          customClass: {
-            confirmButton: 'custom-confirm-button'
-          }
-        });
-        return; // Detiene la ejecución de la función
+  try {
+    const response = await axios.post(`${baseUrl}auth/change-password/${clientId}`, {
+      currentPassword: passwordInput,
+      newPassword: newPasswordInput,
+   
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
       }
+    });
 
-      // Verifica si el campo de confirmación de la nueva contraseña está vacío
-      if (!confirmNewPasswordInput) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'You must confirm your new password.',
-          confirmButtonText: 'Ok',
-          confirmButtonColor: '#fcd34d',
-          customClass: {
-            confirmButton: 'custom-confirm-button'
-          }
-        });
-        return; // Detiene la ejecución de la función
-      }
-
-      // Verifica si las contraseñas coinciden
-      if (newPasswordInput !== confirmNewPasswordInput) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Oops...',
-          text: 'The passwords do not match.',
-          confirmButtonText: 'Ok',
-          confirmButtonColor: '#fcd34d',
-          customClass: {
-            confirmButton: 'custom-confirm-button'
-          }
-        });
-        return; // Detiene la ejecución de la función
-      }
-
-      // Si todo está bien, muestra un mensaje de éxito
+    if (response.ok) {
+      // Contraseña actualizada exitosamente
+      // Mostrar mensaje de éxito
       Swal.fire({
         icon: 'success',
         title: '¡Éxito!',
-        text: 'The password was updated successfully.',
+        text: 'La contraseña se actualizó correctamente.',
         confirmButtonText: 'Ok',
         confirmButtonColor: '#fcd34d',
         customClass: {
           confirmButton: 'custom-confirm-button'
         }
       });
-      onClose();
+      onClose(); // Cerrar modal
     } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'The password is incorrect.',
-        confirmButtonText: 'Ok',
-        confirmButtonColor: '#fcd34d',
-        customClass: {
-          confirmButton: 'custom-confirm-button'
-        }
-      });
+      // Si hay algún error en la solicitud
+      throw new Error('Error al actualizar la contraseña');
     }
-  });
+
+   
+    fakeAuth.authenticate(passwordInput, (isAuthenticated) => {
+      if (isAuthenticated) {
+        // Verifica si los campos de nueva contraseña están vacíos
+        if (!newPasswordInput) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'You must enter the new password.',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#fcd34d',
+            customClass: {
+              confirmButton: 'custom-confirm-button'
+            }
+          });
+          return; 
+        }
+    
+        if (!confirmNewPasswordInput) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'You must confirm your new password.',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#fcd34d',
+            customClass: {
+              confirmButton: 'custom-confirm-button'
+            }
+          });
+          return; 
+        }
+        if (newPasswordInput !== confirmNewPasswordInput) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops...',
+            text: 'The passwords do not match.',
+            confirmButtonText: 'Ok',
+            confirmButtonColor: '#fcd34d',
+            customClass: {
+              confirmButton: 'custom-confirm-button'
+            }
+          });
+          return; 
+        }
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: 'The password was updated successfully.',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#fcd34d',
+          customClass: {
+            confirmButton: 'custom-confirm-button'
+          }
+        });
+        onClose();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'The password is incorrect.',
+          confirmButtonText: 'Ok',
+          confirmButtonColor: '#fcd34d',
+          customClass: {
+            confirmButton: 'custom-confirm-button'
+          }
+        });
+      }
+    });
+  } catch (error) {
+    // Manejar cualquier error que ocurra durante la solicitud
+    console.error('Error al actualizar la contraseña:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Ocurrió un error al actualizar la contraseña. Por favor, inténtalo de nuevo más tarde.',
+      confirmButtonText: 'Ok',
+      confirmButtonColor: '#fcd34d',
+      customClass: {
+        confirmButton: 'custom-confirm-button'
+      }
+    });
+  }
 };
-
-
-
 
  const handleDeleteAccount = () => {
   Swal.fire({
