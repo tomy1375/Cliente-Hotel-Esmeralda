@@ -268,20 +268,8 @@ const Booking = () => {
           adults: selectedGuests,
           children: selectedChildren,
         }).toString();
-         // Aquí es donde se envían los datos a la ruta /bookingTwo
-      const dataToSend = {
-        checkInDate: formattedCheckInDate,
-        checkOutDate: formattedCheckOutDate,
-        selectedGuests,
-        selectedChildren,
-        availableRooms: response.data.rooms,
-      };
-
-      // Hacemos un console.log de los datos que se van a enviar
-      console.log("Data to send:", dataToSend);
-
-
-        
+    
+    
         navigate(`/bookingTwo?${queryParams}`, {
           state: {
             checkInDate: formattedCheckInDate,
