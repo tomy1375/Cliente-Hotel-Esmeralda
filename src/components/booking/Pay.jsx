@@ -1,7 +1,9 @@
-import { useClerk } from "@clerk/clerk-react";
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useClerk } from '@clerk/clerk-react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getUserReservations } from '../../services/pay/paymentData.js'; 
+
 function PaymentDetail({ label, value }) {
   return (
     <div className="flex gap-5 mt-6 max-md:flex-wrap">
@@ -12,26 +14,39 @@ function PaymentDetail({ label, value }) {
 }
 
 function Pay() {
-
-    const navigate = useNavigate()
-    const { user } = useClerk();
+  const navigate = useNavigate();
+  const { user } = useClerk();
   const userIn = useSelector((state) => state.users.userInfo);
- 
+  const [reservationDetails, setReservationDetails] = useState(null);
 
-  const paymentDetails = [
-    { label: "Location Number", value: "000085752257" },
-    { label: "Description", },
-    { label: "TypeRoom", value: "Standard Room" },
-    { label: "Payment Time", value: "25-02-2023, 13:22:16" },
-    { label: "Payment Method", value: "Bank Transfer" },
-    { label: "Sender Name", value: user.firstName??userIn.username??"incognito" }, // Use userInfo.username here
-];
+  useEffect(() => {
+    const userId = user.id; // Asegúrate de obtener el id del usuario de forma correcta
+    getUserReservations(userId).then((data) => {
+      if (data && data.length > 0) {
+        setReservationDetails(data[0]);
+      }
+    }).catch((error) => {
+      console.error('Error al obtener las reservaciones:', error);
+    });
+  }, [user.id]);
+
+  const paymentDetails = reservationDetails ? [
+    { label: 'Location Number', value: reservationDetails.reservation_number },
+    { label: 'Description', value: reservationDetails.room.description },
+    { label: 'TypeRoom', value: reservationDetails.room.room_type.name },
+    { label: 'Payment Time', value: new Date(reservationDetails.createdAt).toLocaleString() },
+    { label: 'Payment Method', value: 'Bank Transfer' },
+    { label: 'Sender Name', value: user.firstName ?? userIn.username ?? 'incognito' },
+    { label: 'Guest Full Name', value: reservationDetails.user.guest_profile.full_name },
+    { label: 'Guest Phone Number', value: reservationDetails.user.guest_profile.phone_number },
+    { label: 'Guest Document', value: reservationDetails.user.guest_profile.document },
+  ] : [];
+
   const amountDetails = [
-    { label: "Amount", value: "IDR 1,000,000" },
-   
-    { label: "Admin Fee", value: "IDR 193.00" },
-   
+    { label: 'Amount', value: 'IDR 1,000,000' },
+    { label: 'Admin Fee', value: 'IDR 193.00' },
   ];
+
   const handleClick = () => {
     navigate('/');
   };
@@ -58,8 +73,11 @@ function Pay() {
       {amountDetails.map((detail, index) => (
         <PaymentDetail key={index} label={detail.label} value={detail.value} />
       ))}
-      <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mt-10 hover:bg-amber-400 transition-colors" onClick={handleClick}>Go to Home</button>
+      <button className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mt-10 hover:bg-amber-400 transition-colors" onClick={handleClick}>
+        Go to Home
+      </button>
     </div>
   );
 }
+
 export default Pay

@@ -14,10 +14,9 @@ const payment = async (paymentData) => {
       body: JSON.stringify(paymentData),
     });
 
-    const responseData = await response.json();  // Move this line up to always parse the response
+    const responseData = await response.json();
 
     if (!response.ok) {
-      // Including more specific error information
       console.error(`HTTP Error Response: ${response.status} ${response.statusText}`, responseData);
       throw new Error(`No se pudo realizar el pago: ${response.status} ${response.statusText}`);
     }
@@ -25,7 +24,7 @@ const payment = async (paymentData) => {
     return responseData;
   } catch (error) {
     console.error("Error en la solicitud fetch:", error.message);
-    // Rethrowing the error might not be necessary unless you want to handle it further up the chain
+
     throw error;
   }
 };
