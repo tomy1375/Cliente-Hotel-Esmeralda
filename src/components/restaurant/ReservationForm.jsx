@@ -6,15 +6,20 @@ import { API_URL } from "../../utils/global";
 import { useClerk } from "@clerk/clerk-react";
 import Cookies from "js-cookie"; 
 
+const tables = [
+  {
+    reservation_time: "12:00",
+    reservation_day: "2024-04-16",
+    number_of_diners: 2,
+  },
+  {
+    reservation_time: "12:00",
+    reservation_day: "2024-04-17",
+    number_of_diners: 4,
+  },
+];
 
-const [token, setToken] = useState(null); 
-
-useEffect(() => {
-   const token = Cookies.get("token");
-   if (token) {
-     setToken(token); 
-   }
-}, []);
+ 
 
 
 function ReservationForm() {
@@ -23,6 +28,15 @@ function ReservationForm() {
   const userInfo = useSelector((state) => state.users.userInfo);
   const clientId = userInfo?.id ?? user?.id ?? "incognito";
  
+  const [token, setToken] = useState(null); // Estado para almacenar el token
+
+  useEffect(() => {
+     const token = Cookies.get("token");
+     if (token) {
+       setToken(token); // Establecer el token en el estado
+     }
+  }, []);
+
   const [formState, setFormState] = useState({
     user_id: "", 
     name: "",
@@ -71,13 +85,13 @@ function ReservationForm() {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+       'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(reservationData), // Asegúrate de que el cuerpo de la solicitud sigue siendo una cadena JSON
    };
    
     // Realizar la solicitud POST
-    fetch(`${API_URL}api/reservations/restaurant`, requestOptions)
+    fetch(`http://localhost:4000/api/reservations/restaurant`, requestOptions)
        .then(response => {
          if (!response.ok) {
            throw new Error('Error en la solicitud: ' + response.status);
