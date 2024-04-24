@@ -31,7 +31,7 @@ const MenuPage = ({ setCurrentPage }) => {
  return (
     <main className="isolate md:isolation-auto  flex  flex-col px-5 text-3xl text-black max-w-[299px] justify-start">
       <div className="flex text-left flex-col self-start mt-8 text-stone-700">
-      <h1 className="w-full text-left text-6xl text-black font-extrabold tracking-tighter leading-[70.4px] ml-4">
+      <h1 className="w-full text-left text-6xl text-black font-extrabold tracking-tighter leading-[70.4px] ">
         Menu
       </h1 >
         {["Italian", "Japanese", "Mexican", "Drinks", "Burgers", "Snacks", "Dessert", "All Dishes"].map((category) => (
@@ -44,7 +44,7 @@ const MenuPage = ({ setCurrentPage }) => {
                 handleCategoryClick(category);
               }
             }}
-            className={`btnd mt-16  ${activeItem === category ? " justify-center items-start px-1 py-1 text-3xl text-white whitespace-nowrap rounded-2xl border border-solid bg-v border-neutral-800 w-[170px]" : "text-stone-700"}`}
+            className={`btnd mt-16  ${activeItem === category ? " justify-center items-start px-1 py-1 text-3xl text-white whitespace-nowrap rounded-2xl border border-solid bg-v border-neutral-800 " : "text-stone-700"}`}
           >
             {category}
           </button>

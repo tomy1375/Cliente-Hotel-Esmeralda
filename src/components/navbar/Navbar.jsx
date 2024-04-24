@@ -104,6 +104,8 @@ function Navbar() {
     setIsOpenSeeMoreMenu(false);
   };
 
+
+  
   const getLobbyImage = () => {
     if (location.pathname === "/") {
       return lobby;
@@ -121,6 +123,8 @@ function Navbar() {
       return null;
     }
   };
+
+  const imageSrc = getLobbyImage();
 
   const handleSignOut = async () => {
     setIsLoading(true);
@@ -350,9 +354,14 @@ function Navbar() {
           </div>
         </div>
       </nav>
+      {imageSrc && (
       <header className="flex justify-center items-center">
-        <img src={getLobbyImage()} className="w-full" />
+        <div className="w-full h-96">
+
+        <img src={imageSrc} className="w-full h-full object-cover " ata-twe-lazyAnimation="[fade-in_1s_ease-in-out]" data-twe-lazyDelay="500" data-twe-lazyPlaceholder="placeholder.jpg" />
+        </div>
       </header>
+      )}
       {/* DESCRIPCIONES HEADER */}
       {showGalleryDescription && (
         <div
@@ -381,7 +390,7 @@ function Navbar() {
           <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl mb-4">
             Exclusive hotel offers and deals
           </h2>
-          <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-normal md:leading-relaxed lg:leading-normal xl:leading-relaxed w-1/5 text-justify">
+          <p className="text-sm md:text-base lg:text-lg xl:text-xl leading-normal md:leading-relaxed lg:leading-normal xl:leading-relaxed text-justify w-2/6">
             Esmeralda Resort & Spa is one of the most unique and historic hotels
             in Buenos Aires. A rich, seamless blend of timeless grandeur with
             contemporary style and sophistication

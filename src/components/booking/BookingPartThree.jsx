@@ -192,7 +192,7 @@ function BookingPartThree() {
       Swal.fire({
         icon: "warning",
         title: "Oops...",
-        text: "You have already selected this car!",
+        text: "You have already selected this Service!",
         confirmButtonColor: "#fcd34d",
         customClass: {
           confirmButton: "custom-confirm-button",
@@ -492,7 +492,7 @@ function BookingPartThree() {
                                 onClick={() => handleRemoveCar(car.id)}
                                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
                                 alt="Remove icon"
-                                className="flex shrink-0 self-start aspect-[0.89] w-[25px] cursor-pointer ml-5"
+                                className="flex shrink-0 self-start aspect-[0.89] w-[25px] cursor-pointer ml-3 mr-4"
                               />
                             </div>
                           </div>
@@ -512,7 +512,7 @@ function BookingPartThree() {
                                 onClick={() => handleRemoveSpa(spa.id)}
                                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/d9d0079c1716eb0292ecbf5111b08d6aba0fa825435ed5dc0dc367078eb205de?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
                                 alt="Remove icon"
-                                className="flex shrink-0 self-start aspect-[0.89] w-[25px] cursor-pointer ml-5"
+                                className="flex shrink-0 self-start aspect-[0.89] w-[25px] cursor-pointer ml-3 mr-4"
                               />
                             </div>
                           </div>
