@@ -19,12 +19,12 @@ function Pay() {
  
 
   const paymentDetails = [
-    { label: "Location Number", value: "000085752257" },
+    { label: "Location Number", value: "" },
     { label: "Description", },
     { label: "TypeRoom", value: "Standard Room" },
     { label: "Payment Time", value: "25-02-2023, 13:22:16" },
     { label: "Payment Method", value: "Bank Transfer" },
-    { label: "Sender Name", value: user.firstName??userIn.username??"incognito" }, // Use userInfo.username here
+    { label: "Sender Name", value: user?.firstName??userIn?.username??"incognito" }, // Use userInfo.username here
 ];
   const amountDetails = [
     { label: "Amount", value: "IDR 1,000,000" },

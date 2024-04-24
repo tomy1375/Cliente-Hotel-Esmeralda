@@ -3,11 +3,11 @@ import Logo from "../../assets/logo.svg";
 
 function Navbar() {
   return (
-    <nav className="bg-v text-white py-4 mt-10">
+    <nav className="bg-v text- py-4 mt-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div className="flex flex-col items-center space-y-4">
           <h2>QUICK LINK</h2>
-          <a href="#" className="hover:text-d">
+          <a href="#" className="hover:text-d f">
             Home
           </a>
           <a href="#" className="hover:text-d">
