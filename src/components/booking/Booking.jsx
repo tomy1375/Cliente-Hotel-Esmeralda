@@ -262,6 +262,12 @@ const Booking = () => {
         });
       } else {
 
+        const queryParams = new URLSearchParams({
+          from: formattedCheckInDate,
+          to: formattedCheckOutDate,
+          adults: selectedGuests,
+          children: selectedChildren,
+        }).toString();
          // Aquí es donde se envían los datos a la ruta /bookingTwo
       const dataToSend = {
         checkInDate: formattedCheckInDate,
@@ -276,7 +282,7 @@ const Booking = () => {
 
 
         
-        navigate("/bookingTwo", {
+        navigate(`/bookingTwo?${queryParams}`, {
           state: {
             checkInDate: formattedCheckInDate,
             checkOutDate: formattedCheckOutDate,
