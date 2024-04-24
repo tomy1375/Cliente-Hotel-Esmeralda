@@ -4,7 +4,7 @@ import Logo from "../../assets/logo.svg";
 function Navbar() {
   return (
     <nav className="bg-v text- py-4 mt-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center  text-white">
         <div className="flex flex-col items-center space-y-4">
           <h2>QUICK LINK</h2>
           <a href="#" className="hover:text-d f">
@@ -24,11 +24,11 @@ function Navbar() {
           </a>
         </div>
 
-        <div className="flex flex-col items-center space-y-4">
+        <div className="flex flex-col items-center space-y-4  text-white">
           <a href="/" className="cursor-pointer">
             <img src={Logo} alt="Logo del hotel" className="h-24" />
           </a>
-          <p>Buenos Aires,Argentina</p>
+          <p className=" text-white">Buenos Aires,Argentina</p>
           <p>
             <a href="tel:+5411123456789">+54 11 1234-5678</a>
           </p>
