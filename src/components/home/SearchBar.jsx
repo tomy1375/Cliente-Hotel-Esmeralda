@@ -93,7 +93,7 @@ const SearchBar = () => {
        to: formattedCheckOutDate,
        capacity,
      };
- 
+     console.log(searchData);
      const response = await axios.get(
        `${baseUrl}api/rooms/available`,
        {
@@ -119,6 +119,16 @@ const SearchBar = () => {
          adults: numberOfAdults,
          children: numberOfChildren,
        }).toString();
+
+       
+       // Imprime en consola los datos que se enviarán
+       console.log({
+        checkInDate: formattedCheckInDate, 
+        checkOutDate: formattedCheckOutDate, 
+        selectedGuests: numberOfAdults, 
+        selectedChildren: numberOfChildren, 
+        availableRooms: response.data.rooms 
+      });
  
        // Navega a la nueva URL con los parámetros de búsqueda
        navigate(`/bookingTwo?${queryParams}`, { state: { 
@@ -154,6 +164,8 @@ const SearchBar = () => {
         formattedCheckOutDate,
         room_id,
       };
+
+      console.log(reservationData);
       const response = await axios.post(
         `${baseUrl}api/reservations`,
         reservationData

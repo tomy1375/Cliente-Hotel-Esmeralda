@@ -14,6 +14,14 @@ const GuestSelector = ({ onGuestsChange, onChildrenChange }) => {
   const [selectedChildren, setSelectedChildren] = React.useState(0);
 
   React.useEffect(() => {
+    console.log("selectedGuests actualizado:", selectedGuests);
+    console.log("selectedGuests actualizado:", selectedChildren);
+    onGuestsChange(selectedGuests);
+    onChildrenChange(selectedChildren);
+   }, [selectedGuests, selectedChildren, onGuestsChange, onChildrenChange]);
+   
+
+  React.useEffect(() => {
     onGuestsChange(selectedGuests);
     onChildrenChange(selectedChildren);
   }, [selectedGuests, selectedChildren, onGuestsChange, onChildrenChange]);
@@ -110,6 +118,10 @@ const Booking = () => {
   const from = queryParams.get("from");
   const to = queryParams.get("to");
   const capacity = queryParams.get("capacity");
+  console.log("Valor de 'from':", from);
+  console.log("Cadena de consulta completa:", location.search);
+  
+
  
   const [checkInDate, setCheckInDate] = useState({
     icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/e723daaa5705c3c60192811b2d4c4d34ea0086691260ccd5f565983c96238170?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&",
@@ -129,39 +141,106 @@ const Booking = () => {
   };
   const navigate = useNavigate();
 
+ 
+  
+  const [checkIn, setCheckIn] = useState(null); // Asegúrate de inicializar checkIn con un valor por defecto
 
   const handleCheckInChange = (startDate) => {
-    setCheckInDate((prevCheckInDate) => ({
-      ...prevCheckInDate,
-      text: startDate.toLocaleDateString("en-GB", {
+   console.log("setCheckInDate llamada con:", startDate);
+   if (startDate instanceof Date) {
+      const formattedDate = startDate.toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
-      }),
-    }));
+      });
+  
+      setCheckInDate((prevCheckInDate) => ({
+        ...prevCheckInDate,
+        text: formattedDate,
+      }));
+  
+      // Actualiza checkIn con el mismo valor que checkInDate
+      setCheckIn(formattedDate);
+  
+      console.log(startDate);
+   } else {
+      console.error("startDate no es un objeto Date válido");
+   }
   };
+  
+  const [checkOut, setCheckOut] = useState("");
 
   const handleCheckOutChange = (endDate) => {
-    setCheckOutDate((prevCheckOutDate) => ({
-      ...prevCheckOutDate,
-      text: endDate.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }),
-    }));
-  };
+    console.log("setCheckOutDate llamada con:", endDate);
+    if (endDate instanceof Date) {
+       const formattedDate = endDate.toLocaleDateString("en-GB", {
+         day: "2-digit",
+         month: "2-digit",
+         year: "numeric",
+       });
+   
+       setCheckOutDate((prevCheckOutDate) => ({
+         ...prevCheckOutDate,
+         text: formattedDate,
+       }));
+   
+       // Actualiza el estado checkOut con el valor formateado
+       setCheckOut(formattedDate);
+   
+       console.log(endDate);
+    } else {
+       console.error("endDate no es un objeto Date válido");
+    }
+   };
+   
+  useEffect(() => {
+    if (from) {
+       const formattedDate = new Date(from).toLocaleDateString("en-GB", {
+         day: "2-digit",
+         month: "2-digit",
+         year: "numeric",
+       });
+   
+       setCheckInDate((prevCheckInDate) => ({
+         ...prevCheckInDate,
+         text: formattedDate,
+       }));
+   
+       console.log("checkInDate actualizado:", checkInDate);
+    }
+   }, [from]);
+   
+
+  useEffect(() => {
+    if (from) {
+       // Formatea la fecha de entrada (check-in) para que coincida con el formato deseado
+       const formattedDate = new Date(from).toLocaleDateString("en-GB", {
+         day: "2-digit",
+         month: "2-digit",
+         year: "numeric",
+       });
+   
+       // Actualiza el estado de checkInDate con la fecha formateada
+       setCheckInDate((prevCheckInDate) => ({
+         ...prevCheckInDate,
+         text: formattedDate,
+       }));
+    }
+   }, [from]); // Dependencia en 'from' para que el efecto se ejecute cuando 'from' cambie
+   
 
   const handleSearch = async () => {
     try {
-      const formattedCheckInDate = from;
-      const formattedCheckOutDate = to;
+      const formattedCheckInDate = checkIn.split('/').reverse().join('-');
+      const formattedCheckOutDate = checkOut.split('/').reverse().join('-');
+      const capacity = selectedGuests + selectedChildren;
 
       const searchData = {
         from: formattedCheckInDate,
         to: formattedCheckOutDate,
         capacity,
       };
+      console.log(searchData);
 
       const response = await axios.get(
         `${baseUrl}api/rooms/available`,
@@ -182,6 +261,21 @@ const Booking = () => {
           text: "No hay habitaciones disponibles con esta cantidad o fecha que busca",
         });
       } else {
+
+         // Aquí es donde se envían los datos a la ruta /bookingTwo
+      const dataToSend = {
+        checkInDate: formattedCheckInDate,
+        checkOutDate: formattedCheckOutDate,
+        selectedGuests,
+        selectedChildren,
+        availableRooms: response.data.rooms,
+      };
+
+      // Hacemos un console.log de los datos que se van a enviar
+      console.log("Data to send:", dataToSend);
+
+
+        
         navigate("/bookingTwo", {
           state: {
             checkInDate: formattedCheckInDate,
@@ -295,7 +389,7 @@ const Booking = () => {
             <div className="relative max-md:max-w-full">
               <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                 <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                  <div className="flex w-full overflow-visible items-center justify-center mt-4 ml-20">
+                  <div className="flex w-full overflow-visible items-center justify-center mt-4 ml-20 mb">
                     <DateRange
                       onChangeCheckIn={handleCheckInChange}
                       onChangeCheckOut={handleCheckOutChange}
@@ -304,16 +398,16 @@ const Booking = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
       <div className="flex flex-col justify-end items-end px-16 pb-3.5=== mt-3 text-2xl font-extrabold tracking-tight leading-8 text-white uppercase whitespace-nowrap max-md:pl-5 max-md:max-w-full">
         <button
-          className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mr-56 mt-5  hover:bg-amber-400 transition-colors"
+          className="justify-center px-8 py-4 text-white bg-amber-300 rounded-md max-md:px-5 mr-96  mb-7  hover:bg-amber-400 transition-colors "
           onClick={handleSearch}
         >
           Continue
         </button>
+      </div>
+          </div>
+        </div>
       </div>
     </div>
   );
