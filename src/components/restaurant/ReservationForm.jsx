@@ -103,7 +103,7 @@ function ReservationForm() {
          // Mostrar alerta de éxito
          Swal.fire({
            title: 'Success!',
-           text: `La reservación ha sido realizada con éxito.`,
+           text: `The reservation has been successfully made.`,
            icon: 'success',
            confirmButtonText: 'Ok',
            confirmButtonColor: '#fcd34d',
@@ -117,7 +117,7 @@ function ReservationForm() {
          // Mostrar alerta de error
          Swal.fire({
            title: 'Error',
-           text: 'Hubo un problema al realizar la reservación.',
+           text: 'You need to log in to reserve a table.',
            icon: 'error',
            confirmButtonText: 'Ok',
            confirmButtonColor: '#fcd34d',

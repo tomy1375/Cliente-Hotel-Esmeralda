@@ -35,11 +35,11 @@ const Offers = () => {
               ))}
             </ul>
             <div className="flex justify-center">
-              <button className="w-1/4 mx-4 text-xl py-4 font-bold text-white bg-amber-300 rounded-2xl shadow-lg">
+              <button className="w-1/4 mx-4 text-xl py-4 font-bold text-v bg-amber-300 rounded-2xl shadow-lg">
                 {offer.price}
               </button>
               <Link to={`/reservas/${offer.id}`} className="w-1/4 mx-4">
-                <button className="text-xl py-4 font-bold text-white bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full">
+                <button className="text-xl py-4 font-bold text-v bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg w-full">
                   BOOK
                 </button>
               </Link>
