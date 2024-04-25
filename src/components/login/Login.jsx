@@ -126,7 +126,7 @@ function LoginPage() {
           <img
             src="https://images.unsplash.com/photo-1506059612708-99d6c258160e?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90oy1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Decorative image"
-            className="w-full h-full object-cover"
+            className="w-full h-screen object-cover "
           />
         </div>
       </div>

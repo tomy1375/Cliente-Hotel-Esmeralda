@@ -124,12 +124,13 @@ function Register() {
   return (
     <div className="bg-v">
       <div className="flex flex-col md:flex-row gap-4">
-      <div className="hidden md:flex md:w-6/12">
+      <div className="hidden md:flex md:w-10/12">
           <div className="hidden md:flex flex-grow justify-center">
             <img
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/e4cffa6d4db4a3a8887391b8e57ff692b1908a1aaa0a91ca34590f6157d7289e?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
               alt="Sign up background"
-              className="w-full h-full object-cover"
+              className="w-full h-screen  object-cover "
+             
             />
           </div>
         </div>
@@ -138,7 +139,7 @@ function Register() {
             <BackToHomeButton />
             <header className="flex flex-col px-5 mt-0 text-xl text-white max-md:mt-8">
             <div className="flex justify-center mb-6">
-              <h1 className="self-center text-5xl font-extrabold tracking-tight leading-[52.8px] max-md:text-4xl ml-20">
+              <h1 className="self-center text-5xl font-extrabold tracking-tight leading-[52.8px] max-md:text-4xl ml-">
                 Sign up
               </h1>
               </div>
@@ -228,7 +229,7 @@ function Register() {
                   <img
                     src={isPasswordVisible ? eyeIconOpen : eyeIconClosed}
                     alt=""
-                    className="shrink-0 aspect-square w-[20px] cursor-pointer"
+                    className="shrink-0 aspect-square w-[20px] cursor-pointer ml-20"
                     onClick={togglePasswordVisibility}
                   />
                 </div>
@@ -241,7 +242,7 @@ function Register() {
                 >
                   Confirm Password
                 </label>
-                <div className="flex gap-3 mt-5 items-center">
+                <div className="flex gap-3 mt-5 items-center ">
                   <div>
                     <img
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/561c92496a6bc73d29f322c42048ab8d888bad1de7c90d5f02a294dafb2ecab4?apiKey=9fe8dc76776646f4a6bc648caa0a3bac&"
@@ -261,7 +262,7 @@ function Register() {
                   <img
                     src={isPasswordVisible ? eyeIconOpen : eyeIconClosed}
                     alt=""
-                    className="shrink-0 aspect-square w-[20px] cursor-pointer"
+                    className="shrink-0 aspect-square w-[20px] cursor-pointer ml-20"
                     onClick={togglePasswordVisibility}
                   />
                 </div>
