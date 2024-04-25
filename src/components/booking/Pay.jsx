@@ -20,16 +20,16 @@ function Pay() {
 
   const paymentDetails = [
     { label: "Location Number", value: "" },
-    { label: "Description", },
-    { label: "TypeRoom", value: "Standard Room" },
-    { label: "Payment Time", value: "25-02-2023, 13:22:16" },
-    { label: "Payment Method", value: "Bank Transfer" },
+    { label: "Description", value:"Presidential Suite, Spa and Beauty"},
+    { label: "TypeRoom", value: "Spa Suite" },
+    // { label: "Payment Time", value: "25-02-2023, 13:22:16" },
+    { label: "Payment Method", value: "Visa" },
     { label: "Sender Name", value: user?.firstName??userIn?.username??"incognito" }, // Use userInfo.username here
 ];
   const amountDetails = [
-    { label: "Amount", value: "IDR 1,000,000" },
+    { label: "Amount", value: "600" },
    
-    { label: "Admin Fee", value: "IDR 193.00" },
+    // { label: "Admin Fee", value: "IDR 193.00" },
    
   ];
   const handleClick = () => {
@@ -48,7 +48,7 @@ function Pay() {
         Payment Success!
       </h2>
       <p className="mt-3.5 text-4xl font-semibold text-center leading-[53.2px] text-neutral-900 max-md:max-w-full">
-        IDR 1,000,000
+        USD 600
       </p>
       <hr className="shrink-0 mt-12 h-0.5 bg-gray-200 border-2 border-gray-200 border-solid max-md:mt-10 max-md:max-w-full" />
       {paymentDetails.map((detail, index) => (
