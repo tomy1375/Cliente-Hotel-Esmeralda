@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import confirmReservation from "../../services/reservations/confirmReservation";
+import Swal from "sweetalert2";
 
 const ReservationCard = ({
   imageSrc,
@@ -14,15 +15,43 @@ const ReservationCard = ({
   checkOut,
   price,
   status,
-  reservationNumber,
+  reservation_number,
+  fetchReservations
+
 }) => {
   const handleConfirmReservation = async () => {
     try {
-      await confirmReservation(reservationNumber);
+      // Display a confirmation dialog before proceeding
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "Are you sure you want to check in at 3:00 PM?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, confirm',
+        cancelButtonText: 'Cancel'
+      });
+
+      if (result.isConfirmed) {
+        await confirmReservation(reservation_number);
+        Swal.fire({
+          icon: "success",
+          title: "Reservation Confirmed",
+          text: "Your reservation has been successfully confirmed.",
+        });
+        fetchReservations(); // Refresh the reservations list
+      }
     } catch (error) {
       console.error("Error confirming reservation:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error Confirming Reservation",
+        text: "An error occurred while confirming your reservation. Please try again later.",
+      });
     }
   };
+
 
   return (
     <div className="flex gap-5 py-0.5 pr-7 pl-px mt-16 w-full bg-slate-300 rounded-2xl border border-solid border-neutral-200 max-md:flex-wrap max-md:pr-5 max-md:mt-10 max-md:max-w-full">
@@ -42,7 +71,7 @@ const ReservationCard = ({
                 <h1 className="text-4xl font-bold">{title}</h1>
               </div>
               <div>
-                <h1>Reservation Number:{reservationNumber}</h1>
+                <h1>Reservation Number:{reservation_number}</h1>
               </div>
               <div className="mt-5">{nights} NIGHTS</div>
               <div className="mt-6">
@@ -52,16 +81,30 @@ const ReservationCard = ({
               <div className="mt-5">Price per night: ${price}</div>
               {status === "pending" && (
                 <button
-                  onClick={handleConfirmReservation} // Agrega el manejador de evento onClick
+                  onClick={handleConfirmReservation}
                   className="mt-5 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
                 >
                   CHECK IN
                 </button>
               )}
               {status === "pay" && (
-                <button className="mt-5 bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600">
-                  Cancelar
-                </button>
+                <div className="
+                  flex
+                  flex-row
+                  items-center
+                  gap-5
+                  justify-center
+                ">
+                  <button className="mt-5 bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600">
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleConfirmReservation}
+                    className="mt-5 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
+                  >
+                    CHECK IN
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -72,10 +115,12 @@ const ReservationCard = ({
           status === "pending"
             ? "bg-red-500"
             : status === "pay"
+            ? "bg-yellow-500"
+            : status === "finalized"
             ? "bg-green-500"
             : status === "confirmed"
-            ? "bg-blue-500" 
-            : "" 
+            ? "bg-blue-500"
+            : ""
         }`}
       >
         {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -91,16 +136,19 @@ const ReservationModal = ({ isOpen, onClose }) => {
   const [reservations, setReservations] = useState([]);
   console.log(reservations);
 
+  const fetchReservations = async () => {
+    try {
+      const response = await requestAllUserReservations(userId);
+      setReservations(response);
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const response = await requestAllUserReservations(userId);
-        setReservations(response);
-      } catch (error) {
-        console.error("Error fetching reservations:", error);
-      }
-    };
-    fetchReservations();
+    if (userId) {
+      fetchReservations();
+    }
   }, [userId]);
 
   if (!isOpen) {
@@ -127,11 +175,12 @@ const ReservationModal = ({ isOpen, onClose }) => {
               reservations.map((reservation, index) => (
                 <ReservationCard
                   key={index}
+                  fetchReservations={fetchReservations}
                   imageSrc={
                     reservation.room?.photo_url ||
                     "https://via.placeholder.com/150"
                   }
-                  reservationNumber={reservation.reservation_number}
+                  reservation_number={reservation.reservation_number}
                   title={reservation.room?.room_type.name || "No Description"}
                   nights={(
                     (new Date(reservation.check_out_date) -

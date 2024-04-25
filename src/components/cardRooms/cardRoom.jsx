@@ -99,17 +99,3 @@ function CardRoom({ room }) {
 
 export default CardRoom;
 
-{
-  /* <article className="flex flex-col justify-center items-start px-16 text-white rounded-3xl shadow-sm bg-green-950 max-md:pl-5">
-        
-<Link to={`/detail/${room.id}`}>
-  <h2 className="relative mt-44 text-4xl font-extrabold tracking-tight text-center  max-md:mt-10">{room.name}</h2>
-</Link>
-<p className="text-white">{room.description}</p>
-<div className="flex mt-4">
-  {room.images.map((image, index) => (
-    <img key={index} src={image} alt={room.title} className="w-1/3" />
-  ))}
-</div>
-</article> */
-}
