@@ -91,7 +91,7 @@ function ReservationForm() {
    };
    
     // Realizar la solicitud POST
-    fetch(`http://localhost:4000/api/reservations/restaurant`, requestOptions)
+    fetch(`${baseURL}api/reservations/restaurant`, requestOptions)
        .then(response => {
          if (!response.ok) {
            throw new Error('Error en la solicitud: ' + response.status);
