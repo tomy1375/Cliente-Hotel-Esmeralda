@@ -1,5 +1,5 @@
 import { API_URL } from '../../utils/global.js';
-
+//se utiliza api_url
 
 export const getUserReservations = async (userId) => {
   try {

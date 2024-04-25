@@ -20,7 +20,7 @@ function Pay() {
   const [reservationDetails, setReservationDetails] = useState(null);
 
   useEffect(() => {
-    const userId = user.id; // Asegúrate de obtener el id del usuario de forma correcta
+    const userId = user.id; 
     getUserReservations(userId).then((data) => {
       if (data && data.length > 0) {
         setReservationDetails(data[0]);
@@ -30,6 +30,7 @@ function Pay() {
     });
   }, [user.id]);
 
+  //se traen datos para imprimir en pantalla
   const paymentDetails = reservationDetails ? [
     { label: 'Location Number', value: reservationDetails.reservation_number },
     { label: 'Description', value: reservationDetails.room.description },
