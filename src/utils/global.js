@@ -1,4 +1,4 @@
-const APP_ENV = "PRODUCTION"; //PRODUCTION O LOCAL
+const APP_ENV = "LOCAL"; //PRODUCTION O LOCAL
 
 let API_URL = "https://backend-hotelesmeralda.onrender.com/";
 
