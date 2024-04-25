@@ -27,7 +27,7 @@ function Pay() {
     { label: "Sender Name", value: user?.firstName??userIn?.username??"incognito" }, // Use userInfo.username here
 ];
   const amountDetails = [
-    { label: "Amount", value: "600" },
+    { label: "Amount", value: "800" },
    
     // { label: "Admin Fee", value: "IDR 193.00" },
    
@@ -48,7 +48,7 @@ function Pay() {
         Payment Success!
       </h2>
       <p className="mt-3.5 text-4xl font-semibold text-center leading-[53.2px] text-neutral-900 max-md:max-w-full">
-        USD 600
+        USD 800
       </p>
       <hr className="shrink-0 mt-12 h-0.5 bg-gray-200 border-2 border-gray-200 border-solid max-md:mt-10 max-md:max-w-full" />
       {paymentDetails.map((detail, index) => (
