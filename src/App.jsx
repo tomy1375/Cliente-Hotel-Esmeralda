@@ -151,7 +151,7 @@ function MainLayout({ socket, setSocket }) {
           onClick={toggleChatButton}
           className="cursor-pointer mr-36 mb-5 fixed right-0 bottom-0 h-[50px] px-6 bg-amber-300 hover:bg-amber-400 transition-colors rounded-2xl shadow-lg z-50"
         >
-          Chat en vivo
+          Chat live
         </button>
       )}
       {!isLoginOrRegister && showSpinner && !showChatButton && (
